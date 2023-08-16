@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TriCount.Entites", "ClassLibrary1\TriCount.Entites.csproj", "{A756E452-34CF-43BF-BA8C-6F7EF3B22EDB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tricount.Entities", "Tricount.Entities\Tricount.Entities.csproj", "{8B272FF8-2DAB-43CE-B2BF-75B82A920DBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A756E452-34CF-43BF-BA8C-6F7EF3B22EDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A756E452-34CF-43BF-BA8C-6F7EF3B22EDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A756E452-34CF-43BF-BA8C-6F7EF3B22EDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A756E452-34CF-43BF-BA8C-6F7EF3B22EDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B272FF8-2DAB-43CE-B2BF-75B82A920DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B272FF8-2DAB-43CE-B2BF-75B82A920DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B272FF8-2DAB-43CE-B2BF-75B82A920DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B272FF8-2DAB-43CE-B2BF-75B82A920DBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
