@@ -9,16 +9,11 @@ namespace Tricount.Entities.Concrete
 {
 	public class Group :BaseEntity
 	{
-        public string GroupName{ get; set; }
-        public Currency DefaultCurrency { get; set; }
-		ICollection<User> Users { get; set; }
-		ICollection<Expense> Expenses { get; set; }
-
-		public enum Currency
-		{
-			USD,
-			EURO,
-			TRY
-		}
-	}
+        public string Name{ get; set; }
+        public string? Description { get; set; }
+        public CurrencyEnum DefaultCurrency { get; set; }
+		public ICollection<User>? Users { get; set; }
+		public ICollection<Expense>? Expenses { get; set; }
+        
+    }
 }

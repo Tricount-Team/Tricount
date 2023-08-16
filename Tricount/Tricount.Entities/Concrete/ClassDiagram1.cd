@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Tricount.Entities.Concrete.User">
+    <Position X="7.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAABAAAAAAAAAQAAAAAAAAAAAAQgAAgAAAAA=</HashCode>
+      <FileName>Concrete\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tricount.Entities.Concrete.Group">
+    <Position X="5.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAgAAAAAAAAAAQAAAAAAAAAAQgAAAAAAAA=</HashCode>
+      <FileName>Concrete\Group.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tricount.Entities.Concrete.Payment">
+    <Position X="4.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAACAAAAAAAAAAiAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Concrete\Payment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tricount.Entities.Concrete.Expense">
+    <Position X="2.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACABAEAEAAAgAAAAQAAAAAiAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Concrete\Expense.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Tricount.Entities.Concrete.CurrencyEnum" Collapsed="true">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAABAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Concrete\CurrencyEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
