@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tricount.Entities.Abstract;
 
 namespace Tricount.Entities.Concrete
 {
-    internal class Test
+    public class Test : BaseEntity
     {
     }
 }
