@@ -13,7 +13,10 @@ namespace Tricount.BL.Concrete
     public class ManagerBase<T> : IManagerBase<T> where T : BaseEntity, new()
     {
         private readonly IBaseRepository<T> repository;
-       
+        private IPaymentRepository repository1;
+        private IGroupRepository repository2;
+        private IExpenseDetailRepository repository3;
+
         public ManagerBase(IBaseRepository<T> repository)
         {
             this.repository = repository;
@@ -62,3 +65,4 @@ namespace Tricount.BL.Concrete
         }
     }
 }
+
