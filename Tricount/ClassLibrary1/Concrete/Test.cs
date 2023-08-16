@@ -10,5 +10,6 @@ namespace TriCount.Entites.Concrete
     public class Test:BaseEntity
     {
         public string Name { get; set; }
+
     }
 }
