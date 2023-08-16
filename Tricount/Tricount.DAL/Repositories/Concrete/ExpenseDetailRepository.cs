@@ -10,5 +10,6 @@ namespace Tricount.DAL.Repositories.Concrete
 {
 	public class ExpenseDetailRepository : BaseRepository<ExpenseDetail>, IExpenseDetailRepository
 	{
+
 	}
 }
