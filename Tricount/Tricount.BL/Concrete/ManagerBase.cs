@@ -48,7 +48,3 @@ namespace Tricount.BL.Concrete
         }
     }
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> ea6429d7ff7c4da7b7ef350fc96ea149aa49ff9d
