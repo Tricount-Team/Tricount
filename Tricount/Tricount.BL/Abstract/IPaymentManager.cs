@@ -7,7 +7,8 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Abstract
 {
-    public interface IGroup : IManagerBase<Group>
+    public interface IPaymentManager : IManagerBase<Payment>
     {
+
     }
 }

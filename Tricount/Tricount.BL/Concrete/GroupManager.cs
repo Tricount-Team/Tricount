@@ -9,10 +9,11 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Concrete
 {
-    public class PaymentManager : ManagerBase<Payment>, IPaymentManager
+    public class GroupManager : ManagerBase<Group>, IGroupManager
     {
-        public PaymentManager(IPaymentRepository repository) : base(repository)
+        public GroupManager(IGroupRepository repository) : base(repository)
         {
+
         }
     }
 }
