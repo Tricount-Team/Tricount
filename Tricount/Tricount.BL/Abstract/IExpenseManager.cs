@@ -7,7 +7,7 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Abstract
 {
-    public interface IExpense : IManagerBase<Expense>
+    public interface IExpenseManager : IManagerBase<Expense>
     {
 
     }
