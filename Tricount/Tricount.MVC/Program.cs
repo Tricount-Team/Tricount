@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tricount.DAL.Contexts;
 using Tricount.Entities.Concrete;
+using Tricount.MVC.AutoMapper;
 using Tricount.MVC.Data;
+using Tricount.MVC.Extentions;
 
 namespace Tricount.MVC
 {
@@ -21,6 +23,10 @@ namespace Tricount.MVC
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddAutoMapper(typeof(TricountMapper));
+
+            builder.Services.AddTricountServices();
 
             var app = builder.Build();
 
