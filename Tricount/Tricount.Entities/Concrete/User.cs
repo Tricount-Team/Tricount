@@ -8,6 +8,6 @@ using Tricount.Entities.Abstract;
 namespace Tricount.Entities.Concrete
 {
     public class User : BaseEntity
-    { 
+    { //sa deneme 1 2 4 
     }
 }
