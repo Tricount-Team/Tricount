@@ -9,5 +9,6 @@ namespace Tricount.Entities.Concrete
 {
     public class Test : BaseEntity
     {
+        public string UserName { get; set; }
     }
 }
