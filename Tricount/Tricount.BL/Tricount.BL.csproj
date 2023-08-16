@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tricount.DAL\Tricount.DAL.csproj" />
+    <ProjectReference Include="..\Tricount.Entities\Tricount.Entities.csproj" />
+  </ItemGroup>
+
 </Project>
