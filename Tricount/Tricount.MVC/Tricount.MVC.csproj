@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tricount.BL\Tricount.BL.csproj" />
     <ProjectReference Include="..\Tricount.DAL\Tricount.DAL.csproj" />
     <ProjectReference Include="..\Tricount.Entities\Tricount.Entities.csproj" />
   </ItemGroup>
