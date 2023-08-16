@@ -16,6 +16,16 @@ namespace Tricount.DAL.Contexts
         public DbSet<Payment> Payments { get; set; }
         public DbSet<User> Users { get; set; }
 
+        public SqlDbContext()
+        {
+            
+        }
+
+        public SqlDbContext(DbContextOptions<SqlDbContext> options) : base(options)
+        {
+            
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
