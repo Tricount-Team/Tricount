@@ -17,15 +17,9 @@ namespace Tricount.MVC.Controllers
 
         public GroupController(
             IGroupManager groupManager, 
-            //IExpenseRepository expenseRepository,
-            //IExpenseDetailRepository expenseDetailRepository,
-            //IPaymentRepository paymentRepository,
             UserManager<User> userManager)
         {
             this.groupManager = groupManager;
-            //this.expenseRepository = expenseRepository;
-            //this.expenseDetailRepository = expenseDetailRepository;
-            //this.paymentRepository = paymentRepository;
             this.userManager = userManager;
         }
 
