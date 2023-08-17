@@ -1,4 +1,4 @@
-﻿@model ICollection<Group>
+﻿@*@model ICollection<Group>*@
 @using Microsoft.AspNetCore.Identity;
 @using Tricount.Entities.Concrete;
 @inject UserManager<User> userManager;
@@ -8,8 +8,8 @@
 
 }
 
-@if (User.Identity.IsAuthenticated)
-{
+@*
+    Template
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -71,7 +71,7 @@
                 <!-- Control sidebar content goes here -->
             </aside>
             <!-- /.control-sidebar -->
-            @*<partial name="_Footer"></partial>*@
+            @*<partial name="_Footer"></partial>*
         </div>
         <!-- ./wrapper -->
         <!-- REQUIRED SCRIPTS -->
@@ -99,9 +99,8 @@
         <script src="~/dist/js/pages/dashboard2.js"></script>
     </body>
     </html>
-}
-else
-{   
+*@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -152,4 +151,3 @@ else
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-}

@@ -10,9 +10,6 @@ namespace Tricount.MVC.Controllers
     public class GroupController : Controller
     {
         private readonly IGroupManager groupManager;
-        private readonly IExpenseRepository expenseRepository;
-        private readonly IExpenseDetailRepository expenseDetailRepository;
-        private readonly IPaymentRepository paymentRepository;
         private readonly UserManager<User> userManager;
 
         public GroupController(

@@ -1,4 +1,4 @@
-﻿@model ICollection<Group>
+﻿@*@model ICollection<Group>*@
 @using Microsoft.AspNetCore.Identity;
 @using Tricount.Entities.Concrete;
 @inject UserManager<User> userManager;
@@ -42,7 +42,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    @foreach (var item in Model)
+                    @*@foreach (var item in Model)
                     {
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
@@ -52,7 +52,7 @@
                                 </a>
                             </li>
                         </ul>
-                    }
+                    }*@
                 </li>
 
             </ul>
