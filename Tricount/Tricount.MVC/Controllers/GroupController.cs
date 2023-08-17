@@ -45,11 +45,9 @@ namespace Tricount.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Groups = await groupRepository.GetAll(p => p.CreatedId.ToString() == GetUserId().Result.ToString());
-            ViewBag.Expenses = await expenseRepository.GetAll(p => p.UserId.ToString() == GetUserId().Result.ToString());
-            ViewBag.ExpenseDetails = await expenseDetailRepository.GetAll(p => p.UserId.ToString() == GetUserId().Result.ToString());
-            ViewBag.Payment = await paymentRepository.GetAll(p => p.UserId.ToString() == GetUserId().Result.ToString());
-            return View();
+     
+            var result = await groupRepository.GetAll(p => p.CreatedId.ToString() == GetUserId().Result.ToString());
+            return View(result);
         }
     }
 }

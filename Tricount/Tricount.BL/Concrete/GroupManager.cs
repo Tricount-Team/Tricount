@@ -19,7 +19,7 @@ namespace Tricount.BL.Concrete
             this.repository = repository;
         }
 
-        public override Task<int> Create(Group entity)
+        public async  override Task<int> Create(Group entity)
         {
             var group = repository.GetAll(p => p.Name == entity.Name).Result.FirstOrDefault();
             if (group == null)
@@ -27,7 +27,7 @@ namespace Tricount.BL.Concrete
                 throw new Exception($"{group.Name} adı zaten mevcut!");
             }
 
-            return base.Create(entity);
+            return await base.Create(entity);
         }
     }
 }
