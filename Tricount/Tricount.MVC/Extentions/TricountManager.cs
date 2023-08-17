@@ -9,14 +9,22 @@ namespace Tricount.MVC.Extentions
     {
         public static IServiceCollection AddTricountServices(this IServiceCollection services)
         {
-            services.AddScoped<IExpenseRepository, ExpenseRepository>();
-            services.AddScoped<IExpenseDetailRepository, ExpenseDetailRepository>();
-            services.AddScoped<IGroupRepository, GroupRepository>();
+            
+
+           
+           
             services.AddScoped<IPaymentRepository, PaymentRepository>();
-            services.AddScoped<IExpenseManager, ExpenseManager>();
-            services.AddScoped<IExpenseDetailManager, ExpenseDetailManager>();
-            services.AddScoped<IGroupManager, GroupManager>();
             services.AddScoped<IPaymentManager, PaymentManager>();
+            
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IExpenseManager, ExpenseManager>();
+            
+            services.AddScoped<IExpenseDetailManager, ExpenseDetailManager>();
+            services.AddScoped<IExpenseDetailRepository, ExpenseDetailRepository>();
+
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IGroupManager, GroupManager>();
+           
 
             return services;
         }

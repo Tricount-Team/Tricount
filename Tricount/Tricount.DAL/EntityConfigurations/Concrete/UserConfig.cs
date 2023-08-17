@@ -16,7 +16,13 @@ namespace Tricount.DAL.EntityConfigurations.Concrete
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+<<<<<<< HEAD
             
+=======
+           
+            builder.Property(p => p.TCNO).HasMaxLength(11);
+            builder.HasIndex(p=>p.TCNO).IsUnique();
+>>>>>>> Test
         }
     }
 }

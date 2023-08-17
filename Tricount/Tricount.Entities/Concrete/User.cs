@@ -10,7 +10,11 @@ namespace Tricount.Entities.Concrete
 {
     public class User : IdentityUser
     {
+<<<<<<< HEAD
         public string? TcNo { get; set; }
+=======
+        public string? TCNO { get; set; }
+>>>>>>> Test
         public CurrencyEnum DefaultCurrency { get; set; }
         public ICollection<Group>? Groups { get; set; }
         public ICollection<Expense>? Expenses { get; set; }
