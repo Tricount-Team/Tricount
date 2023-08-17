@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.DAL.Contexts
 {
-    public class SqlDbContext : DbContext
+    public class SqlDbContext : IdentityDbContext<User>
     {
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<ExpenseDetail> ExpenseDetails { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<User> Users { get; set; }
