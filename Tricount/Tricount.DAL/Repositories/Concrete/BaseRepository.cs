@@ -57,11 +57,11 @@ namespace Tricount.DAL.Repositories.Concrete
         public async Task<IQueryable<T>>? GetAllInclude(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[]? include)
         {
             IQueryable<T> query;
+            query = dbContext.Set<T>();
             if (filter != null)
             {
                 query = dbContext.Set<T>().Where(filter);
             }
-            query = dbContext.Set<T>();
             return include.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
     }

@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Tricount.MVC.Data;
+using Tricount.DAL.Contexts;
 
 #nullable disable
 
-namespace Tricount.MVC.Migrations
+namespace Tricount.DAL.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(SqlDbContext))]
+    [Migration("20230817170154_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,63 +92,6 @@ namespace Tricount.MVC.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique()
-                        .HasFilter("[PhoneNumber] IS NOT NULL");
-
-                    b.ToTable("IdentityUser");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -174,12 +120,10 @@ namespace Tricount.MVC.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -216,12 +160,10 @@ namespace Tricount.MVC.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -236,7 +178,7 @@ namespace Tricount.MVC.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("69c1b35c-6430-4ebf-b73c-e202c6fefb57"));
+                        .HasDefaultValue(new Guid("f2085946-337b-4314-b522-0b66746bf024"));
 
                     b.Property<double>("Amount")
                         .ValueGeneratedOnAdd()
@@ -246,7 +188,7 @@ namespace Tricount.MVC.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(95));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 1, 54, 803, DateTimeKind.Local).AddTicks(3785));
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
@@ -258,9 +200,9 @@ namespace Tricount.MVC.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 2, 46, 19, 879, DateTimeKind.Local).AddTicks(9905));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 1, 54, 803, DateTimeKind.Local).AddTicks(3644));
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId1")
@@ -283,17 +225,17 @@ namespace Tricount.MVC.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("f45fcfbd-4054-4963-88c5-71187c75f4d7"));
+                        .HasDefaultValue(new Guid("8d39ce9d-452d-4293-b410-bcf6e7e7202e"));
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(2591));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(982));
 
-                    b.Property<Guid>("ExpenseId")
+                    b.Property<Guid?>("ExpenseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GroupId")
+                    b.Property<Guid?>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsPaid")
@@ -304,9 +246,9 @@ namespace Tricount.MVC.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(2414));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(789));
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId1")
@@ -322,7 +264,8 @@ namespace Tricount.MVC.Migrations
                     b.HasIndex("UserId1");
 
                     b.HasIndex("ExpenseId", "GroupId", "UserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ExpenseId] IS NOT NULL AND [GroupId] IS NOT NULL AND [UserId] IS NOT NULL");
 
                     b.ToTable("ExpenseDetails");
                 });
@@ -332,12 +275,12 @@ namespace Tricount.MVC.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("473fd7ba-7cec-4dff-a96c-1e548405e8bf"));
+                        .HasDefaultValue(new Guid("e0e5fa55-99bd-4e12-8b8b-5614a731e55d"));
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(5649));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(7213));
 
                     b.Property<Guid>("CreatedId")
                         .HasColumnType("uniqueidentifier");
@@ -357,7 +300,7 @@ namespace Tricount.MVC.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(5535));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(7086));
 
                     b.HasKey("Id");
 
@@ -372,7 +315,7 @@ namespace Tricount.MVC.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("a9c3403e-2c9a-43c5-9ded-dc90fce9b797"));
+                        .HasDefaultValue(new Guid("dc2769cd-642d-4c73-9139-48865cd0e43c"));
 
                     b.Property<double>("Amount")
                         .ValueGeneratedOnAdd()
@@ -382,7 +325,7 @@ namespace Tricount.MVC.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(7516));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(9729));
 
                     b.Property<Guid>("ExpenseId")
                         .HasColumnType("uniqueidentifier");
@@ -390,7 +333,7 @@ namespace Tricount.MVC.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(7316));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(9606));
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -458,6 +401,10 @@ namespace Tricount.MVC.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TCNO")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -474,6 +421,10 @@ namespace Tricount.MVC.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("TCNO")
+                        .IsUnique()
+                        .HasFilter("[TCNO] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -561,15 +512,11 @@ namespace Tricount.MVC.Migrations
                 {
                     b.HasOne("Tricount.Entities.Concrete.Expense", "Expense")
                         .WithMany("ExpenseDetails")
-                        .HasForeignKey("ExpenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExpenseId");
 
                     b.HasOne("Tricount.Entities.Concrete.Group", "Group")
                         .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("Tricount.Entities.Concrete.User", "User")
                         .WithMany()

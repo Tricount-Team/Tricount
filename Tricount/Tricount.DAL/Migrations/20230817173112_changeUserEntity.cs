@@ -3,257 +3,301 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Tricount.MVC.Migrations
+namespace Tricount.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class refresh : Migration
+    public partial class changeUserEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropIndex(
+                name: "IX_AspNetUsers_TCNO",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "TCNO",
+                table: "AspNetUsers");
+
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdateDate",
                 table: "Payments",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(7316),
+                defaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(4746),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 935, DateTimeKind.Local).AddTicks(2832));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(9606));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreateDate",
                 table: "Payments",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(7516),
+                defaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(4862),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 935, DateTimeKind.Local).AddTicks(3051));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(9729));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Payments",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("a9c3403e-2c9a-43c5-9ded-dc90fce9b797"),
+                defaultValue: new Guid("f4ffa2e2-aff3-4cc1-91f6-2da6075e14ea"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("cc967af1-b39a-4016-a5c4-062c7c714246"));
+                oldDefaultValue: new Guid("dc2769cd-642d-4c73-9139-48865cd0e43c"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdateDate",
                 table: "Groups",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(5535),
+                defaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(2931),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 935, DateTimeKind.Local).AddTicks(698));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(7086));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreateDate",
                 table: "Groups",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(5649),
+                defaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(3034),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 935, DateTimeKind.Local).AddTicks(809));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(7213));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Groups",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("473fd7ba-7cec-4dff-a96c-1e548405e8bf"),
+                defaultValue: new Guid("a60b73f2-ef3d-4605-91f5-6ac005bedcc9"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("a1c6d4f7-3c68-4f18-8fad-b2fec6451880"));
+                oldDefaultValue: new Guid("e0e5fa55-99bd-4e12-8b8b-5614a731e55d"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdateDate",
                 table: "Expenses",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 879, DateTimeKind.Local).AddTicks(9905),
+                defaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 287, DateTimeKind.Local).AddTicks(8133),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 934, DateTimeKind.Local).AddTicks(4928));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 803, DateTimeKind.Local).AddTicks(3644));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreateDate",
                 table: "Expenses",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(95),
+                defaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 287, DateTimeKind.Local).AddTicks(8273),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 934, DateTimeKind.Local).AddTicks(5167));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 803, DateTimeKind.Local).AddTicks(3785));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Expenses",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("69c1b35c-6430-4ebf-b73c-e202c6fefb57"),
+                defaultValue: new Guid("53c3b876-152d-42b2-8fd8-8c9aa0ed0306"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("dc0c95ba-dcd3-4305-ac6d-63eb7f348340"));
+                oldDefaultValue: new Guid("f2085946-337b-4314-b522-0b66746bf024"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdateDate",
                 table: "ExpenseDetails",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(2414),
+                defaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(345),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 934, DateTimeKind.Local).AddTicks(7692));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(789));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreateDate",
                 table: "ExpenseDetails",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(2591),
+                defaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(476),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 934, DateTimeKind.Local).AddTicks(7928));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(982));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "ExpenseDetails",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("f45fcfbd-4054-4963-88c5-71187c75f4d7"),
+                defaultValue: new Guid("91f472b8-f6de-418c-8b75-b28711a6b7ae"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("75281091-5474-42b1-b2b5-e817ad54c494"));
+                oldDefaultValue: new Guid("8d39ce9d-452d-4293-b410-bcf6e7e7202e"));
+
+            migrationBuilder.AddColumn<string>(
+                name: "Iban",
+                table: "AspNetUsers",
+                type: "nvarchar(26)",
+                maxLength: 26,
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_Iban",
+                table: "AspNetUsers",
+                column: "Iban",
+                unique: true,
+                filter: "[Iban] IS NOT NULL");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropIndex(
+                name: "IX_AspNetUsers_Iban",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Iban",
+                table: "AspNetUsers");
+
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdateDate",
                 table: "Payments",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 935, DateTimeKind.Local).AddTicks(2832),
+                defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(9606),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(7316));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(4746));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreateDate",
                 table: "Payments",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 935, DateTimeKind.Local).AddTicks(3051),
+                defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(9729),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(7516));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(4862));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Payments",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("cc967af1-b39a-4016-a5c4-062c7c714246"),
+                defaultValue: new Guid("dc2769cd-642d-4c73-9139-48865cd0e43c"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("a9c3403e-2c9a-43c5-9ded-dc90fce9b797"));
+                oldDefaultValue: new Guid("f4ffa2e2-aff3-4cc1-91f6-2da6075e14ea"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdateDate",
                 table: "Groups",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 935, DateTimeKind.Local).AddTicks(698),
+                defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(7086),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(5535));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(2931));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreateDate",
                 table: "Groups",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 935, DateTimeKind.Local).AddTicks(809),
+                defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(7213),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(5649));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(3034));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Groups",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("a1c6d4f7-3c68-4f18-8fad-b2fec6451880"),
+                defaultValue: new Guid("e0e5fa55-99bd-4e12-8b8b-5614a731e55d"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("473fd7ba-7cec-4dff-a96c-1e548405e8bf"));
+                oldDefaultValue: new Guid("a60b73f2-ef3d-4605-91f5-6ac005bedcc9"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdateDate",
                 table: "Expenses",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 934, DateTimeKind.Local).AddTicks(4928),
+                defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 803, DateTimeKind.Local).AddTicks(3644),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 879, DateTimeKind.Local).AddTicks(9905));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 287, DateTimeKind.Local).AddTicks(8133));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreateDate",
                 table: "Expenses",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 934, DateTimeKind.Local).AddTicks(5167),
+                defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 803, DateTimeKind.Local).AddTicks(3785),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(95));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 287, DateTimeKind.Local).AddTicks(8273));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "Expenses",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("dc0c95ba-dcd3-4305-ac6d-63eb7f348340"),
+                defaultValue: new Guid("f2085946-337b-4314-b522-0b66746bf024"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("69c1b35c-6430-4ebf-b73c-e202c6fefb57"));
+                oldDefaultValue: new Guid("53c3b876-152d-42b2-8fd8-8c9aa0ed0306"));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "UpdateDate",
                 table: "ExpenseDetails",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 934, DateTimeKind.Local).AddTicks(7692),
+                defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(789),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(2414));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(345));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreateDate",
                 table: "ExpenseDetails",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 8, 17, 0, 5, 58, 934, DateTimeKind.Local).AddTicks(7928),
+                defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(982),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 8, 17, 2, 46, 19, 880, DateTimeKind.Local).AddTicks(2591));
+                oldDefaultValue: new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(476));
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",
                 table: "ExpenseDetails",
                 type: "uniqueidentifier",
                 nullable: false,
-                defaultValue: new Guid("75281091-5474-42b1-b2b5-e817ad54c494"),
+                defaultValue: new Guid("8d39ce9d-452d-4293-b410-bcf6e7e7202e"),
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier",
-                oldDefaultValue: new Guid("f45fcfbd-4054-4963-88c5-71187c75f4d7"));
+                oldDefaultValue: new Guid("91f472b8-f6de-418c-8b75-b28711a6b7ae"));
+
+            migrationBuilder.AddColumn<string>(
+                name: "TCNO",
+                table: "AspNetUsers",
+                type: "nvarchar(11)",
+                maxLength: 11,
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_TCNO",
+                table: "AspNetUsers",
+                column: "TCNO",
+                unique: true,
+                filter: "[TCNO] IS NOT NULL");
         }
     }
 }

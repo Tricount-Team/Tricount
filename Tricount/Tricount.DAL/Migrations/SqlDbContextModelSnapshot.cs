@@ -89,79 +89,6 @@ namespace Tricount.DAL.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -248,7 +175,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("43b98ffc-7d17-4892-ae44-8764c225ff9d"));
+                        .HasDefaultValue(new Guid("53c3b876-152d-42b2-8fd8-8c9aa0ed0306"));
 
                     b.Property<double>("Amount")
                         .ValueGeneratedOnAdd()
@@ -258,7 +185,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 12, 47, 48, 300, DateTimeKind.Local).AddTicks(656));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 31, 12, 287, DateTimeKind.Local).AddTicks(8273));
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
@@ -270,9 +197,9 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 12, 47, 48, 300, DateTimeKind.Local).AddTicks(499));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 31, 12, 287, DateTimeKind.Local).AddTicks(8133));
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId1")
@@ -295,17 +222,17 @@ namespace Tricount.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("bc1fda91-40d3-458f-a573-60beed1723ca"));
+                        .HasDefaultValue(new Guid("91f472b8-f6de-418c-8b75-b28711a6b7ae"));
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 12, 47, 48, 300, DateTimeKind.Local).AddTicks(2976));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(476));
 
-                    b.Property<Guid>("ExpenseId")
+                    b.Property<Guid?>("ExpenseId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GroupId")
+                    b.Property<Guid?>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsPaid")
@@ -316,9 +243,9 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 12, 47, 48, 300, DateTimeKind.Local).AddTicks(2829));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(345));
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId1")
@@ -334,7 +261,8 @@ namespace Tricount.DAL.Migrations
                     b.HasIndex("UserId1");
 
                     b.HasIndex("ExpenseId", "GroupId", "UserId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ExpenseId] IS NOT NULL AND [GroupId] IS NOT NULL AND [UserId] IS NOT NULL");
 
                     b.ToTable("ExpenseDetails");
                 });
@@ -344,12 +272,12 @@ namespace Tricount.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("c8a5c573-f959-4e32-881f-d72bbae58c0d"));
+                        .HasDefaultValue(new Guid("a60b73f2-ef3d-4605-91f5-6ac005bedcc9"));
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 12, 47, 48, 300, DateTimeKind.Local).AddTicks(5704));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(3034));
 
                     b.Property<Guid>("CreatedId")
                         .HasColumnType("uniqueidentifier");
@@ -369,7 +297,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 12, 47, 48, 300, DateTimeKind.Local).AddTicks(5581));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(2931));
 
                     b.HasKey("Id");
 
@@ -384,7 +312,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("d41e2913-2ede-40d4-97d2-79df759bfdab"));
+                        .HasDefaultValue(new Guid("f4ffa2e2-aff3-4cc1-91f6-2da6075e14ea"));
 
                     b.Property<double>("Amount")
                         .ValueGeneratedOnAdd()
@@ -394,7 +322,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 12, 47, 48, 300, DateTimeKind.Local).AddTicks(7462));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(4862));
 
                     b.Property<Guid>("ExpenseId")
                         .HasColumnType("uniqueidentifier");
@@ -402,7 +330,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 17, 12, 47, 48, 300, DateTimeKind.Local).AddTicks(7337));
+                        .HasDefaultValue(new DateTime(2023, 8, 17, 20, 31, 12, 288, DateTimeKind.Local).AddTicks(4746));
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -424,20 +352,78 @@ namespace Tricount.DAL.Migrations
 
             modelBuilder.Entity("Tricount.Entities.Concrete.User", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DefaultCurrency")
                         .HasColumnType("int");
 
-                    b.Property<string>("TCNO")
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.HasIndex("TCNO")
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Iban")
+                        .HasMaxLength(26)
+                        .HasColumnType("nvarchar(26)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Iban")
                         .IsUnique()
-                        .HasFilter("[TCNO] IS NOT NULL");
+                        .HasFilter("[Iban] IS NOT NULL");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("GroupUser", b =>
@@ -466,7 +452,7 @@ namespace Tricount.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Tricount.Entities.Concrete.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -475,7 +461,7 @@ namespace Tricount.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Tricount.Entities.Concrete.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -490,7 +476,7 @@ namespace Tricount.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Tricount.Entities.Concrete.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -499,7 +485,7 @@ namespace Tricount.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Tricount.Entities.Concrete.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -523,15 +509,11 @@ namespace Tricount.DAL.Migrations
                 {
                     b.HasOne("Tricount.Entities.Concrete.Expense", "Expense")
                         .WithMany("ExpenseDetails")
-                        .HasForeignKey("ExpenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExpenseId");
 
                     b.HasOne("Tricount.Entities.Concrete.Group", "Group")
                         .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("Tricount.Entities.Concrete.User", "User")
                         .WithMany()

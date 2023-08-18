@@ -10,7 +10,7 @@ namespace Tricount.Entities.Concrete
 {
     public class User : IdentityUser
     {
-        public string? TCNO { get; set; }
+        public string? Iban { get; set; }
         public CurrencyEnum DefaultCurrency { get; set; }
         public ICollection<Group>? Groups { get; set; }
         public ICollection<Expense>? Expenses { get; set; }

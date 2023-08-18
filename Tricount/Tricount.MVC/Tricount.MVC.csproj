@@ -30,10 +30,6 @@
   <ItemGroup>
     <Folder Include="Areas\Dashboard\Data\" />
     <Folder Include="Areas\Dashboard\Models\" />
-    <Folder Include="Areas\test\Controllers\" />
-    <Folder Include="Areas\test\Data\" />
-    <Folder Include="Areas\test\Models\" />
-    <Folder Include="Areas\test\Views\" />
     <Folder Include="Methods\" />
   </ItemGroup>
 
