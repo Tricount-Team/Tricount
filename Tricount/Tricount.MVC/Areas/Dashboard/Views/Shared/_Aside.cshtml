@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using Tricount.BL.Abstract;
 @using Tricount.Entities.Concrete;
+@using Tricount.MVC.Models.DTO_s.Group;
 
 @inject UserManager<User> userManager;
 @inject IGroupManager groupManager;
@@ -62,8 +63,17 @@
 
             </ul>
         </nav>
+
+        <!-- Button trigger modal -->
+        <div class="form-inline d-flex justify-content-center">
+            <a class="btn btn-primary" asp-area="Dashboard" asp-controller="Group" asp-action="GetCreateGroup" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+                + Create New Group
+            </a>
+        </div>
+
+        <partial name="_CreateModal"></partial>
+
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
 </aside>
-

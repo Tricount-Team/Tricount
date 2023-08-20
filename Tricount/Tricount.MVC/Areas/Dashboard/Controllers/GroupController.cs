@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tricount.BL.Abstract;
@@ -6,6 +7,9 @@ using Tricount.BL.Concrete;
 using Tricount.DAL.Contexts;
 using Tricount.Entities.Concrete;
 using Tricount.MVC.Models;
+using Tricount.MVC.Models.DTO_s.Expense;
+using Tricount.MVC.Models.DTO_s.Group;
+using Tricount.MVC.Models.DTO_s.Payment;
 
 namespace Tricount.MVC.Areas.Dashboard.Controllers
 {
@@ -15,17 +19,18 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
     {
         private readonly IGroupManager groupManager;
         private readonly UserManager<User> userManager;
+        private readonly IMapper mapper;
 
-        public GroupController(IGroupManager groupManager, UserManager<User> userManager)
+        public GroupController(IGroupManager groupManager, UserManager<User> userManager, IMapper mapper)
         {
             this.groupManager = groupManager;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
-            var groups = await groupManager.GetAllInclude(null, g => g.Users.Where(u => u.Id == GetUserId())).Result.ToListAsync();
-            return View(groups);
+            return View();
         }
 
         [HttpGet]
@@ -38,26 +43,30 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCreateGroup()
         {
-            Group group = new();
-            return View(group);
+            GroupCreateDTO createDTO = new();
+            GroupDetailViewModel groupDetailView = new GroupDetailViewModel();
+            groupDetailView.GroupDTO = createDTO;
+            return View(groupDetailView);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCreateGroup(Group group)
+        public async Task<IActionResult> PostCreateGroup(GroupCreateDTO createDTO)
         {
             if (!ModelState.IsValid)
             {
-                return View(group);
+                ModelState.AddModelError(string.Empty, "Zorunlu Alanları Doldurunuz!");
+                return PartialView("_CreateModal", createDTO);
             }
             try
             {
+                var group = mapper.Map<Group>(createDTO);
                 await groupManager.Create(group);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", $"Bir hata ile karşılaşıldı.\nHata Mesajı: {ex.Message}");
-                return View(group);
+                return PartialView(createDTO);
             }
         }
 
@@ -117,13 +126,16 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         [Route("Dashboard/Group/Detail/{slug}")]
         public async Task<IActionResult> Detail(string slug)
         {
+            GroupDetailViewModel viewModel = new();
             var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
             var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
+            viewModel.Group = groupDetail;
+
             if (user == null)
             {
                 return Redirect("/Identity/Account/AccessDenied");
             }
-            return View(groupDetail);
+            return View(viewModel);
         }
 
         public string GetUserId()

@@ -175,7 +175,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("19bab5e5-701b-4427-a4e4-87a0a957f296"));
+                        .HasDefaultValue(new Guid("9964f472-2509-4b7b-8115-aeff8a6a5cec"));
 
                     b.Property<double>("Amount")
                         .ValueGeneratedOnAdd()
@@ -185,7 +185,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 20, 3, 3, 0, 476, DateTimeKind.Local).AddTicks(8761));
+                        .HasDefaultValue(new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(3254));
 
                     b.Property<string>("Description")
                         .HasMaxLength(100)
@@ -197,7 +197,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 20, 3, 3, 0, 476, DateTimeKind.Local).AddTicks(8587));
+                        .HasDefaultValue(new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(3095));
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -222,12 +222,12 @@ namespace Tricount.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("373cd26e-5936-4fa8-b58d-ba86045b0984"));
+                        .HasDefaultValue(new Guid("d6104a16-0805-454f-8734-d03c434d0124"));
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 20, 3, 3, 0, 477, DateTimeKind.Local).AddTicks(1784));
+                        .HasDefaultValue(new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(5470));
 
                     b.Property<Guid?>("ExpenseId")
                         .HasColumnType("uniqueidentifier");
@@ -243,7 +243,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 20, 3, 3, 0, 477, DateTimeKind.Local).AddTicks(1618));
+                        .HasDefaultValue(new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(5338));
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -272,15 +272,12 @@ namespace Tricount.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("bb87d3e4-8026-4506-97d1-e00fab55ab27"));
+                        .HasDefaultValue(new Guid("60ef917d-1861-425d-8685-a3e4e22afe7d"));
 
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 20, 3, 3, 0, 477, DateTimeKind.Local).AddTicks(4754));
-
-                    b.Property<Guid>("CreatedId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasDefaultValue(new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(7978));
 
                     b.Property<int>("DefaultCurrency")
                         .HasColumnType("int");
@@ -301,7 +298,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 20, 3, 3, 0, 477, DateTimeKind.Local).AddTicks(4627));
+                        .HasDefaultValue(new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(7873));
 
                     b.HasKey("Id");
 
@@ -319,7 +316,7 @@ namespace Tricount.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("3505e9fb-5691-491e-be64-b74597f160bf"));
+                        .HasDefaultValue(new Guid("852f07e8-baf1-4f0f-82f4-d44532fff076"));
 
                     b.Property<double>("Amount")
                         .ValueGeneratedOnAdd()
@@ -329,15 +326,28 @@ namespace Tricount.DAL.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 20, 3, 3, 0, 477, DateTimeKind.Local).AddTicks(6861));
+                        .HasDefaultValue(new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(9884));
 
                     b.Property<Guid>("ExpenseId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsApproved")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsFinished")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<DateTime>("UpdateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 8, 20, 3, 3, 0, 477, DateTimeKind.Local).AddTicks(6725));
+                        .HasDefaultValue(new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(9755));
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -348,6 +358,8 @@ namespace Tricount.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ExpenseId");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -548,11 +560,19 @@ namespace Tricount.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Tricount.Entities.Concrete.Group", "Group")
+                        .WithMany("Payments")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Tricount.Entities.Concrete.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId1");
 
                     b.Navigation("Expense");
+
+                    b.Navigation("Group");
 
                     b.Navigation("User");
                 });
@@ -565,6 +585,8 @@ namespace Tricount.DAL.Migrations
             modelBuilder.Entity("Tricount.Entities.Concrete.Group", b =>
                 {
                     b.Navigation("Expenses");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Tricount.Entities.Concrete.User", b =>

@@ -36,9 +36,7 @@ namespace Tricount.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-     
-            var result = await groupManager.GetAll(p => p.CreatedId.ToString() == GetUserId().Result.ToString());
-            return View(result);
+            return View();
         }
     }
 }

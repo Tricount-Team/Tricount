@@ -1,5 +1,6 @@
 ﻿@using Tricount.Entities.Concrete;
-@model ICollection<Group>
+@using Tricount.MVC.Models.DTO_s.Group;
+@model GroupDetailViewModel
 
 <table class="table table-hover">
     <thead>
@@ -7,17 +8,15 @@
             <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Desc</th>
+            <th scope="col">Create Date</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var group in Model)
-        {
-            <tr>
-                <th scope="row">@group.Id</th>
-                <td>@group.Name</td>
-                <td>@group.Description</td>
-            </tr>
-        }
+        <tr>
+            <th scope="row">@Model.Group.Id</th>
+            <td>@Model.Group.Name</td>
+            <td>@Model.Group.Description</td>
+            <td>@Model.Group.CreateDate.ToShortDateString()</td>
+        </tr>
     </tbody>
 </table>
-

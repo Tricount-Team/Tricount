@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System;
@@ -26,11 +27,7 @@ namespace Tricount.BL.Concrete
 
         public async override Task<int> Create(Group entity)
         {
-            var group = repository.GetAll(p => p.Name == entity.Name).Result.FirstOrDefault();
-            if (group == null)
-            {
-                throw new Exception($"{group.Name} adı zaten mevcut!");
-            }
+            entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
             return await base.Create(entity);
         }
 

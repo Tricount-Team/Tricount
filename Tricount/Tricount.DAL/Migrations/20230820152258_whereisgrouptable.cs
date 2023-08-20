@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tricount.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class whereisgrouptable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +30,8 @@ namespace Tricount.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TCNO = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true),
+                    Iban = table.Column<string>(type: "nvarchar(26)", maxLength: 26, nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DefaultCurrency = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -56,13 +57,13 @@ namespace Tricount.DAL.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("e0e5fa55-99bd-4e12-8b8b-5614a731e55d")),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("60ef917d-1861-425d-8685-a3e4e22afe7d")),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreatedId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DefaultCurrency = table.Column<int>(type: "int", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(7213)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(7086))
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(7978)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(7873))
                 },
                 constraints: table =>
                 {
@@ -179,14 +180,14 @@ namespace Tricount.DAL.Migrations
                 name: "Expenses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("f2085946-337b-4314-b522-0b66746bf024")),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("9964f472-2509-4b7b-8115-aeff8a6a5cec")),
                     Amount = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 803, DateTimeKind.Local).AddTicks(3785)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 803, DateTimeKind.Local).AddTicks(3644))
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(3254)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(3095))
                 },
                 constraints: table =>
                 {
@@ -231,14 +232,14 @@ namespace Tricount.DAL.Migrations
                 name: "ExpenseDetails",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("8d39ce9d-452d-4293-b410-bcf6e7e7202e")),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("d6104a16-0805-454f-8734-d03c434d0124")),
                     IsPaid = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ExpenseId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(982)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(789))
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(5470)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(5338))
                 },
                 constraints: table =>
                 {
@@ -264,13 +265,16 @@ namespace Tricount.DAL.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("dc2769cd-642d-4c73-9139-48865cd0e43c")),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValue: new Guid("852f07e8-baf1-4f0f-82f4-d44532fff076")),
                     Amount = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsFinished = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ExpenseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(9729)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 17, 20, 1, 54, 804, DateTimeKind.Local).AddTicks(9606))
+                    GroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(9884)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 20, 18, 22, 58, 584, DateTimeKind.Local).AddTicks(9755))
                 },
                 constraints: table =>
                 {
@@ -284,6 +288,12 @@ namespace Tricount.DAL.Migrations
                         name: "FK_Payments_Expenses_ExpenseId",
                         column: x => x.ExpenseId,
                         principalTable: "Expenses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Payments_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -321,11 +331,17 @@ namespace Tricount.DAL.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_TCNO",
+                name: "IX_AspNetUsers_Iban",
                 table: "AspNetUsers",
-                column: "TCNO",
+                column: "Iban",
                 unique: true,
-                filter: "[TCNO] IS NOT NULL");
+                filter: "[Iban] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_Slug",
+                table: "AspNetUsers",
+                column: "Slug",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -380,6 +396,12 @@ namespace Tricount.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Groups_Slug",
+                table: "Groups",
+                column: "Slug",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GroupUser_UsersId",
                 table: "GroupUser",
                 column: "UsersId");
@@ -388,6 +410,11 @@ namespace Tricount.DAL.Migrations
                 name: "IX_Payments_ExpenseId",
                 table: "Payments",
                 column: "ExpenseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_GroupId",
+                table: "Payments",
+                column: "GroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_Id",
