@@ -17,7 +17,8 @@ namespace Tricount.DAL.EntityConfigurations.Concrete
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(p => p.Iban).HasMaxLength(26);
-            builder.HasIndex(p=>p.Iban).IsUnique();
+            builder.HasIndex(p => p.Iban).IsUnique();
+            builder.HasIndex(p => p.Slug).IsUnique();
         }
     }
 }

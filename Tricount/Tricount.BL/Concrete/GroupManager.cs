@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -17,7 +18,6 @@ namespace Tricount.BL.Concrete
     public class GroupManager : ManagerBase<Group>, Abstract.IGroupManager
     {
         private readonly IGroupRepository repository;
-        SqlDbContext dbContext = new();
 
         public GroupManager(IGroupRepository repository) : base(repository)
         {
@@ -32,6 +32,16 @@ namespace Tricount.BL.Concrete
                 throw new Exception($"{group.Name} adı zaten mevcut!");
             }
             return await base.Create(entity);
+        }
+
+        public override Task<IQueryable<Group>>? GetAllInclude(Expression<Func<Group, bool>>? filter = null, params Expression<Func<Group, object>>[]? include)
+        {
+            return base.GetAllInclude(filter, include);
+        }
+
+        public virtual async Task<ICollection<Group>> GetGroupWithUserSlug(string slug)
+        {
+            return await repository.GetGroupsWithUserSlug(slug);
         }
     }
 }

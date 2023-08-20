@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tricount.BL.Abstract;
 using Tricount.BL.Concrete;
+using Tricount.DAL.Contexts;
 using Tricount.Entities.Concrete;
+using Tricount.MVC.Models;
 
 namespace Tricount.MVC.Areas.Dashboard.Controllers
 {
@@ -14,7 +16,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         private readonly IGroupManager groupManager;
         private readonly UserManager<User> userManager;
 
-        public GroupController(IGroupManager groupManager,UserManager<User> userManager)
+        public GroupController(IGroupManager groupManager, UserManager<User> userManager)
         {
             this.groupManager = groupManager;
             this.userManager = userManager;
@@ -112,10 +114,15 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        [Route("Dashboard/Detail/{id}")]
-        public async Task<IActionResult> Detail(string id)
+        [Route("Dashboard/Group/Detail/{slug}")]
+        public async Task<IActionResult> Detail(string slug)
         {
-            var groupDetail = await groupManager.GetAll(g => g.Id.ToString() == id);
+            var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
+            var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
+            if (user == null)
+            {
+                return Redirect("/Identity/Account/AccessDenied");
+            }
             return View(groupDetail);
         }
 

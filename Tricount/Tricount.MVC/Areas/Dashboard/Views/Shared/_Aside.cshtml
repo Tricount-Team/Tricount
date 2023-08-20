@@ -1,14 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using Tricount.BL.Abstract;
 @using Tricount.Entities.Concrete;
-@model ICollection<Group>
+
 @inject UserManager<User> userManager;
 @inject IGroupManager groupManager;
 @{
-
     var user = await userManager.GetUserAsync(User);
-    var userId =  userManager.GetUserId(User);
-    var groups = groupManager.GetAllInclude(null, g => g.Users.Where(u => u.Id == userId)).Result.ToList();
+    var userId = userManager.GetUserId(User);
+    var userGroups = groupManager.GetGroupWithUserSlug(user.Slug).Result.ToList();
 }
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -45,13 +44,13 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    @foreach (var group in groups)
+                    @foreach (var group in userGroups)
                     {
-                        if (group.Users.Count != 0)
+                        if (group.Users.Count > 0)
                         {
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a asp-controller="Group" asp-action="Detail" asp-route-id="@group.Id" class="nav-link">
+                                    <a asp-controller="Group" asp-action="Detail" asp-route-slug="@group.Slug" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>@group.Name</p>
                                     </a>

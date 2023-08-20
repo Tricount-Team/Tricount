@@ -11,6 +11,7 @@ namespace Tricount.Entities.Concrete
 	{
         public string Name{ get; set; }
         public string? Description { get; set; }
+        public string Slug { get; set; }
         public Guid CreatedId { get; set; }
         public CurrencyEnum DefaultCurrency { get; set; }
 		public ICollection<User>? Users { get; set; }
