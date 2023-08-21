@@ -15,7 +15,7 @@ namespace Tricount.MVC
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("myDataBase"); 
+            var connectionString = builder.Configuration.GetConnectionString("Server=(localdb)\mssqllocaldb;Database=myDataBase;Trusted_Connection=True;"); 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
