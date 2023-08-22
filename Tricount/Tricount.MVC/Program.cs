@@ -16,12 +16,12 @@ namespace Tricount.MVC
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("Server=(localdb)\\mssqllocaldb;Database=Tricount1;Trusted_Connection=True;"); 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<SqlDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<SqlDbContext>();
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddAutoMapper(typeof(TricountMapper));
