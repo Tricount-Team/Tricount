@@ -10,8 +10,8 @@ using Group = Tricount.Entities.Concrete.Group;
 
 namespace Tricount.DAL.Repositories.Abstract
 {
-	public interface IGroupRepository: IBaseRepository<Group>
-	{
-
-	}
+    public interface IGroupRepository : IBaseRepository<Group>
+    {
+        Task<ICollection<Group>> GetGroupsWithUserSlug(string slug);
+    }
 }

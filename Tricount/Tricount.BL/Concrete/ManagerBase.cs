@@ -20,9 +20,9 @@ namespace Tricount.BL.Concrete
             this.repository = repository;
         }
 
-        public async virtual Task<int> Insert(T entity)
+        public async virtual Task<int> Create(T entity)
         {
-            return await repository.Insert(entity);
+            return await repository.Create(entity);
         }
 
         public async virtual Task<int> Update(T entity)

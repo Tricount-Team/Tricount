@@ -10,7 +10,7 @@ namespace Tricount.BL.Abstract
 {
     public interface IManagerBase<T> where T : BaseEntity
     {
-        Task<int> Insert(T entity);
+        Task<int> Create(T entity);
         Task<int> Update(T entity);
         Task<int> Delete(T entity);
         Task<T> GetById(int id);

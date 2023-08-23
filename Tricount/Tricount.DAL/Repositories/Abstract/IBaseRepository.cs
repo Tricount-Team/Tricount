@@ -10,7 +10,7 @@ namespace Tricount.DAL.Repositories.Abstract
 {
 	public interface IBaseRepository<T> where T : BaseEntity, new()
 	{
-		Task<int> Insert(T input);
+		Task<int> Create(T input);
 		Task<int> Update(T input);
 		Task<int> Delete(T input);
 
