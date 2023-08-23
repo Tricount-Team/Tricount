@@ -5,19 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Tricount.BL.Abstract;
 using Tricount.DAL.Repositories.Abstract;
+using Tricount.DAL.Repositories.Concrete;
 using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Concrete
 {
-    public class GroupManager : ManagerBase<Group>, IGroupManager
+    public class ExpenseManager : ManagerBase<Expense>, IExpenseManager
     {
-        public GroupManager(IGroupRepository repository) : base(repository)
+        public ExpenseManager(ExpenseRepository repository) : base(repository)
         {
 
         }
     }
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> master

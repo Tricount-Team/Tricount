@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,21 +12,15 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.DAL.EntityConfigurations.Concrete
 {
-    public class UserConfig : BaseConfig<User>
+    public class UserConfig : IEntityTypeConfiguration<IdentityUser>
     {
-        public override void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<IdentityUser> builder)
         {
-            base.Configure(builder);
             builder.HasIndex(p => new
             {
-                p.UserName,
-                p.EmailAddress,
                 p.PhoneNumber
             }).IsUnique();
-            builder.Property(p => p.EmailAddress).HasMaxLength(128);
-            builder.Property(p => p.UserName).HasMaxLength(30);
             builder.Property(p => p.PhoneNumber).HasMaxLength(20);
-            builder.Property(p => p.Password).HasMaxLength(50);
         }
     }
 }

@@ -9,15 +9,11 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Concrete
 {
-    public class GroupManager : ManagerBase<Group>, IGroupManager
+    public class ExpenseDetailManager : ManagerBase<ExpenseDetail>, IExpenseDetailManager
     {
-        public GroupManager(IGroupRepository repository) : base(repository)
+        public ExpenseDetailManager(IExpenseDetailRepository repository) : base(repository)
         {
 
         }
     }
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
