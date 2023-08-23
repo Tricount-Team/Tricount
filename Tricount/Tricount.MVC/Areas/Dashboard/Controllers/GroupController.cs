@@ -36,7 +36,8 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> GetGroups()
         {
-            var groups = await groupManager.GetAllInclude(null, g => g.Users.Where(u => u.Id == GetUserId())).Result.ToListAsync();
+            
+            var groups = await groupManager.GetAllInclude(null, g => g.GroupUsers.Where(u => u.User.Id == GetUserId())).Result.ToListAsync();
             return View(groups);
         }
 
@@ -46,27 +47,30 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             GroupCreateDTO createDTO = new();
             GroupDetailViewModel groupDetailView = new GroupDetailViewModel();
             groupDetailView.GroupDTO = createDTO;
-            return View(groupDetailView);
+            return View(groupDetailView.GroupDTO);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCreateGroup(GroupCreateDTO createDTO)
+        public async Task<IActionResult> PostCreateGroup(GroupDetailViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Zorunlu Alanları Doldurunuz!");
-                return PartialView("_CreateModal", createDTO);
+                ModelState.AddModelError(string.Empty, "Zorunlu Alanları Doldurunuz! (*)");
+                return View("_CreateModal", viewModel);
             }
             try
             {
-                var group = mapper.Map<Group>(createDTO);
+
+                var group = mapper.Map<Group>(viewModel.GroupDTO);
+               // group.GroupUsers.Add(; // Add(await userManager.GetUserAsync(User));
+                //return Json(group);
                 await groupManager.Create(group);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", $"Bir hata ile karşılaşıldı.\nHata Mesajı: {ex.Message}");
-                return PartialView(createDTO);
+                return PartialView(viewModel.GroupDTO);
             }
         }
 
@@ -127,8 +131,8 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         public async Task<IActionResult> Detail(string slug)
         {
             GroupDetailViewModel viewModel = new();
-            var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
-            var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
+            var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.GroupUsers).Result.FirstOrDefaultAsync();
+            var user = groupDetail.GroupUsers.Where(u => u.User.Id == GetUserId()).FirstOrDefault();
             viewModel.Group = groupDetail;
 
             if (user == null)

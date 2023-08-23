@@ -1,6 +1,13 @@
 ﻿@using Tricount.MVC.Models.DTO_s.Group;
-@model GroupCreateDTO
+@model GroupDetailViewModel
 
+<style>
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+</style>
 <!-- Modal -->
 <div class="modal fade" id="createGroupModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="createGroupModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -9,37 +16,29 @@
                 <h1 class="modal-title fs-5" id="createGroupModalLabel">+ Create New Group</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div id="validationErrors">
-                @foreach (var key in ViewData.ModelState.Keys)
-                {
-                    foreach (var error in ViewData.ModelState[key].Errors)
-                    {
-                        <p>@error.ErrorMessage</p>
-                    }
-                }
-            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger d-flex justify-content-center align-items-center text-center mt-3" ></div>
+            
             <form asp-area="Dashboard" asp-controller="Group" asp-action="PostCreateGroup" method="post">
                 <div class="modal-body">
                     
                     <div class="mb-3">
-                        <label asp-for="@Model.Name">Group Name</label>
-                        <input class="form-control" type="text" asp-for="@Model.Name" />
-                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                        <label asp-for="@Model.GroupDTO.Name">*Group Name</label>
+                        <input class="form-control" type="text" asp-for="@Model.GroupDTO.Name" />
+                        <span asp-validation-for="@Model.GroupDTO.Name" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="@Model.Description">Group Description</label>
-                        <input class="form-control" type="text" asp-for="@Model.Description" />
-                        <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                        <label asp-for="@Model.GroupDTO.Description">Group Description</label>
+                        <input class="form-control" type="text" asp-for="@Model.GroupDTO.Description" />
+                        <span asp-validation-for="@Model.GroupDTO.Description" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="@Model.DefaultCurrency" required>Default Currency</label>
-                        <select class="form-select" asp-for="@Model.DefaultCurrency">
+                        <label asp-for="@Model.GroupDTO.DefaultCurrency" required>*Default Currency</label>
+                        <select class="form-select" asp-for="@Model.GroupDTO.DefaultCurrency">
                             <option value="0">USD</option>
                             <option value="1">EUR</option>
                             <option value="2" selected>TRY</option>
                         </select>
-                        <span asp-validation-for="@Model.DefaultCurrency" class="text-danger"></span>
+                        <span asp-validation-for="@Model.GroupDTO.DefaultCurrency" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer">

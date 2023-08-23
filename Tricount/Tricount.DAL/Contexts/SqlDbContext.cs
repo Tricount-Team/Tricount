@@ -16,7 +16,7 @@ namespace Tricount.DAL.Contexts
         public DbSet<Group> Groups { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<ExpenseDetail> ExpenseDetails { get; set; }
-
+        public DbSet<GroupUser> GroupUsers { get; set; }
         public SqlDbContext()
         {
             
@@ -30,7 +30,7 @@ namespace Tricount.DAL.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseSqlServer(@"Data Source=MERTCAN\MSSQLSERVER01;Database=Tricount;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+            optionsBuilder.UseSqlServer(@"Data Source=MERTCAN\MSSQLSERVER01;Database=Tricount2;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

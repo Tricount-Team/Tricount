@@ -31,11 +31,6 @@ namespace Tricount.BL.Concrete
             return await base.Create(entity);
         }
 
-        public override Task<IQueryable<Group>>? GetAllInclude(Expression<Func<Group, bool>>? filter = null, params Expression<Func<Group, object>>[]? include)
-        {
-            return base.GetAllInclude(filter, include);
-        }
-
         public virtual async Task<ICollection<Group>> GetGroupWithUserSlug(string slug)
         {
             return await repository.GetGroupsWithUserSlug(slug);
