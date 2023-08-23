@@ -62,9 +62,11 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             {
 
                 var group = mapper.Map<Group>(viewModel.GroupDTO);
-               // group.GroupUsers.Add(; // Add(await userManager.GetUserAsync(User));
-                //return Json(group);
                 await groupManager.Create(group);
+
+                var groupUser = new GroupUser() { GroupId = group.Id, UserId = GetUserId() };
+                group.GroupUsers.Add(groupUser);
+                groupManager.Update(group);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

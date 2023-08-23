@@ -27,7 +27,7 @@ namespace Tricount.BL.Concrete
 
         public async override Task<int> Create(Group entity)
         {
-            entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
+            //entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
             return await base.Create(entity);
         }
 

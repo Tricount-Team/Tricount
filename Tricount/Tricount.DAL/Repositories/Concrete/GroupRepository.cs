@@ -17,5 +17,7 @@ namespace Tricount.DAL.Repositories.Concrete
             var groups = await dbContext.Groups.Include(g => g.GroupUsers.Where(u => u.User.Slug == slug)).ToListAsync();
             return (ICollection<Group>)groups;
         }
+
+        
     }
 }

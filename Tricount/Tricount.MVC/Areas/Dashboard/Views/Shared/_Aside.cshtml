@@ -6,7 +6,13 @@
 @inject UserManager<User> userManager;
 @inject IGroupManager groupManager;
 @{
+    var userGroup =  new List<Group>();
     var user = await userManager.GetUserAsync(User);
+    if (User.Identity.IsAuthenticated)
+    {
+        var userSlug = user.Slug;
+        userGroup = groupManager.GetAllInclude(null, g => g.GroupUsers.Where(gu => gu.User.Slug == userSlug)).Result.ToList();
+    }
     var userId = userManager.GetUserId(User);
     var userGroups = groupManager.GetGroupWithUserSlug(user.Slug).Result.ToList();
 }
@@ -45,9 +51,9 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    @foreach (var group in userGroups)
+                    @foreach (var group in userGroup)
                     {
-                       @* if (group.Users.Count > 0)
+                        if (group.GroupUsers.Count > 0)
                         {
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
@@ -57,7 +63,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        }*@
+                        }
                     }
                 </li>
 
