@@ -14,8 +14,8 @@ namespace Tricount.DAL.EntityConfigurations.Concrete
         public void Configure(EntityTypeBuilder<GroupUser> builder)
         {
             builder.HasKey(p => new { p.UserId, p.GroupId });
-            builder.HasOne(p => p.User).WithMany(p => p.GroupUsers).HasForeignKey(gu => gu.UserId).HasPrincipalKey(u => u.Id).IsRequired();
-            builder.HasOne(p => p.Group).WithMany(p => p.GroupUsers).HasForeignKey(gu => gu.GroupId).HasPrincipalKey(g => g.Id).IsRequired();
+            builder.HasOne(p => p.User).WithMany(p => p.GroupUsers).HasForeignKey(gu => gu.UserId).HasPrincipalKey(u => u.Id);
+            builder.HasOne(p => p.Group).WithMany(p => p.GroupUsers).HasForeignKey(gu => gu.GroupId).HasPrincipalKey(g => g.Id);
         }
     }
 }
