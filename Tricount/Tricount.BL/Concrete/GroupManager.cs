@@ -17,7 +17,3 @@ namespace Tricount.BL.Concrete
         }
     }
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> master
