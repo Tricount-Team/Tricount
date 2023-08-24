@@ -10,15 +10,26 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account
 {
     public class ConfirmEmailChangeModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public ConfirmEmailChangeModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+
+        public ConfirmEmailChangeModel(UserManager<User> userManager, SignInManager<User> signInManager)
+>>>>>>> ercan
         {
             _userManager = userManager;
             _signInManager = signInManager;

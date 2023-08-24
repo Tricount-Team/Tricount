@@ -7,7 +7,13 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.DAL.Repositories.Abstract
 {
+<<<<<<< HEAD
 	public interface IExpenseRepository : IBaseRepository<Expense>
 	{
 	}
+=======
+    public interface IExpenseRepository: IBaseRepository<Expense>
+    {
+    }
+>>>>>>> ercan
 }

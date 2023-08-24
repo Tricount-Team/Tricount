@@ -12,16 +12,28 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
         public DownloadPersonalDataModel(
             UserManager<IdentityUser> userManager,
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<DownloadPersonalDataModel> _logger;
+
+        public DownloadPersonalDataModel(
+            UserManager<User> userManager,
+>>>>>>> ercan
             ILogger<DownloadPersonalDataModel> logger)
         {
             _userManager = userManager;
@@ -45,7 +57,11 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
+<<<<<<< HEAD
             var personalDataProps = typeof(IdentityUser).GetProperties().Where(
+=======
+            var personalDataProps = typeof(User).GetProperties().Where(
+>>>>>>> ercan
                             prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {

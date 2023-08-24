@@ -9,17 +9,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+
+        public IndexModel(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager)
+>>>>>>> ercan
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -60,7 +73,11 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
         }
 
+<<<<<<< HEAD
         private async Task LoadAsync(IdentityUser user)
+=======
+        private async Task LoadAsync(User user)
+>>>>>>> ercan
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

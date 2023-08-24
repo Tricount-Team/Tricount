@@ -8,8 +8,14 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.DAL.Repositories.Concrete
 {
+<<<<<<< HEAD
 	public class ExpenseRepository: BaseRepository<Expense>, IExpenseRepository
 	{
 
 	}
+=======
+    public class ExpenseRepository : BaseRepository<Expense>, IExpenseRepository
+    {
+    }
+>>>>>>> ercan
 }

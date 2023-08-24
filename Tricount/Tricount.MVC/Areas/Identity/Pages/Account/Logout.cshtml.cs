@@ -9,15 +9,26 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
     {
+<<<<<<< HEAD
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
         public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
+=======
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<LogoutModel> _logger;
+
+        public LogoutModel(SignInManager<User> signInManager, ILogger<LogoutModel> logger)
+>>>>>>> ercan
         {
             _signInManager = signInManager;
             _logger = logger;

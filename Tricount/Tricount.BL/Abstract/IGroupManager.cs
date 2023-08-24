@@ -9,5 +9,9 @@ namespace Tricount.BL.Abstract
 {
     public interface IGroupManager : IManagerBase<Group>
     {
+<<<<<<< HEAD
+=======
+        public Task<ICollection<Group>> GetGroupWithUserSlug(string slug);
+>>>>>>> ercan
     }
 }

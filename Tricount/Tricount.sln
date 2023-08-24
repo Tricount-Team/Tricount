@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tricount.DAL", "Tricount.DA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tricount.MVC", "Tricount.MVC\Tricount.MVC.csproj", "{5F886471-838E-4357-98B3-069CE06666BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tricount.BL", "Tricount.BL\Tricount.BL.csproj", "{53F5630C-33C4-490D-974E-060F08B5C801}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tricount.BL", "Tricount.BL\Tricount.BL.csproj", "{53F5630C-33C4-490D-974E-060F08B5C801}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

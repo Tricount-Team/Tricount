@@ -11,14 +11,24 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account
 {
     public class ResetPasswordModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
 
         public ResetPasswordModel(UserManager<IdentityUser> userManager)
+=======
+        private readonly UserManager<User> _userManager;
+
+        public ResetPasswordModel(UserManager<User> userManager)
+>>>>>>> ercan
         {
             _userManager = userManager;
         }

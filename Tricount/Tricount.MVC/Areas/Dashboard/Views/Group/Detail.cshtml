@@ -1,0 +1,22 @@
+﻿@using Tricount.Entities.Concrete;
+@using Tricount.MVC.Models.DTO_s.Group;
+@model GroupDetailViewModel
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Desc</th>
+            <th scope="col">Create Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">@Model.Group.Id</th>
+            <td>@Model.Group.Name</td>
+            <td>@Model.Group.Description</td>
+            <td>@Model.Group.CreateDate.ToShortDateString()</td>
+        </tr>
+    </tbody>
+</table>

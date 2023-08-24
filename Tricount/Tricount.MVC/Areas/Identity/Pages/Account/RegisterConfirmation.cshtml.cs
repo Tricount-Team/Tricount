@@ -11,21 +11,36 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterConfirmationModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailSender _sender;
 
         public RegisterConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender sender)
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly IEmailSender _sender;
+
+        public RegisterConfirmationModel(UserManager<User> userManager, IEmailSender sender)
+>>>>>>> ercan
         {
             _userManager = userManager;
             _sender = sender;
         }
 
+<<<<<<< HEAD
+=======
+        public string UserName { get; set; }
+>>>>>>> ercan
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.

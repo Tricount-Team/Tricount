@@ -11,11 +11,16 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IUserStore<IdentityUser> _userStore;
@@ -24,6 +29,16 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IUserStore<IdentityUser> userStore)
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IUserStore<User> _userStore;
+
+        public ExternalLoginsModel(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IUserStore<User> userStore)
+>>>>>>> ercan
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -69,7 +84,11 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
                 .ToList();
 
             string passwordHash = null;
+<<<<<<< HEAD
             if (_userStore is IUserPasswordStore<IdentityUser> userPasswordStore)
+=======
+            if (_userStore is IUserPasswordStore<User> userPasswordStore)
+>>>>>>> ercan
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
             }

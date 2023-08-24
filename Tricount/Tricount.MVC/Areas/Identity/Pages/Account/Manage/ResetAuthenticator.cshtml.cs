@@ -8,11 +8,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<ResetAuthenticatorModel> _logger;
@@ -20,6 +25,15 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
         public ResetAuthenticatorModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<ResetAuthenticatorModel> _logger;
+
+        public ResetAuthenticatorModel(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+>>>>>>> ercan
             ILogger<ResetAuthenticatorModel> logger)
         {
             _userManager = userManager;

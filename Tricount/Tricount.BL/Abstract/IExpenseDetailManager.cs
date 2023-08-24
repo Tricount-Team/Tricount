@@ -7,7 +7,11 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Abstract
 {
+<<<<<<< HEAD
     public interface IExpenseDetailManager : IManagerBase<ExpenseDetail>
+=======
+    public interface IExpenseDetailManager: IManagerBase<ExpenseDetail>
+>>>>>>> ercan
     {
     }
 }

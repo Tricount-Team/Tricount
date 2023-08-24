@@ -11,11 +11,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account
 {
     public class LoginWith2faModel : PageModel
     {
+<<<<<<< HEAD
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginWith2faModel> _logger;
@@ -23,6 +28,15 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account
         public LoginWith2faModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
+=======
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<LoginWith2faModel> _logger;
+
+        public LoginWith2faModel(
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+>>>>>>> ercan
             ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;

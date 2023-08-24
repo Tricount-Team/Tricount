@@ -9,11 +9,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
@@ -21,6 +26,15 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<DeletePersonalDataModel> _logger;
+
+        public DeletePersonalDataModel(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+>>>>>>> ercan
             ILogger<DeletePersonalDataModel> logger)
         {
             _userManager = userManager;

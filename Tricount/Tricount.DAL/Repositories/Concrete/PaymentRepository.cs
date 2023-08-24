@@ -8,7 +8,13 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.DAL.Repositories.Concrete
 {
+<<<<<<< HEAD
 	public class PaymentRepository : BaseRepository<Payment>, IPaymentRepository
 	{
 	}
+=======
+    public class PaymentRepository : BaseRepository<Payment>, IPaymentRepository
+    {
+    }
+>>>>>>> ercan
 }

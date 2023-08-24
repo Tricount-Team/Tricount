@@ -12,11 +12,16 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -24,6 +29,15 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
         public EmailModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IEmailSender _emailSender;
+
+        public EmailModel(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+>>>>>>> ercan
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -73,7 +87,11 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
             public string NewEmail { get; set; }
         }
 
+<<<<<<< HEAD
         private async Task LoadAsync(IdentityUser user)
+=======
+        private async Task LoadAsync(User user)
+>>>>>>> ercan
         {
             var email = await _userManager.GetEmailAsync(user);
             Email = email;

@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using Tricount.DAL.Contexts;
 using Tricount.Entities.Concrete;
+using Tricount.MVC.AutoMapper;
 using Tricount.MVC.Data;
+using Tricount.MVC.Extentions;
 
 namespace Tricount.MVC
 {
@@ -12,15 +15,30 @@ namespace Tricount.MVC
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
+
             // Add services to the container.
+<<<<<<< HEAD
             var connectionString = builder.Configuration.GetConnectionString(@"Server=(localdb)\mssqllocaldb;Database=Tricount1;Trusted_Connection=True;");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
+=======
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            builder.Services.AddDbContext<SqlDbContext>(options =>
+>>>>>>> ercan
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<SqlDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddAutoMapper(typeof(TricountMapper));
+
+            builder.Services.AddTricountServices();
 
             var app = builder.Build();
 
@@ -41,11 +59,21 @@ namespace Tricount.MVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                  name: "Dashboard",
+                  pattern: "{area:exists}/{controller=exists}/{action=exists}/{id?}"
+                );
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
+            });
+
             app.MapRazorPages();
 
             app.Run();

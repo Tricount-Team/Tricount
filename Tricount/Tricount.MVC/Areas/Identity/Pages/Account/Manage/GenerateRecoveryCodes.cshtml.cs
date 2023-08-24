@@ -9,16 +9,28 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 {
     public class GenerateRecoveryCodesModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<GenerateRecoveryCodesModel> _logger;
 
         public GenerateRecoveryCodesModel(
             UserManager<IdentityUser> userManager,
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<GenerateRecoveryCodesModel> _logger;
+
+        public GenerateRecoveryCodesModel(
+            UserManager<User> userManager,
+>>>>>>> ercan
             ILogger<GenerateRecoveryCodesModel> logger)
         {
             _userManager = userManager;

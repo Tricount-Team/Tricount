@@ -13,7 +13,10 @@ namespace Tricount.BL.Concrete
     {
         public ExpenseDetailManager(IExpenseDetailRepository repository) : base(repository)
         {
+<<<<<<< HEAD
 
+=======
+>>>>>>> ercan
         }
     }
 }

@@ -9,6 +9,9 @@ namespace Tricount.BL.Abstract
 {
     public interface IExpenseManager : IManagerBase<Expense>
     {
+<<<<<<< HEAD
 
+=======
+>>>>>>> ercan
     }
 }

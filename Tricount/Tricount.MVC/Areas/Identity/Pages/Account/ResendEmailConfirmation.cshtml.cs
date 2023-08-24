@@ -13,16 +13,27 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmailSender _emailSender;
 
         public ResendEmailConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly IEmailSender _emailSender;
+
+        public ResendEmailConfirmationModel(UserManager<User> userManager, IEmailSender emailSender)
+>>>>>>> ercan
         {
             _userManager = userManager;
             _emailSender = emailSender;

@@ -10,10 +10,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 namespace Tricount.MVC.Areas.Identity.Pages.Account
 {
     public class LoginWithRecoveryCodeModel : PageModel
     {
+<<<<<<< HEAD
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
@@ -21,6 +26,15 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account
         public LoginWithRecoveryCodeModel(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
+=======
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
+
+        public LoginWithRecoveryCodeModel(
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+>>>>>>> ercan
             ILogger<LoginWithRecoveryCodeModel> logger)
         {
             _signInManager = signInManager;

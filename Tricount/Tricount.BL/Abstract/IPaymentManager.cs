@@ -9,6 +9,9 @@ namespace Tricount.BL.Abstract
 {
     public interface IPaymentManager : IManagerBase<Payment>
     {
+<<<<<<< HEAD
 
+=======
+>>>>>>> ercan
     }
 }

@@ -14,15 +14,27 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+using System.ComponentModel;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
+<<<<<<< HEAD
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+=======
+        private readonly SignInManager<User> _signInManager;
+        private readonly ILogger<LoginModel> _logger;
+
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+>>>>>>> ercan
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -65,8 +77,13 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+<<<<<<< HEAD
             [EmailAddress]
             public string Email { get; set; }
+=======
+            [Display(Name = "UserName")]
+            public string UserName { get; set; }
+>>>>>>> ercan
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -111,11 +128,19 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+<<<<<<< HEAD
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
+=======
+                var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    return LocalRedirect("~/Dashboard/Group/Index");
+>>>>>>> ercan
                 }
                 if (result.RequiresTwoFactor)
                 {

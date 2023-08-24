@@ -8,17 +8,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+<<<<<<< HEAD
+=======
+using Tricount.Entities.Concrete;
+>>>>>>> ercan
 
 namespace Tricount.MVC.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
+<<<<<<< HEAD
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public SetPasswordModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
+=======
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+
+        public SetPasswordModel(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager)
+>>>>>>> ercan
         {
             _userManager = userManager;
             _signInManager = signInManager;
