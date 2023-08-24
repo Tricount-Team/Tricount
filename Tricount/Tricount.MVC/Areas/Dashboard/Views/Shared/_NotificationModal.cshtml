@@ -7,8 +7,8 @@
 @{
     var user = await userManager.GetUserAsync(User);
     var userId = userManager.GetUserId(User);
-    var invites = inviteManager.GetAllInclude(i => i.UserId == userId, i => i.Group).Result.ToList();
-    
+    var inviteRaw = inviteManager.GetAllInclude(i => i.UserId == userId, i => i.Group).Result;
+    var invites = inviteRaw.Where(i => i.IsFinished == false).ToList();
 }
 
 <!-- Modal -->
@@ -23,18 +23,27 @@
 
             @foreach (var item in invites)
             {
-                if (item.IsFinished == false)
-                {
-                    <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
-                        <label>Sender person: @item.SenderId</label>
-                        <label>Group Name: @item.Group.Name</label>
-                        <label>Group Description: @item.Group.Description</label>
-                        <div class="d-flex w-25">
-                            <a asp-area="Dashboard" asp-controller="Group" asp-action="DeniedInvite" asp-route-inviteId="@item.Id" class="btn btn-danger p-2">Denied</a>
-                            <a asp-area="Dashboard" asp-controller="Group" asp-action="AcceptInvite" asp-route-inviteId="@item.Id" class="btn btn-success p-2">Accept</a>
-                        </div>
+                <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
+                    <label>Sender: @item.User</label>
+                    <label>Group Name: @item.Group.Name</label>
+                    <label>Group Description: @item.Group.Description</label>
+                    <div class="d-flex w-25">
+                        <a asp-area="Dashboard"
+                           asp-controller="Group"
+                           asp-action="DeniedInvite"
+                           asp-route-inviteId="@item.Id"
+                           class="btn btn-danger p-2">
+                            Denied
+                        </a>
+                        <a asp-area="Dashboard"
+                           asp-controller="Group"
+                           asp-action="AcceptInvite"
+                           asp-route-inviteId="@item.Id"
+                           class="btn btn-success p-2">
+                            Accept
+                        </a>
                     </div>
-                }
+                </div>
             }
 
 

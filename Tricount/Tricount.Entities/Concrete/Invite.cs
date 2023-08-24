@@ -10,7 +10,6 @@ namespace Tricount.Entities.Concrete
 {
     public class Invite : BaseEntity
     {
-        public bool IsApproved { get; set; }
         public bool IsFinished { get; set; }
         public string? UserId { get; set; }
         public User? User { get; set; }

@@ -40,28 +40,12 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetGroups()
-        {
-            var groups = await groupManager.GetAllInclude(null, g => g.Users.Where(u => u.Id == GetUserId())).Result.ToListAsync();
-            return View(groups);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetCreateGroup()
-        {
-            GroupCreateDTO createDTO = new();
-            GroupDetailViewModel groupDetailView = new GroupDetailViewModel();
-            groupDetailView.GroupDTO = createDTO;
-            return View(groupDetailView);
-        }
-
         [HttpPost]
         public async Task<IActionResult> PostCreateGroup(GroupDetailViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "Zorunlu Alanları Doldurunuz!");
+                ModelState.AddModelError(string.Empty, "Fill in the mandatory fields!");
                 return View("_CreateModal", model);
             }
             try
@@ -78,42 +62,62 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Bir hata ile karşılaşıldı.\nHata Mesajı: {ex.Message}");
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
                 return View("_CreateModal", model);
             }
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUpdateGroup(string id)
+        [Route("Dashboard/Group/Update/{slug}")]
+        public async Task<IActionResult> GetUpdateGroup(string slug)
         {
-            var result = groupManager.GetAll(p => p.Id.ToString() == id).Result;
-            return View(result);
+            GroupDetailViewModel model = new();
+            try
+            {
+                var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
+                model.Group = group;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostUpdateGroup(Group group)
+        public async Task<IActionResult> PostUpdateGroup(GroupDetailViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(group);
+                return View("_UpdateGroupModal", model);
             }
             try
             {
-                await groupManager.Update(group);
+                await groupManager.Update(model.Group);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Bir hata ile karşılaşıldı.\nHata Mesajı: {ex.Message}");
-                return View(group);
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                return View("_UpdateGroupModal", model);
             }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetDeleteGroup(string id)
         {
-            var result = await groupManager.GetAll(g => g.Id.ToString() == id);
-            return View(result);
+            try
+            {
+                var result = await groupManager.GetAll(g => g.Id == id);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                return RedirectToAction("Index", "Group");
+            }
+            
         }
 
         [HttpPost]
@@ -130,7 +134,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Bir hata ile karşılaşıldı.\nHata Mesajı: {ex.Message}");
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
                 return View(group);
             }
         }
@@ -140,34 +144,57 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         public async Task<IActionResult> Detail(string slug)
         {
             GroupDetailViewModel viewModel = new();
-
-            var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
-            var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
-            viewModel.Group = groupDetail;
-
-            if (user == null)
-            {
-                return Redirect("/Identity/Account/AccessDenied");
-            }
-
-            //var invites = inviteManager.GetAll(i => i.UserId.ToString() == GetUserId()).Result.ToList();
-            //viewModel.Invites = invites;
-
-            return View(viewModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetInvite(string id)
-        {
-            GroupDetailViewModel model = new();
             try
             {
-                model.Invites = await inviteManager.GetAllInclude(i => i.UserId == GetUserId(), i => i.Group).Result.ToListAsync();
-                return View(model);
+                var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
+                var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
+                viewModel.Group = groupDetail;
+
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/AccessDenied");
+                }
+
+                return View(viewModel);
             }
             catch (Exception ex)
             {
-                throw;
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                return View(viewModel);
+            }
+            
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostCreateInvite(GroupDetailViewModel model)
+        {
+            try
+            {
+                var user = await userManager.FindByNameAsync(model.Invite.UserName);
+                var group = groupManager.GetAllInclude(g => g.Slug == model.Invite.GroupSlug, g => g.Users).Result.FirstOrDefault();
+                var groupUser = group.Users.FirstOrDefault(u => u.Id == user.Id);
+
+                if (user.Id == GetUserId())
+                {
+                    ModelState.AddModelError("Try Again", "You can't add yourself!");
+                    return View("_InviteModal", model);
+                }
+                else if (group == null && user == null && groupUser != null)
+                {
+                    ModelState.AddModelError("Try Again", "The invitation could not be sent!");
+                    return View("_InviteModal", model);
+                }
+
+                model.Invite.UserId = user.Id;
+                model.Invite.GroupId = group.Id;
+                model.Invite.SenderId = GetUserId();
+                await inviteManager.Create(model.Invite);
+                return RedirectToAction("Index", "Group");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                return View("_InviteModal", model);
             }
         }
 
@@ -178,18 +205,16 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 var invite = inviteManager.GetAll(i => i.Id == inviteId).Result.FirstOrDefault();
                 invite.IsFinished = true;
                 await inviteManager.Update(invite);
+
                 return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Bir hata ile karşılaşıldı.\nHata Mesajı: {ex.Message}");
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
                 return RedirectToAction("Index", "Group");
             }
-
-            return View("Index");
         }
-
-       
+        
         public async Task<IActionResult> AcceptInvite(string inviteId)
         {
             try
@@ -201,46 +226,15 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 user.Groups.Add(group);
                 await userManager.UpdateAsync(user);
 
+                invite.IsFinished = true;
+                await inviteManager.Update(invite);
+
                 return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", $"Bir hata ile karşılaşıldı.\nHata Mesajı: {ex.Message}");
+                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
                 return RedirectToAction("Index", "Group");
-            }
-
-            return View("Index");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostCreateInvite(GroupDetailViewModel model)
-        { 
-            try
-            {
-                var user = await userManager.FindByNameAsync(model.Invite.UserName);
-                var group = groupManager.GetAll(g => g.Slug == model.Invite.GroupSlug).Result.FirstOrDefault();
-                var userInvite = await inviteManager.GetAllInclude(i => i.UserId == GetUserId(), i => i.User).Result.FirstOrDefaultAsync();
-
-                if (user.Id == GetUserId())
-                {
-                    ModelState.AddModelError("", $"Zaten gruptasınız!");
-                }
-                if (group != null && user != null)
-                {
-                    model.Invite.UserId = user.Id;
-                    model.Invite.GroupId = group.Id;
-                    model.Invite.SenderId = GetUserId();
-                    await inviteManager.Create(model.Invite);
-                    return RedirectToAction("Index","Group");
-                }
-
-                ModelState.AddModelError("", $"Davet gönderilemedi!");
-                return View("_InviteModal", model);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", $"Bir hata ile karşılaşıldı.\nHata Mesajı: {ex.Message}");
-                return View("_InviteModal", model);
             }
         }
 

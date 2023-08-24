@@ -3,13 +3,19 @@
 @model GroupDetailViewModel
 
 <!-- Button trigger modal -->
-<div class="form-inline d-flex justify-content-center">
-    <a class="btn btn-primary mb-5" asp-area="Dashboard" asp-controller="Group" asp-action="PostCreateInvite" data-bs-toggle="modal" data-bs-target="#createInviteModal">
-        Send Group Invite ->
+<div class="btn-group" role="group" aria-label="BtnGroup">
+    <a class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#createInviteModal">
+        Share
+    </a>
+    <a class="btn btn-primary mb-5" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
+        Update
+    </a>
+    <a class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
+        Delete
     </a>
 </div>
+<a class="btn btn-"></a>
 
-<partial name="_InviteModal"></partial>
 
 <table class="table table-hover">
     <thead>
@@ -29,3 +35,6 @@
         </tr>
     </tbody>
 </table>
+
+<partial name="_InviteModal"/>
+<partial name="_UpdateGroupModal"/>
