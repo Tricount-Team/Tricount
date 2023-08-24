@@ -10,7 +10,7 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.DAL.Contexts
 {
-    public class SqlDbContext : IdentityDbContext
+    public class SqlDbContext : IdentityDbContext<User>
     {
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Group> Groups { get; set; }
