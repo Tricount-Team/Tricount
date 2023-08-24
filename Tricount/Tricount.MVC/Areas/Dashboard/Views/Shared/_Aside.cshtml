@@ -5,10 +5,13 @@
 
 @inject UserManager<User> userManager;
 @inject IGroupManager groupManager;
+@inject IInviteManager inviteManager;
 @{
     var user = await userManager.GetUserAsync(User);
     var userId = userManager.GetUserId(User);
     var userGroups = groupManager.GetGroupWithUserSlug(user.Slug).Result.ToList();
+    var invites = inviteManager.GetAllInclude(i => i.UserId == userId, i => i.Group).Result.ToList();
+    var notificationCount = 0;
 }
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -27,12 +30,19 @@
             </div>
         </div>
 
-        <!-- Button trigger modal -->
-        <div class="form-inline d-flex justify-content-center p-3">
-            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NotificationModal">
-                Notification
-            </a>
-        </div>
+        @foreach (var item in invites)
+        {
+            if (item.IsFinished == true)
+            {
+                notificationCount++;
+            }
+        }
+            <!-- Button trigger modal -->
+            <div class="form-inline d-flex justify-content-center p-3">
+                <a asp-area="Dashboard" asp-controller="Group" asp-action="GetInvite" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NotificationModal">
+                    Notification (@{var count = invites.Count - notificationCount;}@count)
+                </a>
+            </div>
 
         <partial name="_NotificationModal"></partial>
 

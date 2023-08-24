@@ -6,6 +6,7 @@
 
 @inject UserManager<User> userManager;
 @inject IGroupManager groupManager;
+@inject IInviteManager inviteManager;
 @{
     var user = await userManager.GetUserAsync(User);
     var userGroups = groupManager.GetGroupWithUserSlug(user.Slug).Result.ToList();

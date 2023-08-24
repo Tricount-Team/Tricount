@@ -74,7 +74,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 user.Groups.Add(group);
                 await userManager.UpdateAsync(user);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)
             {
@@ -157,27 +157,27 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetInvite()
+        public async Task<IActionResult> GetInvite(string id)
         {
+            GroupDetailViewModel model = new();
             try
             {
-                var invites = await inviteManager.GetAllInclude(i => i.UserId == GetUserId(), i => i.Group).Result.ToListAsync();
-                return View(invites);
+                model.Invites = await inviteManager.GetAllInclude(i => i.UserId == GetUserId(), i => i.Group).Result.ToListAsync();
+                return View(model);
             }
             catch (Exception ex)
             {
                 throw;
-                return View();
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DeniedInvite(string id)
+        public async Task<IActionResult> DeniedInvite(string inviteId)
         {
             try
             {
-                var invite = inviteManager.GetAll(i => i.Id == id).Result.FirstOrDefault();
-                await inviteManager.Delete(invite);
+                var invite = inviteManager.GetAll(i => i.Id == inviteId).Result.FirstOrDefault();
+                invite.IsFinished = true;
+                await inviteManager.Update(invite);
                 return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)
@@ -189,17 +189,17 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             return View("Index");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AcceptInvite(string id)
+       
+        public async Task<IActionResult> AcceptInvite(string inviteId)
         {
             try
             {
-                var invite = inviteManager.GetAll(i => i.Id == id).Result.FirstOrDefault();
+                var invite = inviteManager.GetAll(i => i.Id == inviteId).Result.FirstOrDefault();
                 var group = groupManager.GetAll(i => i.Id == invite.GroupId).Result.FirstOrDefault();
                 var user = await userManager.GetUserAsync(User);
 
-                group.Users.Add(user);
-                await groupManager.Update(group);
+                user.Groups.Add(group);
+                await userManager.UpdateAsync(user);
 
                 return RedirectToAction("Index", "Group");
             }
@@ -225,7 +225,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 {
                     ModelState.AddModelError("", $"Zaten gruptasınız!");
                 }
-                if (group != null && user != null && userInvite == null)
+                if (group != null && user != null)
                 {
                     model.Invite.UserId = user.Id;
                     model.Invite.GroupId = group.Id;

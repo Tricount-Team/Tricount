@@ -1,6 +1,15 @@
-﻿@using Tricount.Entities.Concrete;
-@using Tricount.MVC.Models.DTO_s.Group;
-@model GroupDetailViewModel
+﻿@using Microsoft.AspNetCore.Identity;
+@using Tricount.BL.Abstract;
+@using Tricount.Entities.Concrete;
+
+@inject UserManager<User> userManager;
+@inject IInviteManager inviteManager;
+@{
+    var user = await userManager.GetUserAsync(User);
+    var userId = userManager.GetUserId(User);
+    var invites = inviteManager.GetAllInclude(i => i.UserId == userId, i => i.Group).Result.ToList();
+    
+}
 
 <!-- Modal -->
 <div class="modal fade m-5" id="NotificationModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="NotificationModalLabel" aria-hidden="true">
@@ -11,16 +20,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*@foreach (var item in Model)
-            {
-                <label>Sender person: @item.SenderId</label>
-                <label>Group Name: @item.Group.Name</label>
-                <a asp-area="Dashboard" asp-controller="Group" asp-action="DeniedInvite" asp-route-inviteId="@item.Id" class="btn btn-danger">Denied</a>
-                <a asp-area="Dashboard" asp-controller="Group" asp-action="AccessInvite" asp-route-inviteId="@item.Id" class="btn btn-success">Accept</a>
-            }*@
-            <div class="mb-3">
 
-            </div>
+            @foreach (var item in invites)
+            {
+                if (item.IsFinished == false)
+                {
+                    <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
+                        <label>Sender person: @item.SenderId</label>
+                        <label>Group Name: @item.Group.Name</label>
+                        <label>Group Description: @item.Group.Description</label>
+                        <div class="d-flex w-25">
+                            <a asp-area="Dashboard" asp-controller="Group" asp-action="DeniedInvite" asp-route-inviteId="@item.Id" class="btn btn-danger p-2">Denied</a>
+                            <a asp-area="Dashboard" asp-controller="Group" asp-action="AcceptInvite" asp-route-inviteId="@item.Id" class="btn btn-success p-2">Accept</a>
+                        </div>
+                    </div>
+                }
+            }
+
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
