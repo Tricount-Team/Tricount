@@ -2,6 +2,15 @@
 @using Tricount.MVC.Models.DTO_s.Group;
 @model GroupDetailViewModel
 
+<!-- Button trigger modal -->
+<div class="form-inline d-flex justify-content-center">
+    <a class="btn btn-primary mb-5" asp-area="Dashboard" asp-controller="Group" asp-action="PostCreateInvite" data-bs-toggle="modal" data-bs-target="#createInviteModal">
+        Send Group Invite ->
+    </a>
+</div>
+
+<partial name="_InviteModal"></partial>
+
 <table class="table table-hover">
     <thead>
         <tr>

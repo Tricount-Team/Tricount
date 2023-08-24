@@ -27,7 +27,8 @@ namespace Tricount.BL.Concrete
 
         public async override Task<int> Create(Group entity)
         {
-            entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
+            entity.Slug = "";
+            //entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
             return await base.Create(entity);
         }
 
@@ -39,6 +40,11 @@ namespace Tricount.BL.Concrete
         public virtual async Task<ICollection<Group>> GetGroupWithUserSlug(string slug)
         {
             return await repository.GetGroupsWithUserSlug(slug);
+        }
+        public override Task<int> Update(Group entity)
+        {
+            entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
+            return base.Update(entity);
         }
     }
 }

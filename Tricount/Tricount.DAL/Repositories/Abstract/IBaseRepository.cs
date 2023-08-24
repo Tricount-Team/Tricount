@@ -4,12 +4,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Tricount.DAL.Contexts;
 using Tricount.Entities.Abstract;
 
 namespace Tricount.DAL.Repositories.Abstract
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
+        public SqlDbContext dbContext { get; set; }
         Task<int> Create(T input);
         Task<int> Delete(T input);
         Task<int> Update(T input);

@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using Tricount.BL.Abstract;
+@using Tricount.BL.Concrete;
+@using Tricount.Entities.Concrete;
+@using Tricount.MVC.Models.DTO_s.Group;
+
+@inject UserManager<User> userManager;
+@inject IGroupManager groupManager;
+@{
+    var user = await userManager.GetUserAsync(User);
+    var userGroups = groupManager.GetGroupWithUserSlug(user.Slug).Result.ToList();
+}
+
+@model GroupDetailViewModel
+
+<!-- Modal -->
+<div class="modal fade" id="createInviteModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="createInviteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createInviteModalLabel">Send Group Invite -></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <form asp-area="Dashboard" asp-controller="Group" asp-action="PostCreateInvite" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label asp-for="@Model.Invite.UserName">User To Invite</label>
+                        <input class="form-control" type="text" asp-for="@Model.Invite.UserName" required/>
+                        <span asp-validation-for="@Model.Invite.UserName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.Invite.GroupSlug">Select Group</label>
+                        <select class="form-select" asp-for="@Model.Invite.GroupSlug" required>
+                            @foreach (var item in userGroups)
+                            {
+                                <option value="@item.Slug">@item.Name - @item.Description</option>
+                            }
+                        </select>
+                        <span asp-validation-for="@Model.Invite.GroupSlug" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

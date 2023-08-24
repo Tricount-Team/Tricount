@@ -9,9 +9,8 @@ namespace Tricount.MVC.Extentions
     {
         public static IServiceCollection AddTricountServices(this IServiceCollection services)
         {
-            
-
-           
+            services.AddScoped<IInviteRepository, InviteRepository>();
+            services.AddScoped<IInviteManager, InviteManager>();
            
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentManager, PaymentManager>();
@@ -24,7 +23,6 @@ namespace Tricount.MVC.Extentions
 
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupManager, GroupManager>();
-           
 
             return services;
         }

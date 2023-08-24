@@ -12,5 +12,7 @@ namespace Tricount.MVC.Models
         public GroupCreateDTO? GroupDTO { get; set; }
         public Group? Group { get; set; }
         public PaymentCreateDTO? PaymentDTO { get; set; }
+        public Invite? Invite { get; set; }
+        public ICollection<Invite>? Invites { get; set; }
     }
 }

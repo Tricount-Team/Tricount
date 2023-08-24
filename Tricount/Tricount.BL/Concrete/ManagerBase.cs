@@ -12,11 +12,12 @@ namespace Tricount.BL.Concrete
 {
     public class ManagerBase<T> : IManagerBase<T> where T : BaseEntity
     {
-        private readonly IBaseRepository<T> repository;
+        public readonly IBaseRepository<T> repository;
 
         public ManagerBase(IBaseRepository<T> repository)
         {
             this.repository = repository;
+            
         }
 
         public virtual async Task<int> Delete(T entity)

@@ -16,6 +16,7 @@ namespace Tricount.DAL.Contexts
         public DbSet<Group> Groups { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<ExpenseDetail> ExpenseDetails { get; set; }
+        public DbSet<Invite> Invites { get; set; }
 
         public SqlDbContext()
         {
