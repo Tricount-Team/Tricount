@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tricount.DAL.Contexts;
 using Tricount.Entities.Concrete;
@@ -42,6 +42,8 @@ namespace Tricount.MVC
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.MapControllerRoute(
                 name: "default",

@@ -8,7 +8,7 @@ using Tricount.Entities.Abstract;
 
 namespace Tricount.DAL.Repositories.Abstract
 {
-	public interface IBaseRepository<T> where T : BaseEntity, new()
+	public interface IBaseRepository<T> where T : BaseEntity
 	{
 		Task<int> Create(T input);
 		Task<int> Update(T input);

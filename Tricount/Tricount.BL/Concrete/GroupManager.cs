@@ -10,36 +10,15 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Concrete
 {
-    public class GroupManager : ManagerBase<Group>, Abstract.IGroupManager
+    public class GroupManager : ManagerBase<Group>, IGroupManager
     {
-        private readonly IGroupRepository repository;
-
         public GroupManager(IGroupRepository repository) : base(repository)
         {
-            this.repository = repository;
         }
 
-        public async override Task<int> Create(Group entity)
+        public Task<ICollection<Group>> GetGroupsWithUserSlug(string slug)
         {
-            entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
-            return await base.Create(entity);
-        }
-
-        public override Task<IQueryable<Group>>? GetAllInclude(Expression<Func<Group, bool>>? filter = null, params Expression<Func<Group, object>>[]? include)
-        {
-            return base.GetAllInclude(filter, include);
-        }
-
-        public virtual async Task<ICollection<Group>> GetGroupWithUserSlug(string slug)
-        {
-            return await repository.GetGroupsWithUserSlug(slug);
+            throw new NotImplementedException();
         }
     }
-    //public class GroupManager : ManagerBase<Group>, IGroupManager
-    //{
-    //    public GroupManager(IGroupRepository repository) : base(repository)
-    //    {
-
-    //    }
-    //}
 }
