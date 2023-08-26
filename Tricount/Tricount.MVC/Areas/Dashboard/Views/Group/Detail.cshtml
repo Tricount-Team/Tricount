@@ -10,7 +10,7 @@
     <a class="btn btn-primary mb-5" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
         Update
     </a>
-    <a class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
+    <a class="btn btn-primary mb-5" id="deleteGroupModalButton" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
         Delete
     </a>
 </div>
@@ -37,10 +37,6 @@
 </table>
 
 <script>
-    function hidePreloader(){
-        document.querySelector(".preloader").style.display='none';
-    }
-
     document.getElementById("updateGroupModalButton").addEventListener("click", function () {
         var slug = window.location.pathname.split('/').pop();
         $.ajax({
@@ -48,11 +44,22 @@
             type: 'GET',
             success: function (result) {
                 $("#updateGroupModal").modal("show");
-                hidePreloader();
             },
             error: function () {
                 alert("An error occurred while fetching modal content.");
-                hidePreloader();
+            }
+        });
+    });
+    document.getElementById("deleteGroupModalButton").addEventListener("click", function () {
+        var slug = window.location.pathname.split('/').pop();
+        $.ajax({
+            url: '/Dashboard/Group/GetDeleteGroup/' + slug,
+            type: 'GET',
+            success: function (result) {
+                $("#deleteGroupModal").modal("show");
+            },
+            error: function () {
+                alert("An error occurred while fetching modal content.");
             }
         });
     });
@@ -60,7 +67,4 @@
 
 <partial name="_InviteModal"/>
 <partial name="_UpdateGroupModal"/>
-
-
-
-
+<partial name="_DeleteGroupModal"/>

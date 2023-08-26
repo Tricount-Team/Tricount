@@ -1,0 +1,49 @@
+﻿@using Tricount.MVC.Models.DTO_s.Group;
+@model GroupDetailViewModel
+
+<!-- Modal -->
+<div class="modal fade" id="deleteGroupModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="deleteGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteGroupModalLabel">- Delete Group</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-area="Dashboard" asp-controller="Group" asp-action="PostDeleteGroup" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="modal-body" id="modalContent">
+                    <input type="hidden" value="@Model.Group.CreateDate" asp-for="@Model.Group.CreateDate" />
+                    <input type="hidden" value="@Model.Group.ConstituentId" asp-for="@Model.Group.ConstituentId" />
+                    <input type="hidden" value="@Model.Group.Id" asp-for="@Model.Group.Id" />
+                    <input type="hidden" value="@Model.Group.Slug" asp-for="@Model.Group.Slug" />
+
+                    <div class="mb-3">
+                        <label asp-for="@Model.Group.Name">Group Name</label>
+                        <input class="form-control" type="text" asp-for="@Model.Group.Name" readonly/>
+                        <span asp-validation-for="@Model.Group.Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.Group.Description">Group Description</label>
+                        <input class="form-control" type="text" asp-for="@Model.Group.Description" readonly />
+                        <span asp-validation-for="@Model.Group.Description" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.Group.DefaultCurrency" required>Default Currency</label>
+                        <select class="form-select" id="disabledSelect" asp-for="@Model.Group.DefaultCurrency">
+                            <option value="0">USD</option>
+                            <option value="1">EUR</option>
+                            <option value="2" selected>TRY</option>
+                        </select>
+                        <span asp-validation-for="@Model.Group.DefaultCurrency" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

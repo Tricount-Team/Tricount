@@ -35,7 +35,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             this.mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
@@ -63,14 +63,14 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return View("_CreateModal", model);
             }
         }
 
         [HttpGet]
         [Route("Dashboard/Group/GetUpdateGroup/{slug}")]
-        public async Task<IActionResult> GetUpdateGroup(string slug)
+        public IActionResult GetUpdateGroup(string slug)
         {
             GroupDetailViewModel model = new();
             try
@@ -81,7 +81,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return RedirectToAction("Index");
             }
         }
@@ -100,44 +100,51 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return View("_UpdateGroupModal", model);
             }
         }
 
         [HttpGet]
         [Route("Dashboard/Group/GetDeleteGroup/{slug}")]
-        public async Task<IActionResult> GetDeleteGroup(string slug)
+        public IActionResult GetDeleteGroup(string slug)
         {
+            GroupDetailViewModel model = new();
             try
             {
-                var result = await groupManager.GetAll(g => g.Slug == slug);
-                return View(result);
+                var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
+                model.Group = group;
+                return View("_DeleteGroupModal", model);
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
-                return RedirectToAction("Index", "Group");
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
+                return RedirectToAction("Index");
             }
-            
+
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostDeleteGroup(Group group)
+        public async Task<IActionResult> PostDeleteGroup(GroupDetailViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(group);
+                return View("_DeleteGroupModal", model);
             }
             try
             {
-                await groupManager.Delete(group);
+                var invites = await inviteManager.GetAll(i => i.GroupId == model.Group.Id);
+                foreach (var invite in invites)
+                {
+                    await inviteManager.Delete(invite);
+                }
+                await groupManager.Delete(model.Group);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
-                return View(group);
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
+                return View("_DeleteGroupModal", model);
             }
         }
 
@@ -161,7 +168,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return View(viewModel);
             }
             
@@ -173,7 +180,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             try
             {
                 var user = await userManager.FindByNameAsync(model.Invite.UserName);
-                var group = groupManager.GetAllInclude(g => g.Slug == model.Invite.GroupSlug, g => g.Users).Result.FirstOrDefault();
+                var group = await groupManager.GetAllInclude(g => g.Slug == model.Invite.GroupSlug, g => g.Users).Result.FirstOrDefaultAsync();
                 var groupUser = group.Users.FirstOrDefault(u => u.Id == user.Id);
 
                 if (user.Id == GetUserId())
@@ -183,7 +190,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 }
                 else if (group == null && user == null && groupUser != null)
                 {
-                    ModelState.AddModelError("Try Again", "The invitation could not be sent!");
+                    ModelState.AddModelError("Try Again", "The invitation couldn't be sent!");
                     return View("_InviteModal", model);
                 }
 
@@ -195,7 +202,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return View("_InviteModal", model);
             }
         }
@@ -212,7 +219,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return RedirectToAction("Index", "Group");
             }
         }
@@ -235,7 +242,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Source, $"An error was encountered.\nError message: {ex.Message}");
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return RedirectToAction("Index", "Group");
             }
         }
