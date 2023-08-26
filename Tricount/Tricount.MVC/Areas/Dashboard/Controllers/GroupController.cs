@@ -35,6 +35,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             this.mapper = mapper;
         }
 
+        [Route("/dashboard/menu")]
         public IActionResult Index()
         {
             return View();
@@ -69,7 +70,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        [Route("Dashboard/Group/GetUpdateGroup/{slug}")]
+        [Route("dashboard/getupdategroup/{slug}")]
         public IActionResult GetUpdateGroup(string slug)
         {
             GroupDetailViewModel model = new();
@@ -106,7 +107,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        [Route("Dashboard/Group/GetDeleteGroup/{slug}")]
+        [Route("dashboard/getdeletegroup/{slug}")]
         public IActionResult GetDeleteGroup(string slug)
         {
             GroupDetailViewModel model = new();
@@ -139,7 +140,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                     await inviteManager.Delete(invite);
                 }
                 await groupManager.Delete(model.Group);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)
             {
@@ -149,7 +150,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        [Route("Dashboard/Group/Detail/{slug}")]
+        [Route("dashboard/detail/{slug}")]
         public async Task<IActionResult> Detail(string slug)
         {
             GroupDetailViewModel viewModel = new();

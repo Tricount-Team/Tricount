@@ -117,7 +117,7 @@ namespace Tricount.MVC.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect("~/Dashboard/Group/Index");
+                    return LocalRedirect("~/dashboard/menu");
                 }
                 if (result.RequiresTwoFactor)
                 {

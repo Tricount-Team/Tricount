@@ -28,7 +28,6 @@ namespace Tricount.BL.Concrete
         public async override Task<int> Create(Group entity)
         {
             entity.Slug = "";
-            //entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
             return await base.Create(entity);
         }
 
@@ -43,7 +42,7 @@ namespace Tricount.BL.Concrete
         }
         public override Task<int> Update(Group entity)
         {
-            entity.Slug = entity.Name + "-" + entity.Description + "-" + entity.Id.ToString().Split('-')[0];
+            entity.Slug = entity.Name.ToLower() + "-" + entity.Description.ToLower() + "-" + entity.Id.ToString().Split('-')[0].ToLower();
             return base.Update(entity);
         }
     }

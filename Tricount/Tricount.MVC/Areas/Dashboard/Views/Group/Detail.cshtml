@@ -40,7 +40,7 @@
     document.getElementById("updateGroupModalButton").addEventListener("click", function () {
         var slug = window.location.pathname.split('/').pop();
         $.ajax({
-            url: '/Dashboard/Group/GetUpdateGroup/' + slug,
+            url: '/dashboard/getupdategroup/' + slug,
             type: 'GET',
             success: function (result) {
                 $("#updateGroupModal").modal("show");
@@ -53,7 +53,7 @@
     document.getElementById("deleteGroupModalButton").addEventListener("click", function () {
         var slug = window.location.pathname.split('/').pop();
         $.ajax({
-            url: '/Dashboard/Group/GetDeleteGroup/' + slug,
+            url: '/dashboard/getdeletegroup/' + slug,
             type: 'GET',
             success: function (result) {
                 $("#deleteGroupModal").modal("show");
