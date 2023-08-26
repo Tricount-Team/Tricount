@@ -36,5 +36,31 @@
     </tbody>
 </table>
 
+<script>
+    function hidePreloader(){
+        document.querySelector(".preloader").style.display='none';
+    }
+
+    document.getElementById("updateGroupModalButton").addEventListener("click", function () {
+        var slug = window.location.pathname.split('/').pop();
+        $.ajax({
+            url: '/Dashboard/Group/GetUpdateGroup/' + slug,
+            type: 'GET',
+            success: function (result) {
+                $("#updateGroupModal").modal("show");
+                hidePreloader();
+            },
+            error: function () {
+                alert("An error occurred while fetching modal content.");
+                hidePreloader();
+            }
+        });
+    });
+</script>
+
 <partial name="_InviteModal"/>
 <partial name="_UpdateGroupModal"/>
+
+
+
+

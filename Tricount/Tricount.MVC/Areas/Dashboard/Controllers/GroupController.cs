@@ -52,6 +52,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             {
                 var group = mapper.Map<Group>(model.GroupDTO);
                 var user = await userManager.GetUserAsync(User);
+                group.ConstituentId = GetUserId();
 
                 await groupManager.Create(group);
                 await groupManager.Update(group);
@@ -68,7 +69,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        [Route("Dashboard/Group/Update/{slug}")]
+        [Route("Dashboard/Group/GetUpdateGroup/{slug}")]
         public async Task<IActionResult> GetUpdateGroup(string slug)
         {
             GroupDetailViewModel model = new();
@@ -76,7 +77,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             {
                 var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
                 model.Group = group;
-                return View(model);
+                return View("_UpdateGroupModal", model);
             }
             catch (Exception ex)
             {
@@ -105,11 +106,12 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDeleteGroup(string id)
+        [Route("Dashboard/Group/GetDeleteGroup/{slug}")]
+        public async Task<IActionResult> GetDeleteGroup(string slug)
         {
             try
             {
-                var result = await groupManager.GetAll(g => g.Id == id);
+                var result = await groupManager.GetAll(g => g.Slug == slug);
                 return View(result);
             }
             catch (Exception ex)
