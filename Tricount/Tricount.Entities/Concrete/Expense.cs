@@ -9,11 +9,13 @@ namespace Tricount.Entities.Concrete
 {
     public class Expense : BaseEntity
     {
-        public double Amount { get; set; }
+        public double TotalAmount { get; set; }
         public string? Description { get; set; }
-        public bool IsPaid { get; set; }
-        public string? UserId { get; set; }
-        public User? User { get; set; }
+        public bool IsFinished { get; set; }
+        public string? PayerId { get; set; }
+        public User? Payer { get; set; }
+        public string? GroupId { get; set; }
+        public Group? Group { get; set; }
         public ICollection<ExpenseDetail>? ExpenseDetails { get; set; }
     }
 }

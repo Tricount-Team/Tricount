@@ -4,16 +4,10 @@ namespace Tricount.Entities.Concrete
 {
     public class ExpenseDetail : BaseEntity
     {
-        public string? UserId { get; set; }
-
-        public User? User { get; set; }
-
-        public string? GroupId { get; set; }
-
-        public Group? Group { get; set; }
-
-        public string? ExpenseId { get; set; }
-
-        public Expense? Expense { get; set; }
+        public double Amount { get; set; }
+        public bool IsPaid { get; set; }
+        public string DebtorId { get; set; }
+        public User? Debtor { get; set; }
+        public ICollection<Expense>? Expenses { get; set; }
     }
 }

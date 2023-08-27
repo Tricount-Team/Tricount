@@ -15,9 +15,9 @@ namespace Tricount.DAL.EntityConfigurations.Concrete
         public override void Configure(EntityTypeBuilder<Expense> builder)
         {
             base.Configure(builder);
-            builder.Property(e => e.Amount).HasDefaultValue(0);
+            builder.Property(e => e.TotalAmount).HasDefaultValue(0);
             builder.Property(e => e.Description).HasMaxLength(100);
-            builder.Property(e => e.IsPaid).HasDefaultValue(false);
+            builder.Property(e => e.IsFinished).HasDefaultValue(false);
         }
     }
 }
