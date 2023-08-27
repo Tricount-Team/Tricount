@@ -1,21 +1,27 @@
-﻿@using Tricount.Entities.Concrete;
+﻿@using Microsoft.AspNetCore.Identity;
+@using Tricount.Entities.Concrete;
 @using Tricount.MVC.Models.DTO_s.Group;
 @model GroupDetailViewModel
+@inject UserManager<User> userManager;
+@{
+    var user = await userManager.GetUserAsync(User);
+}
 
 <!-- Button trigger modal -->
-<div class="btn-group" role="group" aria-label="BtnGroup">
-    <a class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#createInviteModal">
-        Share
-    </a>
-    <a class="btn btn-primary mb-5" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
-        Update
-    </a>
-    <a class="btn btn-primary mb-5" id="deleteGroupModalButton" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
-        Delete
-    </a>
-</div>
-<a class="btn btn-"></a>
-
+@if (Model.Group.ConstituentId == user.Id)
+{
+    <div class="btn-group" role="group" aria-label="BtnGroup">
+        <a class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#createInviteModal">
+            Share
+        </a>
+        <a class="btn btn-primary mb-5" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
+            Update
+        </a>
+        <a class="btn btn-primary mb-5" id="deleteGroupModalButton" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
+            Delete
+        </a>
+    </div>
+}
 
 <table class="table table-hover">
     <thead>
@@ -65,6 +71,6 @@
     });
 </script>
 
-<partial name="_InviteModal"/>
-<partial name="_UpdateGroupModal"/>
-<partial name="_DeleteGroupModal"/>
+<partial name="_InviteModal" />
+<partial name="_UpdateGroupModal" />
+<partial name="_DeleteGroupModal" />
