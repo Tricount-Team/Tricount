@@ -20,18 +20,21 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         private readonly IGroupManager groupManager;
         private readonly IInviteManager inviteManager;
         private readonly UserManager<User> userManager;
+        private readonly ExpenseManager expenseManager;
         private readonly IMapper mapper;
 
         public GroupController(
             IGroupManager groupManager,
             IInviteManager inviteManager,
             UserManager<User> userManager,
+            ExpenseManager expenseManager,
             IMapper mapper
             )
         {
             this.groupManager = groupManager;
             this.inviteManager = inviteManager;
             this.userManager = userManager;
+            this.expenseManager = expenseManager;
             this.mapper = mapper;
         }
 
@@ -277,14 +280,10 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             try
             {
-                var group = mapper.Map<Group>(model.GroupDTO);
+                var expense = mapper.Map<Expense>(model.ExpenseDTO);
                 var user = await userManager.GetUserAsync(User);
-                group.ConstituentId = GetUserId();
 
-                await groupManager.Create(group);
-                await groupManager.Update(group);
-                user.Groups.Add(group);
-                await userManager.UpdateAsync(user);
+                await expenseManager.Create(expense);
 
                 return RedirectToAction("Index", "Group");
             }
