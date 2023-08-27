@@ -23,6 +23,12 @@
     </div>
 }
 
+<div class="btn-group" role="group" aria-label="BtnGroup">
+    <a class="btn btn-primary mb-5" id="createExpenseModalButton" data-bs-toggle="modal" data-bs-target="#createExpenseModal">
+        Add Expense
+    </a>
+</div>
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -82,8 +88,22 @@
             }
         });
     });
+    document.getElementById("createExpenseModalButton").addEventListener("click", function () {
+        var slug = window.location.pathname.split('/').pop();
+        $.ajax({
+            url: '/dashboard/getcreateexpense/' + slug,
+            type: 'GET',
+            success: function (result) {
+                $("#createExpenseModal").modal("show");
+            },
+            error: function () {
+                alert("An error occurred while fetching modal content.");
+            }
+        });
+    });
 </script>
 
 <partial name="_InviteModal" />
 <partial name="_UpdateGroupModal" />
 <partial name="_DeleteGroupModal" />
+<partial name="_CreateExpenseModal" />

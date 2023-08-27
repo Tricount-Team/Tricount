@@ -19,15 +19,15 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
     {
         private readonly IGroupManager groupManager;
         private readonly IInviteManager inviteManager;
+        private readonly IExpenseManager expenseManager;
         private readonly UserManager<User> userManager;
-        private readonly ExpenseManager expenseManager;
         private readonly IMapper mapper;
 
         public GroupController(
             IGroupManager groupManager,
             IInviteManager inviteManager,
             UserManager<User> userManager,
-            ExpenseManager expenseManager
+            IExpenseManager expenseManager,
             IMapper mapper
             )
         {
@@ -270,18 +270,34 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("dashboard/getcreateexpense/{slug}")]
+        public IActionResult GetCreateExpense(string slug)
+        {
+            GroupDetailViewModel model = new();
+            try
+            {
+                var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
+                model.Group = group;
+                return View("_CreateExpenseModal", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
+                return RedirectToAction("Index");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostCreateExpense(GroupDetailViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError(string.Empty, "Fill in the mandatory fields!");
-                return View("_CreateExpenseModal", model);
-            }
             try
             {
+                var group = groupManager.GetAll(g => g.Slug == model.ExpenseDTO.GroupSlug).Result.FirstOrDefault();
                 var expense = mapper.Map<Expense>(model.ExpenseDTO);
                 var user = await userManager.GetUserAsync(User);
+                expense.PayerId = GetUserId();
+                expense.GroupId = group.Id;
 
                 await expenseManager.Create(expense);
 
@@ -293,7 +309,6 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 return View("_CreateExpenseModal", model);
             }
         }
-
         public string GetUserId()
         {
             var userId = userManager.GetUserId(User).ToString();

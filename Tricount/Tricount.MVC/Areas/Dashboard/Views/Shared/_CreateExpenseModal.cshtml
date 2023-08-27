@@ -1,37 +1,51 @@
-﻿@using Tricount.MVC.Models.DTO_s.Group;
+﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore;
+@using Tricount.BL.Abstract;
+@using Tricount.Entities.Concrete;
+@using Tricount.MVC.Models.DTO_s.Group;
 @model GroupDetailViewModel
+@inject IGroupManager groupManager;
+@inject UserManager<User> userManager;
+@{
+    var userAccount = await userManager.GetUserAsync(User);
+    var getGroupWithUsers = await groupManager.GetAllInclude(g => g.Slug == Model.Group.Slug, g => g.Users).Result.FirstOrDefaultAsync();
+    var groupUser = getGroupWithUsers.Users.ToList();
+}
 
 <!-- Modal -->
-<div class="modal fade" id="createGroupModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="createGroupModalLabel" aria-hidden="true">
+<div class="modal fade" id="createExpenseModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="createExpenseModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="createGroupModalLabel">+ Create New Group</h1>
+                <h1 class="modal-title fs-5" id="createExpenseModalLabel">+ Create New Group</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <form asp-area="Dashboard" asp-controller="Group" asp-action="PostCreateGroup" method="post">
+            <form asp-area="Dashboard" asp-controller="Group" asp-action="PostCreateExpense" method="post">
                 <div class="modal-body">
-
+                    <input type="hidden" value="@Model.Group.Slug" asp-for="@Model.ExpenseDTO.GroupSlug"/>
                     <div class="mb-3">
-                        <label asp-for="@Model.GroupDTO.Name">Group Name</label>
-                        <input class="form-control" type="text" asp-for="@Model.GroupDTO.Name" required />
-                        <span asp-validation-for="@Model.GroupDTO.Name" class="text-danger"></span>
+                        <label asp-for="@Model.ExpenseDTO.TotalAmount">Total Amount</label>
+                        <input class="form-control" type="text" asp-for="@Model.ExpenseDTO.TotalAmount" required />
+                        <span asp-validation-for="@Model.ExpenseDTO.TotalAmount" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="@Model.GroupDTO.Description">Group Description</label>
-                        <input class="form-control" type="text" asp-for="@Model.GroupDTO.Description" />
-                        <span asp-validation-for="@Model.GroupDTO.Description" class="text-danger"></span>
+                        <label asp-for="@Model.ExpenseDTO.Description">Group Description</label>
+                        <input class="form-control" type="text" asp-for="@Model.ExpenseDTO.Description" />
+                        <span asp-validation-for="@Model.ExpenseDTO.Description" class="text-danger"></span>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="@Model.GroupDTO.DefaultCurrency" required>Default Currency</label>
-                        <select class="form-select" asp-for="@Model.GroupDTO.DefaultCurrency" required>
-                            <option value="0">USD</option>
-                            <option value="1">EUR</option>
-                            <option value="2" selected>TRY</option>
-                        </select>
-                        <span asp-validation-for="@Model.GroupDTO.DefaultCurrency" class="text-danger"></span>
+                    <div class="">
+                        <label for="listGroup">People Involved in Expenditures</label>
+                        <ul class="list-group" id="listGroup">
+                            @foreach (var user in groupUser)
+                            {
+                                <li class="list-group-item" style="color:white;">
+                                    <input class="form-check-input me-1" type="checkbox" asp-for="@Model.ExpenseDetail.DebtorId" asp-route="@user.Id" />
+                                    @user.UserName
+                                </li>
+                            }
+                        </ul>
                     </div>
                 </div>
                 <div class="modal-footer">
