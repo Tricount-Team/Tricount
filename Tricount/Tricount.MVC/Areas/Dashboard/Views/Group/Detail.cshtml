@@ -11,7 +11,7 @@
 @if (Model.Group.ConstituentId == user.Id)
 {
     <div class="btn-group" role="group" aria-label="BtnGroup">
-        <a class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#createInviteModal">
+        <a class="btn btn-primary mb-5" id="createInviteModalButton" data-bs-toggle="modal" data-bs-target="#createInviteModal">
             Share
         </a>
         <a class="btn btn-primary mb-5" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
@@ -63,6 +63,19 @@
             type: 'GET',
             success: function (result) {
                 $("#deleteGroupModal").modal("show");
+            },
+            error: function () {
+                alert("An error occurred while fetching modal content.");
+            }
+        });
+    });
+    document.getElementById("createInviteModalButton").addEventListener("click", function () {
+        var slug = window.location.pathname.split('/').pop();
+        $.ajax({
+            url: '/dashboard/getcreateinvite/' + slug,
+            type: 'GET',
+            success: function (result) {
+                $("#createInviteModal").modal("show");
             },
             error: function () {
                 alert("An error occurred while fetching modal content.");

@@ -4,8 +4,6 @@ namespace Tricount.Entities.Concrete
 {
     public class ExpenseDetail : BaseEntity
     {
-        public bool IsPaid { get; set; }
-
         public string? UserId { get; set; }
 
         public User? User { get; set; }

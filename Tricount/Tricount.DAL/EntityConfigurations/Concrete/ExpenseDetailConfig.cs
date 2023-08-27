@@ -15,14 +15,13 @@ namespace Tricount.DAL.EntityConfigurations.Concrete
         public override void Configure(EntityTypeBuilder<ExpenseDetail> builder)
         {
             base.Configure(builder);
-            builder.HasIndex(p => new
+            builder.HasIndex(ed => new
             {
-                p.ExpenseId,
-                p.GroupId,
-                p.UserId
+                ed.ExpenseId,
+                ed.GroupId,
+                ed.UserId
                 
             }).IsUnique();
-            builder.Property(p => p.IsPaid).HasDefaultValue(false);
         }
     }
 }

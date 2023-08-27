@@ -11,6 +11,7 @@ namespace Tricount.Entities.Concrete
     {
         public double Amount { get; set; }
         public string? Description { get; set; }
+        public bool IsPaid { get; set; }
         public string? UserId { get; set; }
         public User? User { get; set; }
         public ICollection<ExpenseDetail>? ExpenseDetails { get; set; }

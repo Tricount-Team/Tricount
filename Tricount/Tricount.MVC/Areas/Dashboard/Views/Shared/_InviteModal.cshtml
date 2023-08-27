@@ -35,13 +35,9 @@
                         <span asp-validation-for="@Model.Invite.UserName" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
-                        <label asp-for="@Model.Invite.GroupSlug">Select Group</label>
-                        <select class="form-select" asp-for="@Model.Invite.GroupSlug" required>
-                            @foreach (var item in userGroups)
-                            {
-                                <option value="@item.Slug">@item.Name - @item.Description</option>
-                            }
-                        </select>
+                        <label asp-for="@Model.Invite.GroupSlug">Selected Group</label>
+                        <input type="hidden" asp-for="@Model.Invite.GroupSlug" value="@Model.Group.Slug"/>
+                        <input  class="form-control" type="text" value="@Model.Group.Name - @Model.Group.Description" readonly/>
                         <span asp-validation-for="@Model.Invite.GroupSlug" class="text-danger"></span>
                     </div>
                 </div>

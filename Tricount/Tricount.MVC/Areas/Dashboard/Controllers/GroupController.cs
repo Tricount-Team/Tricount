@@ -175,6 +175,25 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             
         }
 
+        [HttpGet]
+        [Route("dashboard/getcreateinvite/{slug}")]
+        public IActionResult GetCreateInvite(string slug)
+        {
+            GroupDetailViewModel model = new();
+            try
+            {
+                var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
+                model.Group = group;
+                return View("_InviteModal", model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
+                return RedirectToAction("Index");
+            }
+
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostCreateInvite(GroupDetailViewModel model)
         {
@@ -245,6 +264,34 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             {
                 ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return RedirectToAction("Index", "Group");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostCreateExpense(GroupDetailViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError(string.Empty, "Fill in the mandatory fields!");
+                return View("_CreateExpenseModal", model);
+            }
+            try
+            {
+                var group = mapper.Map<Group>(model.GroupDTO);
+                var user = await userManager.GetUserAsync(User);
+                group.ConstituentId = GetUserId();
+
+                await groupManager.Create(group);
+                await groupManager.Update(group);
+                user.Groups.Add(group);
+                await userManager.UpdateAsync(user);
+
+                return RedirectToAction("Index", "Group");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
+                return View("_CreateExpenseModal", model);
             }
         }
 
