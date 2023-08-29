@@ -5,14 +5,6 @@
 @using Tricount.Entities.Concrete;
 @using Tricount.MVC.Models.DTO_s.Group;
 
-@inject UserManager<User> userManager;
-@inject IGroupManager groupManager;
-@inject IInviteManager inviteManager;
-@{
-    var user = await userManager.GetUserAsync(User);
-    var userGroups = await groupManager.GetAllInclude(g => g.Users.FirstOrDefault().Id == user.Id, g => g.Users).Result.ToListAsync();
-}
-
 @model GroupDetailViewModel
 
 <!-- Modal -->

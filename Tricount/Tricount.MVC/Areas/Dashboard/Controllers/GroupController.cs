@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Tricount.BL.Abstract;
 using Tricount.BL.Concrete;
@@ -39,7 +41,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [Route("/dashboard/menu")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
@@ -175,7 +177,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
                 return View(viewModel);
             }
-            
+
         }
 
         [HttpGet]
@@ -246,7 +248,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 return RedirectToAction("Index", "Group");
             }
         }
-        
+
         public async Task<IActionResult> AcceptInvite(string inviteId)
         {
             try
@@ -272,12 +274,15 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 
         [HttpGet]
         [Route("dashboard/getcreateexpense/{slug}")]
-        public IActionResult GetCreateExpense(string slug)
+        public async Task<IActionResult> GetCreateExpense(string slug)
         {
             GroupDetailViewModel model = new();
             try
             {
                 var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
+                var getGroupWithUsers = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
+                var groupUser = getGroupWithUsers.Users.ToList();
+                model.Group.Users = groupUser;
                 model.Group = group;
                 return View("_CreateExpenseModal", model);
             }
@@ -289,18 +294,33 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCreateExpense(GroupDetailViewModel model)
+        public async Task<IActionResult> PostCreateExpense(GroupDetailViewModel model, string[] selectedUsers)
         {
             try
             {
                 var group = groupManager.GetAll(g => g.Slug == model.ExpenseDTO.GroupSlug).Result.FirstOrDefault();
                 var expense = mapper.Map<Expense>(model.ExpenseDTO);
-                var user = await userManager.GetUserAsync(User);
-                expense.PayerId = GetUserId();
+
+                expense.PayerId = userManager.FindByNameAsync(model.ExpenseDTO.PayerId).Result.Id;
                 expense.GroupId = group.Id;
 
-                await expenseManager.Create(expense);
+                foreach (var item in selectedUsers)
+                {
+                    var userId = userManager.FindByNameAsync(item.ToString()).Result.Id;
+                    if (expense.PayerId != userId)
+                    {
+                        if (model.ExpenseDTO.IsCheckedShowAmountPartial.Length != null)
+                        {
+                            ExpenseDetail detail = new ExpenseDetail();
+                            detail.Amount = model.ExpenseDTO.TotalAmount / selectedUsers.Length;
+                            detail.DebtorId = userId;
+                            expense.ExpenseDetails.Add(detail);
+                        }
 
+                    }
+                }
+
+                await expenseManager.Create(expense);
                 return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)

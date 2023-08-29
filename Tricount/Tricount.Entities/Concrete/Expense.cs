@@ -21,5 +21,7 @@ namespace Tricount.Entities.Concrete
 
         [NotMapped]
         public string? GroupSlug { get; set; }
+        [NotMapped]
+        public bool? IsCheckedShowAmountPartial { get; set; }
     }
 }

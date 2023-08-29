@@ -16,5 +16,6 @@ namespace Tricount.MVC.Models.DTO_s.Expense
         public ICollection<ExpenseDetail>? ExpenseDetails { get; set; }
 
         public string? GroupSlug { get; set; }
+        public string[]? IsCheckedShowAmountPartial { get; set; }
     }
 }

@@ -13,11 +13,11 @@ namespace Tricount.DAL.EntityConfigurations.Abstract
     {
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Property(p => p.Id).HasDefaultValue(Guid.NewGuid().ToString());
-            builder.HasIndex(x => x.Id).IsUnique();
-            builder.Property(p => p.UpdateDate).HasDefaultValue(DateTime.Now);
-            builder.Property(p => p.CreateDate).HasDefaultValue(DateTime.Now);
+            builder.HasKey(t => t.Id);
+            builder.Property(t => t.Id).HasDefaultValue(Guid.NewGuid().ToString());
+            builder.HasIndex(t => t.Id).IsUnique();
+            builder.Property(t => t.UpdateDate).HasDefaultValue(DateTime.Now);
+            builder.Property(t => t.CreateDate).HasDefaultValue(DateTime.Now);
         }
     }
 }
