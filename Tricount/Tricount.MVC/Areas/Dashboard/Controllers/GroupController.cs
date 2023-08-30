@@ -11,7 +11,6 @@ using Tricount.Entities.Concrete;
 using Tricount.MVC.Models;
 using Tricount.MVC.Models.DTO_s.Expense;
 using Tricount.MVC.Models.DTO_s.Group;
-using Tricount.MVC.Models.DTO_s.Payment;
 
 namespace Tricount.MVC.Areas.Dashboard.Controllers
 {
@@ -22,26 +21,29 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         private readonly IGroupManager groupManager;
         private readonly IInviteManager inviteManager;
         private readonly IExpenseManager expenseManager;
-        private readonly UserManager<User> userManager;
+        private readonly IPaymentManager paymentManager;
         private readonly IMapper mapper;
+        private readonly UserManager<User> userManager;
 
         public GroupController(
             IGroupManager groupManager,
             IInviteManager inviteManager,
-            UserManager<User> userManager,
             IExpenseManager expenseManager,
-            IMapper mapper
+            IPaymentManager paymentManager,
+            IMapper mapper,
+            UserManager<User> userManager
             )
         {
             this.groupManager = groupManager;
             this.inviteManager = inviteManager;
             this.userManager = userManager;
             this.expenseManager = expenseManager;
+            this.paymentManager = paymentManager;
             this.mapper = mapper;
         }
 
         [Route("/dashboard/menu")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }
@@ -276,14 +278,12 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         [Route("dashboard/getcreateexpense/{slug}")]
         public async Task<IActionResult> GetCreateExpense(string slug)
         {
-            GroupDetailViewModel model = new();
+            GroupDetailViewModel model = new GroupDetailViewModel();
             try
             {
                 var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
                 var getGroupWithUsers = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
-                var groupUser = getGroupWithUsers.Users.ToList();
-                model.Group.Users = groupUser;
-                model.Group = group;
+                model.Group = getGroupWithUsers;
                 return View("_CreateExpenseModal", model);
             }
             catch (Exception ex)
@@ -347,6 +347,26 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 return View("_CreateExpenseModal", model);
             }
         }
+
+        //[HttpGet]
+        //[Route("dashboard/getpayments/{slug}")]
+        //public async Task<IActionResult> GetPayments(string slug)
+        //{
+        //    GroupDetailViewModel model = new();
+        //    try
+        //    {
+        //        var user = await userManager.GetUserAsync(User);
+        //        var expenses = expenseManager.GetAllInclude(null, p => p.ExpenseDetails.Where(ed => ed.DebtorId == user.Id)).Result.ToList();
+        //        model.Expenses = expenses;
+        //        return View("_PaymentsModal", model);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
+        //        return RedirectToAction("Index");
+        //    }
+        //}
+
         public string GetUserId()
         {
             var userId = userManager.GetUserId(User).ToString();

@@ -27,6 +27,9 @@
     <a class="btn btn-primary mb-5" id="createExpenseModalButton" data-bs-toggle="modal" data-bs-target="#createExpenseModal">
         Add Expense
     </a>
+    <a class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#PaymentsModal">
+        Show Payments
+    </a>
 </div>
 
 <table class="table table-hover">
@@ -101,9 +104,23 @@
             }
         });
     });
+    //document.getElementById("paymentsModalButton").addEventListener("click", function () {
+    //    var slug = window.location.pathname.split('/').pop();
+    //    $.ajax({
+    //        url: '/dashboard/getpayments/' + slug,
+    //        type: 'GET',
+    //        success: function (result) {
+    //            $("#paymentsModal").modal("show");
+    //        },
+    //        error: function () {
+    //            alert("An error occurred while fetching modal content.");
+    //        }
+    //    });
+    //});
 </script>
 
 <partial name="_InviteModal" />
 <partial name="_UpdateGroupModal" />
 <partial name="_DeleteGroupModal" />
 <partial name="_CreateExpenseModal" />
+<partial name="_PaymentsModal" />

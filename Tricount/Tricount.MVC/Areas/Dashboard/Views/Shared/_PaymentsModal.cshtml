@@ -1,0 +1,54 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore;
+@using Tricount.BL.Abstract;
+@using Tricount.Entities.Concrete;
+@inject UserManager<User> userManager;
+@inject IExpenseManager expenseManager;
+
+@{
+    var user = await userManager.GetUserAsync(User);
+    var expensesRaw = expenseManager
+        .GetAllInclude(null, e => e.ExpenseDetails
+        .Where(ed => ed.DebtorId == user.Id))
+        .Result;
+    var expenses = await expensesRaw
+        .Include(e => e.Group)
+        .Include(e => e.Payer)
+        .ToListAsync();
+}
+
+<!-- Modal -->
+<div class="modal fade m-5" id="PaymentsModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="PaymentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="PaymentsModalLabel">Payments</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @foreach (var item in expenses)
+            {
+                <div class="mb-3 d-flex flex-column justify-content-center align-items-center bg-dark rounded-3 p-3 m-3">
+                    <label>Person To Be Paid: @item.Payer.UserName</label>
+                    <label>Spending Description: @item.Description</label>
+                    <label>Amount: @item.ExpenseDetails.FirstOrDefault().Amount @item.Payer.DefaultCurrency</label>
+                    <label>Spending Time: @item.CreateDate.ToLongDateString() - @item.CreateDate.ToLongTimeString()</label>
+                    <div class="d-flex w-25">
+                        <a asp-area="Dashboard"
+                           asp-controller="Group"
+                           asp-action="PaidConfirmation"
+                           asp-route-inviteId="@item.Id"
+                           class="btn btn-success p-2">
+                            Send To Paid Confirmation
+                        </a>
+                    </div>
+                </div>
+            }
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
