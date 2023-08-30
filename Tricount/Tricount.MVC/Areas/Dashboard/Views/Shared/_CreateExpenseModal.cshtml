@@ -61,14 +61,14 @@
                         </div>
                         <ul class="list-group" id="listGroup">
                             @{
-                                var x = 1;
+                                var x = 0;
                                 foreach (var user in Model.Group.Users)
                                 {
                                     <li class="list-group-item" style="color:white;">
-                                        <input class="form-check-input me-1" id="showInputCheckbox" name="selectedUsers" type="checkbox" data-target="inputContainer(@x)" value="@user.Slug" />
+                                        <input class="form-check-input me-1" id="inputAmount_@x" name="selectedUsers" type="checkbox" value="@user.UserName" />
                                         @user.UserName
-                                        <div id="inputContainer(@x)" style="display: none;">
-                                            <input class="form-control" type="text" id="hiddenInput" placeholder="Paid Amount">
+                                        <div id="inputContainer" style="display: none;">
+                                            <input class="form-control" type="text" id="inputAmount_@x" name="selectedUsersInputs" placeholder="Paid Amount" disabled>
                                         </div>
                                     </li>
                                     x++;
@@ -89,39 +89,26 @@
     document.addEventListener("DOMContentLoaded", function () {
         var mainCheckbox = document.querySelector("#showAmountPartial");
         mainCheckbox.addEventListener("change", function () {
-            var checkboxes = document.querySelectorAll("#showInputCheckbox");
-            checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener("change", function () {
-                    var targetId = checkbox.getAttribute("data-target");
-                    var inputContainer = document.getElementById(targetId);
-                    if (checkbox.checked && mainCheckbox.checked) {
-                        inputContainer.style.display = "block";
-                    } else {
-                        inputContainer.style.display = "none";
-                    }
-                });
+            var inputContainers = document.querySelectorAll("#inputContainer");
+            inputContainers.forEach(function (inputContainer) {
+                if (mainCheckbox.checked) {
+                    inputContainer.style.display = "block";
+                } else {
+                    inputContainer.style.display = "none";
+                }
+            });
+        });
+        var checkboxes = document.querySelectorAll(".form-check-input.me-1");
+        var newCheckboxes = checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                var targetId = checkbox.getAttribute("id");
+                if (checkbox.checked) {
+                    document.getElementById(targetId).removeAttribute("disabled");
+                }
+                else {
+                    document.getElementById(targetId).setAttribute("disabled")
+                }
             });
         });
     });
-
-    //Jquery çalışmıyor
-
-    //$(document).ready(function () {
-    //    var mainCheckbox = $("#showAmountPartial");
-    //    mainCheckbox.on("change", function () {
-    //        var checkboxes = $("#showInputCheckbox");
-    //        checkboxes.each(function () {
-    //            var checkbox = $(this);
-    //            checkbox.on("change", function () {
-    //                var targetId = checkbox.data("data-target");
-    //                var inputContainer = $("#" + targetId);
-    //                if (checkbox.prop("checked") && mainCheckbox.prop("checked")) {
-    //                    inputContainer.css("display", "block");
-    //                } else {
-    //                    inputContainer.css("display", "none");
-    //                }
-    //            });
-    //        });
-    //    });
-    //});
 </script>

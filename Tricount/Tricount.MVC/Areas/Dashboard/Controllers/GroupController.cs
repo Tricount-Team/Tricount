@@ -294,32 +294,50 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostCreateExpense(GroupDetailViewModel model, string[] selectedUsers)
+        public async Task<IActionResult> PostCreateExpense(GroupDetailViewModel model, string[] selectedUsers, string[] selectedUsersInputs)
         {
             try
             {
-                var group = groupManager.GetAll(g => g.Slug == model.ExpenseDTO.GroupSlug).Result.FirstOrDefault();
                 var expense = mapper.Map<Expense>(model.ExpenseDTO);
+                var group = groupManager.GetAll(g => g.Slug == model.ExpenseDTO.GroupSlug).Result.FirstOrDefault();
+                var payer = userManager.FindByNameAsync(model.ExpenseDTO.PayerId).Result;
+                double totalInputAmount = 0;
 
-                expense.PayerId = userManager.FindByNameAsync(model.ExpenseDTO.PayerId).Result.Id;
-                expense.GroupId = group.Id;
-
-                foreach (var item in selectedUsers)
+                for (int x = 0; x < selectedUsersInputs.Length; x++)
                 {
-                    var userId = userManager.FindByNameAsync(item.ToString()).Result.Id;
-                    if (expense.PayerId != userId)
-                    {
-                        if (model.ExpenseDTO.IsCheckedShowAmountPartial.Length != null)
-                        {
-                            ExpenseDetail detail = new ExpenseDetail();
-                            detail.Amount = model.ExpenseDTO.TotalAmount / selectedUsers.Length;
-                            detail.DebtorId = userId;
-                            expense.ExpenseDetails.Add(detail);
-                        }
+                    totalInputAmount += Double.Parse(selectedUsersInputs[x]);
+                }
 
+                if (model.ExpenseDTO.TotalAmount != totalInputAmount)
+                {
+                    ModelState.AddModelError("", "The amount entered by users is not equal to the total amount!");
+                    return View("_CreateExpenseModal", model);
+                }
+
+                for (int x = 0; x < selectedUsers.Length; x++)
+                {
+                    var userId = userManager.FindByNameAsync(selectedUsers[x]).Result.Id;
+
+                    if (payer.Id != userId)
+                    {
+                        ExpenseDetail detail = new ExpenseDetail();
+                        double amountPerPerson = model.ExpenseDTO.TotalAmount / selectedUsers.Length;
+
+                        if (model.ExpenseDTO.IsCheckedShowAmountPartial != null)
+                        {
+                            detail.Amount = Double.Parse(selectedUsersInputs[x]);
+                        }
+                        else
+                        {
+                            detail.Amount = amountPerPerson;
+                        }
+                        detail.DebtorId = userId;
+                        expense.ExpenseDetails.Add(detail);
                     }
                 }
 
+                expense.PayerId = payer.Id;
+                expense.GroupId = group.Id;
                 await expenseManager.Create(expense);
                 return RedirectToAction("Index", "Group");
             }
