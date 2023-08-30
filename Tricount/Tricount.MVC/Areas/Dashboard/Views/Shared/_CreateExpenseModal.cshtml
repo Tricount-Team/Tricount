@@ -65,7 +65,7 @@
                                 foreach (var user in Model.Group.Users)
                                 {
                                     <li class="list-group-item" style="color:white;">
-                                        <input class="form-check-input me-1" id="inputAmount_@x" name="selectedUsers" type="checkbox" value="@user.UserName" />
+                                        <input class="form-check-input me-1" data-target="inputAmount_@x" name="selectedUsers" type="checkbox" value="@user.UserName" />
                                         @user.UserName
                                         <div id="inputContainer" style="display: none;">
                                             <input class="form-control" type="text" id="inputAmount_@x" name="selectedUsersInputs" placeholder="Paid Amount" disabled>
@@ -99,14 +99,16 @@
             });
         });
         var checkboxes = document.querySelectorAll(".form-check-input.me-1");
-        var newCheckboxes = checkboxes.forEach(function (checkbox) {
+        checkboxes.forEach(function (checkbox) {
             checkbox.addEventListener("change", function () {
-                var targetId = checkbox.getAttribute("id");
+                var targetId = checkbox.getAttribute("data-target");
+                var inputAmount = document.getElementById(targetId);
                 if (checkbox.checked) {
-                    document.getElementById(targetId).removeAttribute("disabled");
+                    inputAmount.removeAttribute("disabled");
                 }
                 else {
-                    document.getElementById(targetId).setAttribute("disabled")
+                    inputAmount.setAttribute("disabled", "disabled");
+                    inputAmount.value = "";
                 }
             });
         });
