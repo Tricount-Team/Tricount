@@ -17,7 +17,7 @@ namespace Tricount.Entities.Concrete
         public User? Payer { get; set; }
         public string? GroupId { get; set; }
         public Group? Group { get; set; }
-        public ICollection<ExpenseDetail>? ExpenseDetails { get; set; }
+        public ICollection<ExpenseDetail>? ExpenseDetails { get; set; } = new List<ExpenseDetail>();
 
         [NotMapped]
         public string? GroupSlug { get; set; }

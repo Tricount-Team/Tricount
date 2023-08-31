@@ -12,6 +12,6 @@ namespace Tricount.MVC.Models
         public Group? Group { get; set; }
         public Payment? Payment { get; set; }
         public Invite? Invite { get; set; }
-        public ICollection<Expense>? Expenses { get; set; }
+        public ICollection<Expense>? Expenses { get; set; } = new List<Expense>();
     }
 }

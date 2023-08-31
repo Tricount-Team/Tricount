@@ -1,33 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using Tricount.Entities.Concrete;
-@using Tricount.MVC.Models.DTO_s.Group;
 @model GroupDetailViewModel
 @inject UserManager<User> userManager;
 @{
     var user = await userManager.GetUserAsync(User);
+
 }
 
-<!-- Button trigger modal -->
-@if (Model.Group.ConstituentId == user.Id)
-{
-    <div class="btn-group" role="group" aria-label="BtnGroup">
-        <a class="btn btn-primary mb-5" id="createInviteModalButton" data-bs-toggle="modal" data-bs-target="#createInviteModal">
-            Share
-        </a>
-        <a class="btn btn-primary mb-5" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
-            Update
-        </a>
-        <a class="btn btn-primary mb-5" id="deleteGroupModalButton" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
-            Delete
-        </a>
-    </div>
-}
+
+<div class="btn-group" role="group" aria-label="BtnGroup">
+    <a class="btn btn-primary mb-5" id="createInviteModalButton" data-bs-toggle="modal" data-bs-target="#createInviteModal">
+        Share
+    </a>
+    <a class="btn btn-primary mb-5" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
+        Update
+    </a>
+    <a class="btn btn-primary mb-5" id="deleteGroupModalButton" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
+        Delete
+    </a>
+</div>
 
 <div class="btn-group" role="group" aria-label="BtnGroup">
     <a class="btn btn-primary mb-5" id="createExpenseModalButton" data-bs-toggle="modal" data-bs-target="#createExpenseModal">
         Add Expense
     </a>
-    <a class="btn btn-primary mb-5" data-bs-toggle="modal" data-bs-target="#PaymentsModal">
+    <a class="btn btn-primary mb-5" id="getPaymentsButton" data-bs-toggle="modal" data-bs-target="#paymentsModal">
         Show Payments
     </a>
 </div>
@@ -51,13 +48,15 @@
     </tbody>
 </table>
 
-<script>
+<script src="~/js/script.js"></script>
+
+@*<script type="text/javascript">
     document.getElementById("updateGroupModalButton").addEventListener("click", function () {
         var slug = window.location.pathname.split('/').pop();
         $.ajax({
             url: '/dashboard/getupdategroup/' + slug,
             type: 'GET',
-            success: function (result) {
+            success: function () {
                 $("#updateGroupModal").modal("show");
             },
             error: function () {
@@ -70,7 +69,7 @@
         $.ajax({
             url: '/dashboard/getdeletegroup/' + slug,
             type: 'GET',
-            success: function (result) {
+            success: function () {
                 $("#deleteGroupModal").modal("show");
             },
             error: function () {
@@ -83,7 +82,7 @@
         $.ajax({
             url: '/dashboard/getcreateinvite/' + slug,
             type: 'GET',
-            success: function (result) {
+            success: function () {
                 $("#createInviteModal").modal("show");
             },
             error: function () {
@@ -96,7 +95,7 @@
         $.ajax({
             url: '/dashboard/getcreateexpense/' + slug,
             type: 'GET',
-            success: function (result) {
+            success: function () {
                 $("#createExpenseModal").modal("show");
             },
             error: function () {
@@ -104,23 +103,24 @@
             }
         });
     });
-    //document.getElementById("paymentsModalButton").addEventListener("click", function () {
-    //    var slug = window.location.pathname.split('/').pop();
-    //    $.ajax({
-    //        url: '/dashboard/getpayments/' + slug,
-    //        type: 'GET',
-    //        success: function (result) {
-    //            $("#paymentsModal").modal("show");
-    //        },
-    //        error: function () {
-    //            alert("An error occurred while fetching modal content.");
-    //        }
-    //    });
-    //});
-</script>
+    document.getElementById("getPaymentsButton").addEventListener("click", function () {
+        var slug = window.location.pathname.split('/').pop();
+        $("#paymentsModal").modal("show");
+        $.ajax({
+            url: '/dashboard/getpayments/' + slug,
+            type: 'GET',
+            success: function () {
+                alert("Başarılı");
+            },
+            error: function () {
+                alert("An error occurred while fetching modal content.");
+            }
+        });
+    });
+</script>*@
 
-<partial name="_InviteModal" />
 <partial name="_UpdateGroupModal" />
 <partial name="_DeleteGroupModal" />
+<partial name="_InviteModal" />
+<partial name="_PaymentsModal" model="Model" />
 <partial name="_CreateExpenseModal" />
-<partial name="_PaymentsModal" />

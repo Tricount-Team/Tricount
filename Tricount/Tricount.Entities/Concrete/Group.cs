@@ -15,8 +15,8 @@ namespace Tricount.Entities.Concrete
         public string? ConstituentId { get; set; }
         public CurrencyEnum DefaultCurrency { get; set; }
 		public ICollection<User>? Users { get; set; } = new List<User>();
-		public ICollection<Expense>? Expenses { get; set; }
-        public ICollection<Payment>? Payments { get; set; }
-        public ICollection<Invite>? Invites { get; set; }
+		public ICollection<Expense>? Expenses { get; set; } = new List<Expense>();
+        public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
+        public ICollection<Invite>? Invites { get; set; } = new List<Invite>();
     }
 }

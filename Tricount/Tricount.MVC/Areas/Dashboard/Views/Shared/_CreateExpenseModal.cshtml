@@ -1,9 +1,9 @@
-﻿@using Microsoft.AspNetCore.Identity;
-@using Microsoft.EntityFrameworkCore;
-@using Tricount.BL.Abstract;
-@using Tricount.Entities.Concrete;
-@using Tricount.MVC.Models.DTO_s.Group;
-@model GroupDetailViewModel
+﻿@model GroupDetailViewModel
+
+@{
+    var url = Context.Request.Path.Value.Split("/");
+    var slug = url[url.Length - 1];
+}
 
 <style>
     .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -32,7 +32,7 @@
 
             <form asp-area="Dashboard" asp-controller="Group" asp-action="PostCreateExpense" method="post">
                 <div class="modal-body">
-                    <input type="hidden" value="@Model.Group.Slug" asp-for="@Model.ExpenseDTO.GroupSlug" />
+                    <input type="hidden" value="@slug" asp-for="@Model.ExpenseDTO.GroupSlug" />
                     <div class="mb-3">
                         <label asp-for="@Model.ExpenseDTO.TotalAmount">Total Amount</label>
                         <input class="form-control" type="text" asp-for="@Model.ExpenseDTO.TotalAmount" required />
@@ -85,6 +85,7 @@
         </div>
     </div>
 </div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var mainCheckbox = document.querySelector("#showAmountPartial");
