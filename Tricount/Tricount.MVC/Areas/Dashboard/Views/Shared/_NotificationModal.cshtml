@@ -20,13 +20,19 @@
         .Include(e => e.Group)
         .Include(e => e.Payer)
         .Include(e => e.Payment)
+        .Include(e => e.Payment.Debtor)
         .ToListAsync();
 
     var expenseDetailCount = 0;
+    var expenseDetailBool = false;
     foreach (var expense in expenses)
     {
         if (expense.ExpenseDetails.Count > 0)
         {
+            if (expense.ExpenseDetails.FirstOrDefault().IsApproved == false && expense.ExpenseDetails.FirstOrDefault().IsPaid == true)
+            {
+                expenseDetailBool = true;
+            }
             expenseDetailCount++;
         }
     }
@@ -50,7 +56,7 @@
                 {
                     @if (invites.Count > 0)
                     {
-                        <label class="display-6">Group Invites</label>
+                        <label class="fs-5">Group Invites</label>
                         foreach (var invite in invites)
                         {
                             <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
@@ -76,9 +82,10 @@
                             </div>
                         }
                     }
-                    @if (expenseDetailCount > 0)
+
+                    if (expenseDetailBool)
                     {
-                        <label class="display-6">Expenditure Approvals</label>
+                        <label class="fs-5">Expenditure Approvals</label>
                         foreach (var expense in expenses)
                         {
                             if (expense.ExpenseDetails.Count > 0 && expense.ExpenseDetails.FirstOrDefault().IsApproved == false && expense.ExpenseDetails.FirstOrDefault().IsPaid == true)
@@ -108,7 +115,6 @@
                                 </div>
                             }
                         }
-
                     }
                 }
             </div>

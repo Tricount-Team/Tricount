@@ -14,13 +14,13 @@
     var inviteRaw = inviteManager.GetAllInclude(i => i.UserId == user.Id, i => i.Group).Result;
     var invites = inviteRaw.Where(i => i.IsFinished == false).ToList();
 
-    var expenseRaw = expenseManager.GetAllInclude(e => e.PayerId == user.Id, e => e.ExpenseDetails.Where(ed => ed.IsPaid == true)).Result;
+    var expenseRaw = expenseManager.GetAllInclude(e => e.PayerId == user.Id, e => e.ExpenseDetails).Result;
     var expenses = expenseRaw.Where(e => e.IsFinished == false).ToList();
 
     var notificationCount = 0;
     foreach (var expense in expenses)
     {
-        if (expense.ExpenseDetails.Count > 0)
+        if (expense.ExpenseDetails.Count > 0 && expense.ExpenseDetails.FirstOrDefault().IsPaid == true && expense.ExpenseDetails.FirstOrDefault().IsApproved == false )
         {
             notificationCount++;
         }

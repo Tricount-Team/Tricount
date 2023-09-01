@@ -40,6 +40,9 @@
                             <label>Person To Be Paid: @item.Payer.UserName</label>
                             <label>Description: @item.Description</label>
                             <label>Amount: @item.ExpenseDetails?.FirstOrDefault()?.Amount @item.Group.DefaultCurrency</label>
+                            <label>
+                                Iban: @(item.Payer.Iban ?? "Not Access Iban Info")
+                            </label>
                             <label>Time: @item.CreateDate.ToLongDateString() - @item.CreateDate.ToLongTimeString()</label>
                             <div class="d-flex w-50">
                                 <a asp-area="Dashboard"

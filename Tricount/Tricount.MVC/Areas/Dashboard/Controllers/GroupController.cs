@@ -299,6 +299,10 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                     expenseDetail.Payments.Add(paymentModel);
                     
                     await expenseManager.Update(expenseWithExpenseDetails);
+
+                    expenseWithExpenseDetails.PaymentId = paymentModel.Id;
+                    await expenseManager.Update(expenseWithExpenseDetails);
+
                 }
 
                 return RedirectToAction("Index", "Group");
