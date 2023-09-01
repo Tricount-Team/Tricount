@@ -11,14 +11,11 @@ namespace Tricount.Entities.Concrete
     public class Payment : BaseEntity
     {
         public double Amount { get; set; }
-        public bool IsApproved { get; set; }
         public bool IsFinished { get; set; }
-        public string UserId { get; set; }
-        public User? User { get; set; }
-        public string ExpenseId { get; set; }
-        public Expense? Expense { get; set; }
-        public string GroupId { get; set; }
-        public Group? Group { get; set; }
+        public string? DebtorId { get; set; }
+        public User? Debtor { get; set; }
+        public string ExpenseDetailId { get; set; }
+        public ExpenseDetail? ExpenseDetail { get; set; }
 
         [NotMapped]
         public string? GroupSlug { get; set; }

@@ -6,10 +6,14 @@
 @inject IExpenseManager expenseManager;
 @inject IGroupManager groupManager;
 @{
+    var url = Context.Request.Path.Value.Split("/");
+    var slug = url[url.Length - 1];
+    var group = groupManager.GetAll(g => g.Slug == slug).Result.FirstOrDefault();
+
     var user = await userManager.GetUserAsync(User);
+
     var expensesRaw = expenseManager
-        .GetAllInclude(null, e => e.ExpenseDetails
-        .Where(ed => ed.DebtorId == user.Id))
+        .GetAllInclude(e => e.GroupId == group.Id && e.ExpenseDetails.FirstOrDefault().DebtorId == user.Id, e => e.ExpenseDetails)
         .Result;
     var expense = await expensesRaw
         .Include(e => e.Group)
@@ -30,24 +34,27 @@
             @{
                 foreach (var item in expense)
                 {
-                    <div class="mb-3 d-flex flex-column justify-content-center align-items-center bg-dark rounded-3 p-3 m-3">
-                        <label>Person To Be Paid: @item.Payer.UserName</label>
-                        <label>Spending Description: @item.Description</label>
-                        <label>Amount: @item.ExpenseDetails?.FirstOrDefault()?.Amount @item.Group.DefaultCurrency</label>
-                        <label>Spending Time: @item.CreateDate.ToLongDateString() - @item.CreateDate.ToLongTimeString()</label>
-                        <div class="d-flex w-25">
-                            <a asp-area="Dashboard"
-                               asp-controller="Group"
-                               asp-action="PaidConfirmation"
-                               asp-route-expenseId="@item.Id"
-                               class="btn btn-success p-2">
-                                Send To Paid Confirmation
-                            </a>
+                    if (item.ExpenseDetails.FirstOrDefault().IsPaid == false && item.ExpenseDetails.FirstOrDefault().IsApproved == false)
+                    {
+                        <div class="mb-3 d-flex flex-column justify-content-center align-items-center bg-dark rounded-3 p-3 m-3">
+                            <label>Person To Be Paid: @item.Payer.UserName</label>
+                            <label>Description: @item.Description</label>
+                            <label>Amount: @item.ExpenseDetails?.FirstOrDefault()?.Amount @item.Group.DefaultCurrency</label>
+                            <label>Time: @item.CreateDate.ToLongDateString() - @item.CreateDate.ToLongTimeString()</label>
+                            <div class="d-flex w-50">
+                                <a asp-area="Dashboard"
+                                   asp-controller="Group"
+                                   asp-action="PaidConfirmation"
+                                   asp-route-expenseId="@item.Id"
+                                   class="btn btn-success p-2">
+                                    Send To Paid Confirmation
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    }
                 }
             }
-            
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>

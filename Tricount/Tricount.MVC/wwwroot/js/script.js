@@ -50,20 +50,3 @@ document.getElementById("createExpenseModalButton").addEventListener("click", fu
         }
     });
 });
-//document.getElementById("getPaymentsButton").addEventListener("click", function () {
-//    var slug = window.location.pathname.split('/').pop();
-//    $.ajax({
-//        url: '/dashboard/getpayments/' + slug,
-//        type: 'post',
-//        success: function (result) {
-//            $("#paymentsModal").modal("show");
-//            $('#paymentUserName').text = result.UserName;
-
-//            console.log(result);
-//            document.createElement("div");
-//        },
-//        error: function () {
-//            alert("An error occurred while fetching modal content.");
-//        }
-//    });
-//});

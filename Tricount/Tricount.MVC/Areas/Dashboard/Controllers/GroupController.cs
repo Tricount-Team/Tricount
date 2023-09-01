@@ -239,14 +239,23 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
         }
 
-        public async Task<IActionResult> DeniedInvite(string inviteId)
+        [HttpGet]
+        public async Task<IActionResult> DeniedInvite(string? inviteId, string? expenseId)
         {
             try
             {
-                var invite = inviteManager.GetAll(i => i.Id == inviteId).Result.FirstOrDefault();
-                invite.IsFinished = true;
-                await inviteManager.Update(invite);
-
+                if (inviteId != null)
+                {
+                    var invite = inviteManager.GetAll(i => i.Id == inviteId).Result.FirstOrDefault();
+                    invite.IsFinished = true;
+                    await inviteManager.Update(invite);
+                }
+                else if(expenseId != null)
+                {
+                    var expenseWithExpenseDetails = expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefault();
+                    expenseWithExpenseDetails.ExpenseDetails.FirstOrDefault().IsPaid = false;
+                    await expenseManager.Update(expenseWithExpenseDetails);
+                }
                 return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)
@@ -256,19 +265,41 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
         }
 
-        public async Task<IActionResult> AcceptInvite(string inviteId)
+        [HttpGet]
+        public async Task<IActionResult> AcceptInvite(string? inviteId, string? expenseId)
         {
             try
             {
-                var invite = inviteManager.GetAll(i => i.Id == inviteId).Result.FirstOrDefault();
-                var group = groupManager.GetAll(i => i.Id == invite.GroupId).Result.FirstOrDefault();
-                var user = await userManager.GetUserAsync(User);
+                if (inviteId != null)
+                {
+                    var user = await userManager.GetUserAsync(User);
+                    var invite = inviteManager.GetAll(i => i.Id == inviteId).Result.FirstOrDefault();
+                    var group = groupManager.GetAll(i => i.Id == invite.GroupId).Result.FirstOrDefault();
 
-                user.Groups.Add(group);
-                await userManager.UpdateAsync(user);
+                    user.Groups.Add(group);
+                    await userManager.UpdateAsync(user);
 
-                invite.IsFinished = true;
-                await inviteManager.Update(invite);
+                    invite.IsFinished = true;
+                    await inviteManager.Update(invite);
+                }
+                else if(expenseId != null)
+                {
+                    var expenseWithExpenseDetails = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
+                    var expenseDetail = expenseWithExpenseDetails.ExpenseDetails.FirstOrDefault();
+                    var payment = expenseDetail.Payments.FirstOrDefault();
+
+                    expenseDetail.IsApproved = true;
+
+                    Payment paymentModel = new();
+                    paymentModel.Amount = expenseDetail.Amount;
+                    paymentModel.DebtorId = expenseDetail.DebtorId;
+                    paymentModel.IsFinished = true;
+                    paymentModel.ExpenseDetailId = expenseId;
+
+                    expenseDetail.Payments.Add(paymentModel);
+                    
+                    await expenseManager.Update(expenseWithExpenseDetails);
+                }
 
                 return RedirectToAction("Index", "Group");
             }
@@ -359,47 +390,23 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
         }
 
-        #region GetPayments (kullanılmıyor)
-        [HttpPost]
-        [Route("/dashboard/getpayments/{slug}")]
-        public async Task<IActionResult> GetPayments(string slug)
+        [HttpGet]
+        public async Task<IActionResult> PaidConfirmation(string expenseId)
         {
             try
             {
-                GroupDetailViewModel model = new();
-                //var user = await userManager.GetUserAsync(User);
-                //var expensesRaw = expenseManager
-                //    .GetAllInclude(null, e => e.ExpenseDetails
-                //    .Where(ed => ed.DebtorId == user.Id))
-                //    .Result;
-                //var expense = await expensesRaw
-                //    .Include(e => e.Group)
-                //    .Include(e => e.Payer)
-                //    .ToListAsync();
-                var user = await userManager.GetUserAsync(User);
-                var group = groupManager.GetAll(g => g.Slug == slug).Result.FirstOrDefault();
-                var expensesRaw = expenseManager
-                    .GetAllInclude(e => e.GroupId == group.Id)
-                    .Result;
-                var expense = await expensesRaw
-                    .Include(e => e.Group)
-                    .Include(e => e.Payer)
-                    .Include(e => e.ExpenseDetails.Where(ed => ed.DebtorId == user.Id))
-                    .ToListAsync();
-                model.Expenses = expense;
-                return Json(model);
+                var expense = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
+                expense.ExpenseDetails.FirstOrDefault().IsPaid = true;
+                await expenseManager.Update(expense);
+                return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
-                return Json(new
-                {
-                    success = "error",
-                    description = "hatali"
-                }); ;
+                return RedirectToAction("Index", "Group");
             }
+            
         }
-        #endregion
 
         public string GetUserId()
         {

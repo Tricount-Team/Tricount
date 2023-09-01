@@ -16,7 +16,6 @@ namespace Tricount.Entities.Concrete
         public CurrencyEnum DefaultCurrency { get; set; }
 		public ICollection<User>? Users { get; set; } = new List<User>();
 		public ICollection<Expense>? Expenses { get; set; } = new List<Expense>();
-        public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
         public ICollection<Invite>? Invites { get; set; } = new List<Invite>();
     }
 }
