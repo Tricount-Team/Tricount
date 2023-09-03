@@ -15,7 +15,7 @@ namespace Tricount.DAL.EntityConfigurations.Concrete
 		public override void Configure(EntityTypeBuilder<Invite> builder)
 		{
 			base.Configure(builder);
-			builder.Property(p =>p.IsAccepted).HasDefaultValue(false);
+			builder.Property(p =>p.IsFinished).HasDefaultValue(false);
 
 		}
 	}

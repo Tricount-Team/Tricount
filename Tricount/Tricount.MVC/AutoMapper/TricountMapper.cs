@@ -11,7 +11,7 @@ namespace Tricount.MVC.AutoMapper
         {
             CreateMap<ExpenseCreateDTO, Expense>();
             CreateMap<GroupCreateDTO, Group>();
-            CreateMap<PaymentCreateDTO, Payment>();
+            
         }
     }
 }

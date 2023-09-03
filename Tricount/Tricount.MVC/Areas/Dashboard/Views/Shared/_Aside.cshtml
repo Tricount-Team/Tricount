@@ -1,0 +1,9 @@
+﻿﻿@using Microsoft.AspNetCore.Identity;
+@using Tricount.BL.Abstract;
+@using Tricount.Entities.Concrete;
+@using Tricount.MVC.Models.DTO_s.;
+
+@inject UserManager<User> userManager;
+@inject IGroupManager groupManager;
+@inject IInviteManager inviteManager;
+@inject IExpenseManager expenseManager

@@ -9,7 +9,7 @@ using Tricount.MVC.Models.DTO_s;
 
 namespace Tricount.MVC.Areas.Dashboard.Controllers
 {
-	[Area("Dashboard")]
+    [Area("Dashboard")]
 	public class GroupController : Controller
 	{
 		private readonly IExpenseManager expenseManager;
