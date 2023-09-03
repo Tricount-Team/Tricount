@@ -19,6 +19,8 @@ namespace Tricount.MVC.Extensions
 			services.AddScoped<IGroupManager, GroupManager>();
 			services.AddScoped<IPaymentManager, PaymentManager>();
 			services.AddScoped<IExpenseDetailManager, ExpenseDetailManager>();
+			services.AddScoped<IInviteManager, InviteManager>();
+			services.AddScoped<IInviteRepository, InviteRepository>();
 
 
 

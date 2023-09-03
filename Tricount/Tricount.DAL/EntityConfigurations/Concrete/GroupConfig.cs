@@ -16,6 +16,7 @@ namespace Tricount.DAL.EntityConfigurations.Concrete
             base.Configure(builder);
             builder.Property(p => p.Name).HasMaxLength(50);
             builder.Property(p => p.Description).HasMaxLength(100);
+            builder.HasIndex(g=>g.Slug).IsUnique();
 
         }
     }

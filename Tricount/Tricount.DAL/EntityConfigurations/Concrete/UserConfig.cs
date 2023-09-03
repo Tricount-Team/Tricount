@@ -12,15 +12,16 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.DAL.EntityConfigurations.Concrete
 {
-    public class UserConfig : IEntityTypeConfiguration<IdentityUser>
+    public class UserConfig : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<IdentityUser> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasIndex(p => new
-            {
-                p.PhoneNumber
-            }).IsUnique();
-            builder.Property(p => p.PhoneNumber).HasMaxLength(20);
+            builder.Property(u=>u.Name).HasMaxLength(40);
+            builder.Property(u=>u.Surname).HasMaxLength(40);
+            builder.Property(u => u.Iban).HasMaxLength(26);
+            builder.HasIndex(u => u.Iban).IsUnique();
+            builder.HasIndex(u => u.Slug).IsUnique();
+
         }
     }
 }

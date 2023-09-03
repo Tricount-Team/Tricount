@@ -8,7 +8,7 @@ namespace Tricount.Entities.Abstract
 {
     public abstract class BaseEntity
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
     }
