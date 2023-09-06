@@ -7,3 +7,23 @@
 @inject IGroupManager groupManager;
 @inject IInviteManager inviteManager;
 @inject IExpenseManager expenseManager
+@{
+    var user = await userManager.GetUserAsync(User);
+    var userGroups = groupManager.GetGroupWithUserSlug(user.Slug).Result.ToList();
+
+    var inviteRaw = inviteManager.GetAllInclude(i => i.UserId == user.Id, i =>i.Groups).Result;
+    var invites = inviteRaw.Where(i => i.IsFinished == false).ToList();
+
+    var expenseRaw = expenseManager.GetAllInclude(e => e.PayerId == user.Id, e => e.ExpenseDetails).Result;
+    var expenses = expenseRaw.Where(e => e.IsFinished == false).ToList();
+
+    var notificationCount = 0;
+    foreach (var expense in expenses)
+    {
+        if (expense.ExpenseDetails.Count > 0 && expense.ExpenseDetails.FirstOrDefault().IsPaid == true && expense.ExpenseDetails.FirstOrDefault().IsApproved == false) ;
+        {
+            notificationCount++;
+        }
+    }
+    notificationCount += invites.Count;
+}

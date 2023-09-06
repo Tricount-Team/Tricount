@@ -11,7 +11,7 @@ namespace Tricount.BL.Concrete
 {
 	public class InviteManager : ManagerBase<Invite>, IInviteManager
 	{
-		public InviteManager(IBaseRepository<Invite> repository) : base(repository)
+		public InviteManager(IInviteRepository repository) : base(repository)
 		{
 		}
 		public override Task<int> Insert(Invite entity)

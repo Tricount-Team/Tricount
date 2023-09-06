@@ -1,18 +1,22 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Tricount.BL.Abstract;
+using Tricount.DAL.Contexts;
 using Tricount.DAL.Repositories.Abstract;
 using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Concrete
 {
-    public class GroupManager : ManagerBase<Group>, IGroupManager
+    public class GroupManager : ManagerBase<Group>, BL.Abstract.IGroupManager
     {
         private readonly IGroupRepository repository;
         public GroupManager(IGroupRepository repository) : base(repository)
@@ -34,6 +38,10 @@ namespace Tricount.BL.Concrete
         {
             return await repository.GetGroupWithUserSlug(slug);
         }
-        
+        public override Task<int> Update(Group entity)
+        {
+            entity.Slug = entity.Name.ToLower() + "-" + entity.Description.ToLower() + "-" + entity.Id.ToString().Split('-')[0].ToLower();
+            return base.Update(entity);
+        }
     }
 }

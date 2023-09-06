@@ -202,6 +202,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 		{
 			try
 			{
+
 				var user = await userManager.FindByNameAsync(model.Invite.UserName);
 				var group =await groupManager.GetAllInclude(g => g.Slug == model.Invite.GroupSlug, g => g.Users).Result.FirstOrDefaultAsync();
 				var groupUser = group.Users.FirstOrDefault(u => u.Id == user.Id);

@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tricount.DAL.Contexts;
 using Tricount.Entities.Concrete;
-
+using Tricount.MVC.AutoMapper;
+using Tricount.MVC.Extensions;
 
 namespace Tricount.MVC
 {
@@ -21,6 +22,8 @@ namespace Tricount.MVC
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<SqlDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddAutoMapper(typeof(TricountMapper));
+            builder.Services.AddTricountServices();
 
             var app = builder.Build();
 
@@ -43,9 +46,17 @@ namespace Tricount.MVC
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+              app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                  name: "Dashboard",
+                  pattern: "{area:exists}/{controller=exists}/{action=exists}/{id?}"
+                );
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
+            });
             app.MapRazorPages();
 
             app.Run();

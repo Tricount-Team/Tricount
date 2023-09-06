@@ -1,0 +1,44 @@
+﻿﻿@using Tricount.MVC.Models.DTO_s.Group;
+@model Tricount.MVC.Models.DTO_s.GroupDetailViewModel       
+
+<!-- Modal -->
+<div class="modal fade" id="createGroupModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="createGroupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="createGroupModalLabel">+ Create New Group</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <form asp-area="Dashboard" asp-controller="Group" asp-action="PostCreateGroup" method="post">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label asp-for="@Model.GroupDTO.Name">Group Name</label>
+                        <input class="form-control" type="text" asp-for="@Model.GroupDTO.Name" required />
+                        <span asp-validation-for="@Model.GroupDTO.Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.GroupDTO.Description">Group Description</label>
+                        <input class="form-control" type="text" asp-for="@Model.GroupDTO.Description" />
+                        <span asp-validation-for="@Model.GroupDTO.Description" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.GroupDTO.DefaultCurrency" required>Default Currency</label>
+                        <select class="form-select" asp-for="@Model.GroupDTO.DefaultCurrency" required>
+                            <option value="0">USD</option>
+                            <option value="1">EUR</option>
+                            <option value="2" selected>TRY</option>
+                        </select>
+                        <span asp-validation-for="@Model.GroupDTO.DefaultCurrency" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

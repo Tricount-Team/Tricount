@@ -12,7 +12,7 @@ namespace Tricount.BL.Concrete
 {
     public class ExpenseManager : ManagerBase<Expense>, IExpenseManager
     {
-        public ExpenseManager(ExpenseRepository repository) : base(repository)
+        public ExpenseManager(IExpenseRepository repository) : base(repository)
         {
 
         }

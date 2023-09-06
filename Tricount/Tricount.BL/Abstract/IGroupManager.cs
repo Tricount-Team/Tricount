@@ -7,7 +7,8 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Abstract
 {
-    public interface IGroupManager : IManagerBase<Group>
+    public interface IGroupManager : IManagerBase<Group> 
     {
+        public Task<ICollection<Group>> GetGroupWithUserSlug(string slug);
     }
 }
