@@ -96,6 +96,12 @@
                     inputContainer.style.display = "block";
                 } else {
                     inputContainer.style.display = "none";
+                    
+                    checkboxes.forEach(function (checkbox) {
+                        var targetId = checkbox.getAttribute("data-target");
+                        var inputAmount = document.getElementById(targetId);
+                        inputAmount.value="";
+                    });
                 }
             });
         });
