@@ -32,8 +32,8 @@
             if (expense.ExpenseDetails.FirstOrDefault().IsApproved == false && expense.ExpenseDetails.FirstOrDefault().IsPaid == true)
             {
                 expenseDetailBool = true;
+                expenseDetailCount++;
             }
-            expenseDetailCount++;
         }
     }
 }
@@ -46,11 +46,11 @@
                 <h1 class="modal-title fs-5" id="NotificationModalLabel">Notification</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body d-flex justify-content-center align-items-center">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 @if (invites.Count < 1 && expenseDetailCount < 1)
                 {
-                    <label class="display-6">Hiç Bildirimiz Yok</label>
+                    <label class="fs-5">Hiç Bildirimiz Yok</label>
                 }
                 else
                 {
@@ -59,8 +59,9 @@
                         <label class="fs-5">Group Invites</label>
                         foreach (var invite in invites)
                         {
+                            var sender = await userManager.FindByIdAsync(invite.SenderId);
                             <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
-                                <label>Sender: @invite.User</label>
+                                <label>Sender: @sender.UserName</label>
                                 <label>Group Name: @invite.Group.Name</label>
                                 <label>Group Description: @invite.Group.Description</label>
                                 <div class="d-flex w-25">
