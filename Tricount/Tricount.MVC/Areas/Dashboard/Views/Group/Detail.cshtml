@@ -1,11 +1,237 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore;
+@using Tricount.BL.Abstract;
 @using Tricount.Entities.Concrete;
 @model GroupDetailViewModel
 @inject UserManager<User> userManager;
+@inject IGroupManager groupManager;
+@inject IExpenseManager expenseManager;
 @{
-    var user = await userManager.GetUserAsync(User);
+    var url = Context.Request.Path.Value.Split("/");
+    var slug = url[url.Length - 1];
 
+    var user = await userManager.GetUserAsync(User);
+    var groupWithSlug = groupManager.GetAll(g => g.Slug == slug).Result.FirstOrDefault();
+    var expenseWithGroupId = expenseManager.GetAll(e => e.GroupId == groupWithSlug.Id).Result;
+
+    var groupDefaultCurrency = groupWithSlug.DefaultCurrency;
+    var groupCreatedBy = await userManager.FindByIdAsync(groupWithSlug.ConstituentId);
+
+    var numberOfExpenditures = expenseWithGroupId.Count;
+    double? totalAmountSpent = 0;
+    foreach (var expense in expenseWithGroupId)
+    {
+        totalAmountSpent += expense.TotalAmount;
+    }
+
+    var expensesRaw = expenseManager
+        .GetAllInclude(e => e.GroupId == groupWithSlug.Id && e.ExpenseDetails.FirstOrDefault().DebtorId == user.Id, e => e.ExpenseDetails)
+        .Result;
+    var expenses = await expensesRaw
+        .Include(e => e.Group)
+        .Include(e => e.Payer)
+        .ToListAsync();
 }
+
+<!--Custom ScroolBar With CSS-->
+<style>
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+        border: 1.5px solid #7e7e7e;
+        border-radius: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #f1f1f1;
+        border: 2px solid #616161;
+        border-radius: 8px;
+    }
+
+</style>
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Group Detail</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                    <div class="row">
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Number of Expenditures</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@numberOfExpenditures</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Total Amount Spent</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@totalAmountSpent @groupDefaultCurrency</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-4">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Date of Establishment</span>
+                                    <span class="info-box-number text-center text-muted mb-0">@groupWithSlug.CreateDate.ToLongDateString()</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6" style="max-height: 630px;min-height:629px ; overflow-y:scroll !important;">
+                            <h4 class="text-center">Recent Expenses</h4>
+                            @foreach (var expense in expenseWithGroupId)
+                            {
+                                var userWithId = await userManager.FindByIdAsync(expense.PayerId);
+
+                                <div class="post clearfix d-flex flex-column justify-content-center align-items-center">
+                                    <div class="user-block">
+                                        <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
+                                        <span class="username">
+                                            <a href="#">@userWithId.UserName</a>
+                                        </span>
+                                        <span class="description">spent</span>
+                                    </div>
+                                    <!-- /.user-block -->
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="info-box bg-light">
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text text-center text-muted">Spent Amount</span>
+                                                    <span class="info-box-number text-center text-muted mb-0">@expense.TotalAmount @groupDefaultCurrency</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="info-box bg-light">
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text text-center text-muted">Spending Time</span>
+                                                    <span class="info-box-number text-center text-muted mb-0">@expense.CreateDate.ToShortDateString() - @expense.CreateDate.ToShortTimeString()</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="info-box bg-light">
+                                                <div class="info-box-content">
+                                                    <span class="info-box-text text-center text-muted">Description</span>
+                                                    <span class="info-box-number text-center text-muted mb-0">@expense.Description</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-6" style="max-height: 630px;min-height:629px ; overflow-y:scroll !important;">
+                            <h4 class="text-center">Your Debts</h4>
+                            @foreach (var expense in expenses)
+                            {
+                                if (expense.ExpenseDetails.FirstOrDefault().IsPaid == false && expense.ExpenseDetails.FirstOrDefault().IsApproved == false)
+                                {
+                                    var userWithId = await userManager.FindByIdAsync(expense.PayerId);
+                                    var debtorWithId = await userManager.FindByIdAsync(expense.ExpenseDetails.FirstOrDefault().DebtorId);
+
+                                    <div class="post clearfix d-flex flex-column justify-content-center align-items-center">
+                                        <div class="w-100 d-flex justify-content-between align-items-center">
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
+                                                <span class="username">
+                                                    <a href="#">@debtorWithId.UserName</a>
+                                                </span>
+                                                <span class="description">Debtor</span>
+                                            </div>
+                                            <div class="user-block">
+                                                <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
+                                                <span class="username">
+                                                    <a href="#">@expense.Payer.UserName</a>
+                                                </span>
+                                                <span class="description">The Person To Pay</span>
+                                            </div>
+                                        </div>
+                                        <!-- /.user-block -->
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="info-box bg-light">
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text text-center text-muted">Debt Amount</span>
+                                                        <span class="info-box-number text-center text-muted mb-0">@expense.ExpenseDetails?.FirstOrDefault()?.Amount @groupDefaultCurrency</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="info-box bg-light">
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text text-center text-muted">Debt Time</span>
+                                                        <span class="info-box-number text-center text-muted mb-0">@expense.CreateDate.ToShortDateString() - @expense.CreateDate.ToShortTimeString()</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="info-box bg-light">
+                                                    <div class="info-box-content">
+                                                        <span class="info-box-text text-center text-muted">Description</span>
+                                                        <span class="info-box-number text-center text-muted mb-0">@expense.Description</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <a asp-area="Dashboard"
+                                                   asp-controller="Group"
+                                                   asp-action="PaidConfirmation"
+                                                   asp-route-expenseId="@expense.Id"
+                                                   class="btn btn-success w-100">
+                                                    Send To Paid Confirmation
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                    <h3 class="text-primary"><i class="fas fa-paint-brush"></i>@groupWithSlug.Name</h3>
+                    <p class="text-muted">@groupWithSlug.Description</p>
+                    <br>
+                    <div class="text-muted">
+                        <p class="text-sm">
+                            Group Leader
+                            <b class="d-block">@groupCreatedBy.UserName</b>
+                        </p>
+                    </div>
+
+                    @*<div class="text-center mt-5 mb-3">
+                    <a href="#" class="btn btn-sm btn-primary">Add files</a>
+                    <a href="#" class="btn btn-sm btn-warning">Report contact</a>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
 
 
 <div class="btn-group" role="group" aria-label="BtnGroup">
@@ -29,25 +255,15 @@
     </a>
 </div>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Desc</th>
-            <th scope="col">Create Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">@Model.Group.Id</th>
-            <td>@Model.Group.Name</td>
-            <td>@Model.Group.Description</td>
-            <td>@Model.Group.CreateDate.ToShortDateString()</td>
-        </tr>
-    </tbody>
-</table>
-
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+<!-- My Scripts -->
 <script src="~/js/script.js"></script>
 
 <partial name="_UpdateGroupModal" />
