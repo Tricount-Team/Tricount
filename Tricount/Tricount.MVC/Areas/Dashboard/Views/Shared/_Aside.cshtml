@@ -1,4 +1,4 @@
-﻿﻿@using Microsoft.AspNetCore.Identity;
+﻿@using Microsoft.AspNetCore.Identity;
 @using Tricount.BL.Abstract;
 @using Tricount.Entities.Concrete;
 @using Tricount.MVC.Models.DTO_s.Group;
@@ -11,7 +11,7 @@
     var user = await userManager.GetUserAsync(User);
     var userGroups = groupManager.GetGroupWithUserSlug(user.Slug).Result.ToList();
 
-    var inviteRaw = inviteManager.GetAllInclude(i => i.UserId == user.Id, i =>i.Groups).Result;
+    var inviteRaw = inviteManager.GetAllInclude(i => i.UserId == user.Id, i => i.Groups).Result;
     var invites = inviteRaw.Where(i => i.IsFinished == false).ToList();
 
     var expenseRaw = expenseManager.GetAllInclude(e => e.PayerId == user.Id, e => e.ExpenseDetails).Result;
@@ -20,10 +20,87 @@
     var notificationCount = 0;
     foreach (var expense in expenses)
     {
-        if (expense.ExpenseDetails.Count > 0 && expense.ExpenseDetails.FirstOrDefault().IsPaid == true && expense.ExpenseDetails.FirstOrDefault().IsApproved == false) ;
+        if (expense.ExpenseDetails.Count > 0 && expense.ExpenseDetails.FirstOrDefault().IsPaid == true && expense.ExpenseDetails.FirstOrDefault().IsApproved == false)
         {
             notificationCount++;
         }
     }
     notificationCount += invites.Count;
 }
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+        <span class="brand-text font-weight-light">TriCount</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="info">
+                <label>Hesap:</label>
+                <a href="#" class="d-block">@user.UserName</a>
+            </div>
+        </div>
+
+
+        <!-- Button trigger modal -->
+        <div class="form-inline d-flex justify-content-center p-3">
+            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NotificationModal">
+                Notification (@notificationCount)
+            </a>
+        </div>
+
+        <partial name="_NotificationModal"></partial>
+
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Arama Yap" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item menu-open">
+                    @foreach (var group in userGroups)
+                    {
+                        if (group.Users.Count > 0)
+                        {
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a asp-controller="Group" asp-action="Detail" asp-route-slug="@group.Slug" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>@group.Name</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    }
+                </li>
+
+            </ul>
+        </nav>
+
+        <!-- Button trigger modal -->
+        <div class="form-inline d-flex justify-content-center">
+            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGroupModal">
+                + Create New Group
+            </a>
+        </div>
+
+        <partial name="_CreateModal"></partial>
+
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

@@ -18,9 +18,12 @@ namespace Tricount.Entities.Concrete
         public User? Payer  { get; set;}
         public Group? Group { get; set; }
         public string?  GroupId { get; set; }
-
+        public string? PaymentId { get; set; }
+        public Payment? Payment { get; set; }
 
         [NotMapped]
         public string? GroupSlug { get; set; }
+        [NotMapped]
+        public string[]? IsCheckedShowAmountPartial { get; set; }
     }
 }

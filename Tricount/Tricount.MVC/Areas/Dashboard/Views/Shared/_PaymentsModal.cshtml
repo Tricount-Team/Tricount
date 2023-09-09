@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore;
+@using Tricount.BL.Abstract;
+@using Tricount.Entities.Concrete;
+@using Tricount.MVC.Models.DTO_s;
+@inject UserManager<User> userManager;
+@inject IExpenseManager expenseManager;
+@inject IGroupManager groupManager;
+@{
+    var url = Context.Request.Path.Value.Split("/");
+    var slug = url[url.Length - 1];
+    var group = groupManager.GetAll(g => g.Slug == slug).Result.FirstOrDefault();
+
+    var user = await userManager.GetUserAsync(User);
+
+    var expensesRaw = expenseManager
+        .GetAllInclude(e => e.GroupId == group.Id && e.ExpenseDetails.FirstOrDefault().DebtorId == user.Id, e => e.ExpenseDetails)
+        .Result;
+    var expense = await expensesRaw
+        .Include(e => e.Group)
+        .Include(e => e.Payer)
+        .ToListAsync();
+}
+
+@model GroupDetailViewModel
+
+<!-- Modal -->
+<div class="modal fade m-5" id="paymentsModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="PaymentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="PaymentsModalLabel">Payments</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @{
+                foreach (var item in expense)
+                {
+                    if (item.ExpenseDetails.FirstOrDefault().IsPaid == false && item.ExpenseDetails.FirstOrDefault().IsApproved == false)
+                    {
+                        <div class="mb-3 d-flex flex-column justify-content-center align-items-center bg-dark rounded-3 p-3 m-3">
+                            <label>Person To Be Paid: @item.Payer.UserName</label>
+                            <label>Description: @item.Description</label>
+                            <label>Amount: @item.ExpenseDetails?.FirstOrDefault()?.Amount @item.Group.DefaultCurrency</label>
+                            <label>
+                                Bank Account: @(item.Payer.Iban ?? "Not Access Iban Info")
+                            </label>
+                            <label>Time: @item.CreateDate.ToLongDateString() - @item.CreateDate.ToLongTimeString()</label>
+
+                        </div>
+                    }
+                }
+            }
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

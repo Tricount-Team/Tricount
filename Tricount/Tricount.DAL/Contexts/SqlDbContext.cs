@@ -31,7 +31,7 @@ namespace Tricount.DAL.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Tricount1;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=tcp:dilsadygmr.database.windows.net,1433;Initial Catalog=dilsad;Persist Security Info=False;User ID=admindilsad;Password=Dilsad123-123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

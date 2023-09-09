@@ -17,6 +17,7 @@ namespace Tricount.DAL.EntityConfigurations.Concrete
             base.Configure(builder);
             builder.Property(a => a.Amount).HasDefaultValue(0.00);
             builder.Property(p => p.IsPaid).HasDefaultValue(false);
+            builder.Property(p => p.IsApproved).HasDefaultValue(false);
         }
     }
 }

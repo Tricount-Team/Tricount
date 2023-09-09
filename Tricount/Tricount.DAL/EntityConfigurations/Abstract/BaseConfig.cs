@@ -16,8 +16,7 @@ namespace Tricount.DAL.EntityConfigurations.Abstract
             builder.HasKey(x => x.Id);
             builder.Property(p => p.Id).HasDefaultValue(Guid.NewGuid().ToString());
             builder.HasIndex(x => x.Id).IsUnique();
-            builder.Property(p => p.UpdateDate).HasDefaultValue(DateTime.Now);
-            builder.Property(p => p.CreateDate).HasDefaultValue(DateTime.Now);
+            
         }
     }
 }

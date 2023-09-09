@@ -38,7 +38,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 			if (!ModelState.IsValid)
 			{
 				ModelState.AddModelError(string.Empty, "Fill in the mandatory fields!");
-				return View("_Createmodal", model);
+				return View("_Createmodal", model); 
 			}
 			try
 			{

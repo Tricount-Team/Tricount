@@ -9,10 +9,10 @@ namespace Tricount.MVC.Models.DTO_s
 		public ExpenseCreateDTO? ExpenseDTO { get; set; }
 		public ExpenseDetail? ExpenseDetail { get; set; }
         public GroupCreateDTO? GroupDTO { get; set; }
-        public Payment payment { get; set; }
+        public Payment? payment { get; set; }
         public Invite? Invite { get; set; }
-        public Tricount.Entities.Concrete.Group Group { get; set; }
-        public ICollection<Tricount.Entities.Concrete.Expense> Expenses { get; set; } = new List<Tricount.Entities.Concrete.Expense>();
+        public Tricount.Entities.Concrete.Group? Group { get; set; }
+        public ICollection<Tricount.Entities.Concrete.Expense>? Expenses { get; set; } = new List<Tricount.Entities.Concrete.Expense>();
 
         
 
