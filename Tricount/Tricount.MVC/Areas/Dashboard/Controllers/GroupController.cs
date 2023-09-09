@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using Tricount.BL.Abstract;
 using Tricount.BL.Concrete;
 using Tricount.DAL.Contexts;
@@ -143,12 +144,17 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             try
             {
+                model.Group.Users = groupManager.GetAllInclude(g => g.Id == model.Group.Id, g => g.Users).Result.FirstOrDefault().Users; 
                 var invites = await inviteManager.GetAll(i => i.GroupId == model.Group.Id);
+                var group = groupManager.GetAll(g => g.Id == model.Group.Id).Result.FirstOrDefault();
+                
                 foreach (var invite in invites)
                 {
+                    var users = userManager.Users.Include(u => u.Groups.Where(g => g.Id == model.Group.Id)).ToList();
                     await inviteManager.Delete(invite);
                 }
-                await groupManager.Delete(model.Group);
+
+                await groupManager.Delete(group);
                 return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)
