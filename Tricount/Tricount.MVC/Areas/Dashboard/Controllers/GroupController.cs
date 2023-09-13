@@ -407,7 +407,13 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             try
             {
                 var expense = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
-                expense.ExpenseDetails.FirstOrDefault().IsPaid = true;
+                foreach (var expenseDetail in expense.ExpenseDetails)
+                {
+                    if (expenseDetail.ExpenseId == expenseId && expenseDetail.DebtorId == debtorId)
+                    {
+                        expenseDetail.IsPaid = true;
+                    }
+                }
                 await expenseManager.Update(expense);
 
                 Payment payment = new();

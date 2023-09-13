@@ -76,7 +76,7 @@
                     <i class="fas fa-envelope mr-2"></i> @invites.Count New Group Invite
                     @if (invites.Count > 0)
                     {
-                        var invitesDate = invites.OrderByDescending(i => i.UpdateDate.Date).ThenBy(i => i.UpdateDate.TimeOfDay).FirstOrDefault().UpdateDate;
+                        var invitesDate = invites.OrderByDescending(i => i.UpdateDate.Ticks).FirstOrDefault().UpdateDate;
                         var invitesyear = now.Year - invitesDate.Year;
                         var invitesmonth = now.Month - invitesDate.Month;
                         var invitesday = now.Day - invitesDate.Day;
@@ -104,10 +104,7 @@
                         {
                             <span class="float-right text-muted text-sm"> @invitesminute minutes ago</span>
                         }
-                        else if (invitessecond > 0)
-                        {
-                            <span class="float-right text-muted text-sm"> @invitessecond seconds ago</span>
-                        }
+                        
                     }
                 </a>
                 <div class="dropdown-divider"></div>
@@ -115,7 +112,7 @@
                     <i class="fas fa-check mr-2"></i> @expenseCount New Payment Confirmation
                     @if (expenseCount > 0)
                     {
-                        var expenseDate = expenses.OrderByDescending(e => e.UpdateDate.Date).ThenBy(e => e.UpdateDate.TimeOfDay).FirstOrDefault().UpdateDate;
+                        var expenseDate = expenses.OrderByDescending(e => e.UpdateDate.Ticks).FirstOrDefault().UpdateDate;
                         var paymentyear = now.Year - expenseDate.Year;
                         var paymentmonth = now.Month - expenseDate.Month;
                         var paymentday = now.Day - expenseDate.Day;
