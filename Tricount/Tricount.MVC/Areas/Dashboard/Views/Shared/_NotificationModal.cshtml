@@ -93,7 +93,7 @@
                             {
                                 <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
                                     <label>Group: @expense.Group.Name</label>
-                                    <label>Debtor: @expense.ExpenseDetails.FirstOrDefault().Debtor.UserName</label>
+                                    <label>Debtor: @expense.ExpenseDetails</label>
                                     <label>Description: @expense.Description</label>
                                     <label>Amount: @expense.ExpenseDetails.FirstOrDefault().Amount @expense.Group.DefaultCurrency</label>
                                     <label>Time: @expense.CreateDate.ToLongDateString() - @expense.CreateDate.ToLongTimeString()</label>
