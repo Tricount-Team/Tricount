@@ -373,16 +373,17 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                     if (payer.Id != userId)
                     {
                         ExpenseDetail detail = new ExpenseDetail();
-                        double amountPerPerson = model.ExpenseDTO.TotalAmount / selectedUsers.Length;
+                        double amountPerPerson = Math.Round((model.ExpenseDTO.TotalAmount / selectedUsers.Length), 2);
 
                         if (model.ExpenseDTO.IsCheckedShowAmountPartial != null)
                         {
-                            detail.Amount = Double.Parse(selectedUsersInputs[x]);
+                            detail.Amount = Math.Round(Double.Parse(selectedUsersInputs[x]), 2);
                         }
                         else
                         {
                             detail.Amount = amountPerPerson;
                         }
+                        detail.ExpenseId = expense.Id;
                         detail.DebtorId = userId;
                         expense.ExpenseDetails.Add(detail);
                     }
@@ -401,13 +402,18 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> PaidConfirmation(string expenseId)
+        public async Task<IActionResult> PaidConfirmation(string expenseId, string debtorId)
         {
             try
             {
                 var expense = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
                 expense.ExpenseDetails.FirstOrDefault().IsPaid = true;
                 await expenseManager.Update(expense);
+
+                Payment payment = new();
+                payment.DebtorId = debtorId;
+                
+
                 return RedirectToAction("Index", "Group");
             }
             catch (Exception ex)

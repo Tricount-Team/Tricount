@@ -15,6 +15,8 @@
     var expenseRaw = expenseManager.GetAllInclude(e => e.PayerId == user.Id, e => e.ExpenseDetails).Result;
     var expenses = expenseRaw.Where(e => e.IsFinished == false).ToList();
 
+    var now = DateTime.Now;
+
     var expenseCount = 0;
     foreach (var expense in expenses)
     {
@@ -66,18 +68,86 @@
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning">@notificationCount</span>
-            </a> 
+            </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-3">
                 <span class="dropdown-header">@notificationCount Notifications</span>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item p-3" data-bs-toggle="modal" data-bs-target="#NotificationModal">
                     <i class="fas fa-envelope mr-2"></i> @invites.Count New Group Invite
-                    <span class="float-right text-muted text-sm">3 mins</span>
+                    @if (invites.Count > 0)
+                    {
+                        var invitesDate = invites.OrderByDescending(i => i.UpdateDate.Date).ThenBy(i => i.UpdateDate.TimeOfDay).FirstOrDefault().UpdateDate;
+                        var invitesyear = now.Year - invitesDate.Year;
+                        var invitesmonth = now.Month - invitesDate.Month;
+                        var invitesday = now.Day - invitesDate.Day;
+                        var inviteshour = now.Hour - invitesDate.Hour;
+                        var invitesminute = now.Minute - invitesDate.Minute;
+                        var invitessecond = now.Second - invitesDate.Second;
+
+                        if (invitesyear > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @invitesyear years ago</span>
+                        }
+                        else if (invitesmonth > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @invitesmonth months ago</span>
+                        }
+                        else if (invitesday > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @invitesday days ago</span>
+                        }
+                        else if (inviteshour > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @inviteshour hours ago</span>
+                        }
+                        else if (invitesminute > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @invitesminute minutes ago</span>
+                        }
+                        else if (invitessecond > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @invitessecond seconds ago</span>
+                        }
+                    }
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="#" class="dropdown-item p-3" data-bs-toggle="modal" data-bs-target="#NotificationModal">
                     <i class="fas fa-check mr-2"></i> @expenseCount New Payment Confirmation
-                    <span class="float-right text-muted text-sm">12 hours</span>
+                    @if (expenseCount > 0)
+                    {
+                        var expenseDate = expenses.OrderByDescending(e => e.UpdateDate.Date).ThenBy(e => e.UpdateDate.TimeOfDay).FirstOrDefault().UpdateDate;
+                        var paymentyear = now.Year - expenseDate.Year;
+                        var paymentmonth = now.Month - expenseDate.Month;
+                        var paymentday = now.Day - expenseDate.Day;
+                        var paymenthour = now.Hour - expenseDate.Hour;
+                        var paymentminute = now.Minute - expenseDate.Minute;
+                        var paymentsecond = now.Second - expenseDate.Second;
+
+                        if (paymentyear > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @paymentyear years ago</span>
+                        }
+                        else if (paymentmonth > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @paymentmonth months ago</span>
+                        }
+                        else if (paymentday > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @paymentday days ago</span>
+                        }
+                        else if (paymenthour > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @paymenthour hours ago</span>
+                        }
+                        else if (paymentminute > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @paymentminute minutes ago</span>
+                        }
+                        else if (paymentsecond > 0)
+                        {
+                            <span class="float-right text-muted text-sm"> @paymentsecond seconds ago</span>
+                        }
+                    }
                 </a>
                 <div class="dropdown-divider"></div>
             </div>

@@ -9,7 +9,8 @@ namespace Tricount.Entities.Concrete
         public bool IsApproved { get; set; }
         public string? DebtorId { get; set; }
         public User? Debtor { get; set; }
-        public ICollection<Expense>? Expenses { get; set; } = new List<Expense>();
+        public string? ExpenseId { get; set; }
+        public Expense? Expense { get; set; }
         public ICollection<Payment>? Payments { get; set; } = new List<Payment>();
     }
 }

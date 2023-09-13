@@ -25,33 +25,13 @@
     }
 
     var expensesRaw = expenseManager
-        .GetAllInclude(e => e.GroupId == groupWithSlug.Id && e.ExpenseDetails.FirstOrDefault().DebtorId == user.Id, e => e.ExpenseDetails)
+        .GetAllInclude(e => e.GroupId == groupWithSlug.Id, e => e.ExpenseDetails)
         .Result;
     var expenses = await expensesRaw
         .Include(e => e.Group)
         .Include(e => e.Payer)
         .ToListAsync();
 }
-
-<!--Custom ScroolBar With CSS-->
-<style>
-    ::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background-color: transparent;
-        border: 1.5px solid #7e7e7e;
-        border-radius: 8px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: #f1f1f1;
-        border: 2px solid #616161;
-        border-radius: 8px;
-    }
-
-</style>
 
 <section class="content">
 
@@ -273,81 +253,76 @@
                                     <div style="max-height: 630px;min-height:629px ; overflow-y:scroll !important;">
                                         @foreach (var expense in expenses)
                                         {
-                                            if (expense.ExpenseDetails.FirstOrDefault().IsPaid == false && expense.ExpenseDetails.FirstOrDefault().IsApproved == false)
+                                            var userWithId = await userManager.FindByIdAsync(expense.PayerId);
+                                            foreach (var expenseDetail in expense.ExpenseDetails)
                                             {
-                                                var userWithId = await userManager.FindByIdAsync(expense.PayerId);
-                                                var debtorWithId = await userManager.FindByIdAsync(expense.ExpenseDetails.FirstOrDefault().DebtorId);
+                                                if (expenseDetail.IsPaid == false && expenseDetail.IsApproved == false && expenseDetail.DebtorId == user.Id)
+                                                {
+                                                    var debtorWithId = await userManager.FindByIdAsync(expenseDetail.DebtorId);
 
-                                                <div class="post clearfix d-flex flex-column justify-content-center align-items-center">
-                                                    <div class="w-100 d-flex justify-content-between align-items-center">
-                                                        <div class="user-block">
-                                                            <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
-                                                            <span class="username">
-                                                                <a class="text-decoration-none text-white" href="#">@debtorWithId.UserName</a>
-                                                            </span>
-                                                            <span class="description font-weight-bold text-danger">Debtor</span>
+                                                    <div class="post clearfix d-flex flex-column justify-content-center align-items-center">
+                                                        <div class="w-100 d-flex justify-content-between align-items-center">
+                                                            <div class="user-block">
+                                                                <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
+                                                                <span class="username">
+                                                                    <a class="text-decoration-none text-white" href="#">@debtorWithId.UserName</a>
+                                                                </span>
+                                                                <span class="description font-weight-bold text-danger">Debtor</span>
+                                                            </div>
+                                                            <div class="user-block">
+                                                                <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
+                                                                <span class="username">
+                                                                    <a class="text-decoration-none text-white" href="#">@expense.Payer.UserName</a>
+                                                                </span>
+                                                                <span class="description font-weight-bold text-success">The Person To Pay</span>
+                                                            </div>
                                                         </div>
-                                                        <div class="user-block">
-                                                            <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
-                                                            <span class="username">
-                                                                <a class="text-decoration-none text-white" href="#">@expense.Payer.UserName</a>
-                                                            </span>
-                                                            <span class="description font-weight-bold text-success">The Person To Pay</span>
-                                                        </div>
-                                                    </div>
-                                                    <!-- /.user-block -->
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="info-box bg-light">
-                                                                <div class="info-box-content">
-                                                                    <span class="info-box-text text-center text-muted">Debt Amount</span>
-                                                                    <span class="info-box-number text-center text-muted mb-0">@expense.ExpenseDetails?.FirstOrDefault()?.Amount @groupDefaultCurrency</span>
+                                                        <!-- /.user-block -->
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="info-box bg-light">
+                                                                    <div class="info-box-content">
+                                                                        <span class="info-box-text text-center text-muted">Debt Amount</span>
+                                                                        <span class="info-box-number text-center text-muted mb-0">@expenseDetail.Amount @groupDefaultCurrency</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="info-box bg-light">
+                                                                    <div class="info-box-content">
+                                                                        <span class="info-box-text text-center text-muted">Debt Time</span>
+                                                                        <span class="info-box-number text-center text-muted mb-0">@expense.CreateDate.ToShortDateString() - @expense.CreateDate.ToShortTimeString()</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <div class="info-box bg-light">
-                                                                <div class="info-box-content">
-                                                                    <span class="info-box-text text-center text-muted">Debt Time</span>
-                                                                    <span class="info-box-number text-center text-muted mb-0">@expense.CreateDate.ToShortDateString() - @expense.CreateDate.ToShortTimeString()</span>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="info-box bg-light">
+                                                                    <div class="info-box-content">
+                                                                        <span class="info-box-text text-center text-muted">Description</span>
+                                                                        <span class="info-box-number text-center text-muted mb-0">@expense.Description</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="info-box bg-light">
-                                                                <div class="info-box-content">
-                                                                    <span class="info-box-text text-center text-muted">Description</span>
-                                                                    <span class="info-box-number text-center text-muted mb-0">@expense.Description</span>
-                                                                </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <a asp-area="Dashboard"
+                                                                   asp-controller="Group"
+                                                                   asp-action="PaidConfirmation"
+                                                                   asp-route-expenseId="@expense.Id"
+                                                                   class="btn btn-success w-100">
+                                                                    Send To Paid Confirmation
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <a asp-area="Dashboard"
-                                                               asp-controller="Group"
-                                                               asp-action="PaidConfirmation"
-                                                               asp-route-expenseId="@expense.Id"
-                                                               class="btn btn-success w-100">
-                                                                Send To Paid Confirmation
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                }
                                             }
                                         }
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-
-
-                                @*<div class="text-center mt-5 mb-3">
-                                <a href="#" class="btn btn-sm btn-primary">Add files</a>
-                                <a href="#" class="btn btn-sm btn-warning">Report contact</a>
-                                </div>*@
                             </div>
                         </div>
                     </div>

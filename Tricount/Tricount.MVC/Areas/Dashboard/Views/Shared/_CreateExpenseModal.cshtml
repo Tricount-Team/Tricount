@@ -64,7 +64,7 @@
                                 var x = 0;
                                 foreach (var user in Model.Group.Users)
                                 {
-                                    <li class="list-group-item" style="color:white;">
+                                    <li class="list-group-item">
                                         <input class="form-check-input me-1" data-target="inputAmount_@x" name="selectedUsers" type="checkbox" value="@user.UserName" />
                                         @user.UserName
                                         <div id="inputContainer" style="display: none;">

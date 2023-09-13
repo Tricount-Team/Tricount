@@ -13,7 +13,7 @@
     var user = await userManager.GetUserAsync(User);
 
     var expensesRaw = expenseManager
-        .GetAllInclude(e => e.GroupId == group.Id && e.ExpenseDetails.FirstOrDefault().DebtorId == user.Id, e => e.ExpenseDetails)
+        .GetAllInclude(e => e.GroupId == group.Id, e => e.ExpenseDetails)
         .Result;
     var expense = await expensesRaw
         .Include(e => e.Group)
@@ -34,18 +34,20 @@
             @{
                 foreach (var item in expense)
                 {
-                    if (item.ExpenseDetails.FirstOrDefault().IsPaid == false && item.ExpenseDetails.FirstOrDefault().IsApproved == false)
+                    foreach (var expenseDetail in item.ExpenseDetails)
                     {
-                        <div class="mb-3 d-flex flex-column justify-content-center align-items-center bg-dark rounded-3 p-3 m-3">
-                            <label>Person To Be Paid: @item.Payer.UserName</label>
-                            <label>Description: @item.Description</label>
-                            <label>Amount: @item.ExpenseDetails?.FirstOrDefault()?.Amount @item.Group.DefaultCurrency</label>
-                            <label>
-                                Bank Account: @(item.Payer.Iban ?? "Not Access Iban Info")
-                            </label>
-                            <label>Time: @item.CreateDate.ToLongDateString() - @item.CreateDate.ToLongTimeString()</label>
-                            
-                        </div>
+                        if (expenseDetail.IsPaid == false && expenseDetail.IsApproved == false && expenseDetail.DebtorId == user.Id)
+                        {
+                            <div class="mb-3 d-flex flex-column justify-content-center align-items-center bg-dark rounded-3 p-3 m-3">
+                                <label>Person To Be Paid: @item.Payer.UserName</label>
+                                <label>Description: @item.Description</label>
+                                <label>Amount: @expenseDetail.Amount @item.Group.DefaultCurrency</label>
+                                <label>
+                                    Bank Account: @(item.Payer.Iban ?? "Not Access Iban Info")
+                                </label>
+                                <label>Time: @item.CreateDate.ToLongDateString() - @item.CreateDate.ToLongTimeString()</label>
+                            </div>
+                        }
                     }
                 }
             }
