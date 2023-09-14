@@ -23,6 +23,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         private readonly IInviteManager inviteManager;
         private readonly IExpenseManager expenseManager;
         private readonly IPaymentManager paymentManager;
+        private readonly IExpenseDetailManager expenseDetailManager;
         private readonly IMapper mapper;
         private readonly UserManager<User> userManager;
 
@@ -31,6 +32,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             IInviteManager inviteManager,
             IExpenseManager expenseManager,
             IPaymentManager paymentManager,
+            IExpenseDetailManager expenseDetailManager,
             IMapper mapper,
             UserManager<User> userManager
             )
@@ -40,6 +42,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             this.userManager = userManager;
             this.expenseManager = expenseManager;
             this.paymentManager = paymentManager;
+            this.expenseDetailManager = expenseDetailManager;
             this.mapper = mapper;
         }
 
@@ -147,14 +150,31 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 model.Group.Users = groupManager.GetGroupWithSlugAndIncludeUsers(model.Group.Slug).Users;
 
                 var invites = await inviteManager.GetAll(i => i.GroupId == model.Group.Id);
-                var group = groupManager.GetAll(g => g.Id == model.Group.Id).Result.FirstOrDefault();
+                var group = groupManager.GetAllInclude(g => g.Id == model.Group.Id, g => g.Expenses).Result.FirstOrDefault();
                 
                 foreach (var invite in invites)
                 {
-                    var users = userManager.Users.Include(u => u.Groups.Where(g => g.Id == model.Group.Id)).ToList();
                     await inviteManager.Delete(invite);
                 }
-
+                foreach (var expense in group.Expenses)
+                {
+                    var expenseEach = expenseManager.GetAllInclude(e => e.Id == expense.Id, e => e.ExpenseDetails).Result.FirstOrDefault();
+                    foreach (var expenseDetail in expenseEach.ExpenseDetails)
+                    {
+                        var expenseDetailEach = expenseDetailManager.GetAllInclude(ed => ed.Id == expenseDetail.Id, ed => ed.Payments).Result.FirstOrDefault();
+                        foreach (var payment in expenseDetailEach.Payments)
+                        {
+                            paymentManager.Delete(payment);
+                        }
+                        expenseDetailManager.Delete(expenseDetail);
+                    }
+                    expenseManager.Delete(expense);
+                }
+                for (int i = 0; i < group.Users.Count;)
+                {
+                    group.Users.Remove(group.Users.ToList()[i]);
+                }
+                await groupManager.Update(group);
                 await groupManager.Delete(group);
                 return RedirectToAction("Index", "Group");
             }
