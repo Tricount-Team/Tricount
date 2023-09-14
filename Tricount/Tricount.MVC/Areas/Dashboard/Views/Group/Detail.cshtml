@@ -11,7 +11,7 @@
     var slug = url[url.Length - 1];
 
     var user = await userManager.GetUserAsync(User);
-    var groupWithSlug = groupManager.GetAll(g => g.Slug == slug).Result.FirstOrDefault();
+    var groupWithSlug = groupManager.GetGroupWithSlug(slug);
     var expenseWithGroupId = expenseManager.GetAll(e => e.GroupId == groupWithSlug.Id).Result;
 
     var groupDefaultCurrency = groupWithSlug.DefaultCurrency;
@@ -342,5 +342,4 @@
 <partial name="_UpdateGroupModal" />
 <partial name="_DeleteGroupModal" />
 <partial name="_InviteModal" />
-<partial name="_PaymentsModal" model="Model" />
 <partial name="_CreateExpenseModal" />
