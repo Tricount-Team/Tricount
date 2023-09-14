@@ -35,15 +35,23 @@ namespace Tricount.BL.Concrete
         {
             return base.GetAllInclude(filter, include);
         }
-
-        public virtual async Task<ICollection<Group>> GetGroupWithUserSlug(string slug)
-        {
-            return await repository.GetGroupsWithUserSlug(slug);
-        }
         public override Task<int> Update(Group entity)
         {
             entity.Slug = entity.Name.ToLower() + "-" + entity.Description.ToLower() + "-" + entity.Id.ToString().Split('-')[0].ToLower();
             return base.Update(entity);
+        }
+        public virtual async Task<ICollection<Group>> GetGroupWithUserSlug(string slug)
+        {
+            return await repository.GetGroupsWithUserSlug(slug);
+        }
+        
+        public virtual Group GetGroupWithSlug(string slug)
+        {
+            return repository.GetGroupWithSlug(slug);
+        }
+        public virtual Group GetGroupWithSlugAndIncludeUsers(string slug)
+        {
+            return repository.GetGroupWithSlugAndIncludeUsers(slug);
         }
     }
 }

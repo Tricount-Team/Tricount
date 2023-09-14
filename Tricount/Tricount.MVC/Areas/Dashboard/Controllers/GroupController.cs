@@ -85,7 +85,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             {
                 GroupDetailViewModel model = new();
 
-                var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
+                var group = groupManager.GetGroupWithSlug(slug);
                 model.Group = group;
                 return View("_UpdateGroupModal", model);
             }
@@ -123,7 +123,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             {
                 GroupDetailViewModel model = new();
 
-                var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
+                var group = groupManager.GetGroupWithSlug(slug);
                 model.Group = group;
                 return View("_DeleteGroupModal", model);
             }
@@ -144,7 +144,8 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             }
             try
             {
-                model.Group.Users = groupManager.GetAllInclude(g => g.Id == model.Group.Id, g => g.Users).Result.FirstOrDefault().Users; 
+                model.Group.Users = groupManager.GetGroupWithSlugAndIncludeUsers(model.Group.Slug).Users;
+
                 var invites = await inviteManager.GetAll(i => i.GroupId == model.Group.Id);
                 var group = groupManager.GetAll(g => g.Id == model.Group.Id).Result.FirstOrDefault();
                 
@@ -173,9 +174,9 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             try
             {
 
-                var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
-                var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
-                model.Group = groupDetail;
+                var groupWithUsers = groupManager.GetGroupWithSlugAndIncludeUsers(slug);
+                var user = groupWithUsers.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
+                model.Group = groupWithUsers;
 
                 if (user == null)
                 {
@@ -200,7 +201,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             {
                 GroupDetailViewModel model = new();
 
-                var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
+                var group = groupManager.GetGroupWithSlug(slug);
                 model.Group = group;
                 return View("_InviteModal", model);
             }
@@ -218,7 +219,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             try
             {
                 var user = await userManager.FindByNameAsync(model.Invite.UserName);
-                var group = await groupManager.GetAllInclude(g => g.Slug == model.Invite.GroupSlug, g => g.Users).Result.FirstOrDefaultAsync();
+                var group = groupManager.GetGroupWithSlugAndIncludeUsers(model.Invite.GroupSlug);
                 var groupUser = group.Users.FirstOrDefault(u => u.Id == user.Id);
 
                 if (user.Id == GetUserId())
@@ -258,7 +259,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 }
                 else if(expenseId != null)
                 {
-                    var expenseWithExpenseDetails = expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefault();
+                    var expenseWithExpenseDetails = expenseManager.expenseWithIdAndIncludeE_Details(expenseId);
                     foreach (var expenseDetail in expenseWithExpenseDetails.ExpenseDetails)
                     {
                         if (expenseDetail.ExpenseId == expenseId)
@@ -298,7 +299,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 {
                     Payment paymentModel = new();
 
-                    var expenseWithExpenseDetails = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
+                    var expenseWithExpenseDetails = expenseManager.expenseWithIdAndIncludeE_Details(expenseId);
 
                     foreach (var expenseDetail in expenseWithExpenseDetails.ExpenseDetails)
                     {
@@ -338,8 +339,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             {
                 GroupDetailViewModel model = new();
 
-                var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
-                var getGroupWithUsers = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
+                var getGroupWithUsers = groupManager.GetGroupWithSlugAndIncludeUsers(slug);
                 model.Group = getGroupWithUsers;
 
                 return View("_CreateExpenseModal", model);
@@ -357,7 +357,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             try
             {
                 var expense = mapper.Map<Expense>(model.ExpenseDTO);
-                var group = groupManager.GetAll(g => g.Slug == model.ExpenseDTO.GroupSlug).Result.FirstOrDefault();
+                var group = groupManager.GetGroupWithSlug(model.ExpenseDTO.GroupSlug);
                 var payer = userManager.FindByNameAsync(model.ExpenseDTO.PayerId).Result;
                 double totalInputAmount = 0;
 
@@ -415,15 +415,15 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
         {
             try
             {
-                var expense = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
-                foreach (var expenseDetail in expense.ExpenseDetails)
+                var expenseWithED = expenseManager.expenseWithIdAndIncludeE_Details(expenseId);
+                foreach (var expenseDetail in expenseWithED.ExpenseDetails)
                 {
                     if (expenseDetail.ExpenseId == expenseId && expenseDetail.DebtorId == debtorId)
                     {
                         expenseDetail.IsPaid = true;
                     }
                 }
-                await expenseManager.Update(expense);
+                await expenseManager.Update(expenseWithED);
 
                 Payment payment = new();
                 payment.DebtorId = debtorId;

@@ -10,5 +10,8 @@ namespace Tricount.DAL.Repositories.Abstract
     public interface IGroupRepository : IBaseRepository<Group>
     {
         public Task<ICollection<Group>> GetGroupsWithUserSlug(string slug);
+
+        public Group GetGroupWithSlug(string slug);
+        public Group GetGroupWithSlugAndIncludeUsers(string slug);
     }
 }

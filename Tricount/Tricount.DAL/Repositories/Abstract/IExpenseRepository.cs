@@ -9,5 +9,6 @@ namespace Tricount.DAL.Repositories.Abstract
 {
     public interface IExpenseRepository: IBaseRepository<Expense>
     {
+        public Expense expenseWithIdAndIncludeE_Details(string expenseId);
     }
 }

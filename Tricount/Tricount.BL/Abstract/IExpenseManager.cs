@@ -9,5 +9,6 @@ namespace Tricount.BL.Abstract
 {
     public interface IExpenseManager : IManagerBase<Expense>
     {
+        public Expense expenseWithIdAndIncludeE_Details(string expenseId);
     }
 }
