@@ -1,43 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity;
-@using Microsoft.EntityFrameworkCore;
 @using Tricount.BL.Abstract;
 @using Tricount.Entities.Concrete;
 
 @inject UserManager<User> userManager;
 @inject IInviteManager inviteManager;
-@inject IPaymentManager paymentManager;
-@inject IExpenseManager expenseManager;
-@inject IExpenseDetailManager expenseDetailManager;
 @{
     var user = await userManager.GetUserAsync(User);
     var inviteRaw = inviteManager.GetAllInclude(i => i.UserId == user.Id, i => i.Group).Result;
     var invites = inviteRaw.Where(i => i.IsFinished == false).ToList();
-
-    var expensesRaw = expenseManager
-        .GetAllInclude(e => e.PayerId == user.Id, e => e.ExpenseDetails)
-        .Result;
-    var expenses = await expensesRaw
-        .Include(e => e.Group)
-        .Include(e => e.Payer)
-        .Include(e => e.Payment)
-        .ToListAsync();
-
-    var expenseDetailCount = 0;
-    var expenseDetailBool = false;
-    foreach (var expense in expenses)
-    {
-        if (expense.ExpenseDetails.Count > 0)
-        {
-            foreach (var expenseDetail in expense.ExpenseDetails)
-            {
-                if (expenseDetail.IsApproved == false && expenseDetail.IsPaid == true)
-                {
-                    expenseDetailBool = true;
-                    expenseDetailCount++;
-                }
-            }
-        }
-    }
 }
 
 <!-- Modal -->
@@ -45,14 +15,14 @@
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="NotificationModalLabel">Notification</h1>
+                <h1 class="modal-title fs-5" id="NotificationModalLabel">Invites</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex flex-column justify-content-center align-items-center">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @if (invites.Count < 1 && expenseDetailCount < 1)
+                @if (invites.Count < 1)
                 {
-                    <label class="fs-5">Hiç Bildirimiz Yok</label>
+                    <label class="fs-5">You have no invites.</label>
                 }
                 else
                 {
@@ -83,44 +53,6 @@
                                     </a>
                                 </div>
                             </div>
-                        }
-                    }
-
-                    if (expenseDetailBool)
-                    {
-                        <label class="fs-5">Expenditure Approvals</label>
-                        foreach (var expense in expenses)
-                        {
-                            foreach (var expenseDetail in expense.ExpenseDetails)
-                            {
-                                if (expense.ExpenseDetails.Count > 0 && expenseDetail.IsApproved == false && expenseDetail.IsPaid == true)
-                                {
-                                    var debtor = userManager.FindByIdAsync(expenseDetail.DebtorId).Result;
-                                    <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
-                                        <label>Group: @expense.Group.Name</label>
-                                        <label>Debtor: @debtor.UserName</label>
-                                        <label>Description: @expense.Description</label>
-                                        <label>Amount: @expenseDetail.Amount @expense.Group.DefaultCurrency</label>
-                                        <label>Time: @expense.CreateDate.ToLongDateString() - @expense.CreateDate.ToLongTimeString()</label>
-                                        <div class="d-flex w-25 gap-1 justify-content-center align-items-center">
-                                            <a asp-area="Dashboard"
-                                               asp-controller="Group"
-                                               asp-action="DeniedInvite"
-                                               asp-route-expenseId="@expense.Id"
-                                               class="btn btn-danger p-2">
-                                                Refuse
-                                            </a>
-                                            <a asp-area="Dashboard"
-                                               asp-controller="Group"
-                                               asp-action="AcceptInvite"
-                                               asp-route-expenseId="@expense.Id"
-                                               class="btn btn-success p-2">
-                                                Approve
-                                            </a>
-                                        </div>
-                                    </div>
-                                }
-                            }
                         }
                     }
                 }

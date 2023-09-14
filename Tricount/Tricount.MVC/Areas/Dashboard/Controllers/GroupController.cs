@@ -259,7 +259,13 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 else if(expenseId != null)
                 {
                     var expenseWithExpenseDetails = expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefault();
-                    expenseWithExpenseDetails.ExpenseDetails.FirstOrDefault().IsPaid = false;
+                    foreach (var expenseDetail in expenseWithExpenseDetails.ExpenseDetails)
+                    {
+                        if (expenseDetail.ExpenseId == expenseId)
+                        {
+                            expenseDetail.IsPaid = false;
+                        }
+                    }
                     await expenseManager.Update(expenseWithExpenseDetails);
                 }
                 return RedirectToAction("Index", "Group");
@@ -290,25 +296,28 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
                 }
                 else if(expenseId != null)
                 {
-                    var expenseWithExpenseDetails = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
-                    var expenseDetail = expenseWithExpenseDetails.ExpenseDetails.FirstOrDefault();
-                    var payment = expenseDetail.Payments.FirstOrDefault();
-
-                    expenseDetail.IsApproved = true;
-
                     Payment paymentModel = new();
-                    paymentModel.Amount = expenseDetail.Amount;
-                    paymentModel.DebtorId = expenseDetail.DebtorId;
-                    paymentModel.IsFinished = true;
-                    paymentModel.ExpenseDetailId = expenseId;
 
-                    expenseDetail.Payments.Add(paymentModel);
-                    
+                    var expenseWithExpenseDetails = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
+
+                    foreach (var expenseDetail in expenseWithExpenseDetails.ExpenseDetails)
+                    {
+                        if (expenseDetail.ExpenseId == expenseId)
+                        {
+                            expenseDetail.IsApproved = true;
+                            paymentModel.Amount = expenseDetail.Amount;
+                            paymentModel.DebtorId = expenseDetail.DebtorId;
+                            paymentModel.IsFinished = true;
+                            paymentModel.ExpenseDetailId = expenseId;
+
+                            expenseDetail.Payments.Add(paymentModel);
+                        }
+                    }
+
                     await expenseManager.Update(expenseWithExpenseDetails);
 
                     expenseWithExpenseDetails.PaymentId = paymentModel.Id;
                     await expenseManager.Update(expenseWithExpenseDetails);
-
                 }
 
                 return RedirectToAction("Index", "Group");

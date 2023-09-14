@@ -50,4 +50,3 @@ document.getElementById("createExpenseModalButton").addEventListener("click", fu
         }
     });
 });
-
