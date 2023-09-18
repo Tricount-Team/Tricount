@@ -4,14 +4,9 @@
 @using Tricount.Entities.Concrete;
 
 @inject UserManager<User> userManager;
-@inject IInviteManager inviteManager;
-@inject IPaymentManager paymentManager;
 @inject IExpenseManager expenseManager;
-@inject IExpenseDetailManager expenseDetailManager;
 @{
     var user = await userManager.GetUserAsync(User);
-    var inviteRaw = inviteManager.GetAllInclude(i => i.UserId == user.Id, i => i.Groups).Result;
-    var invites = inviteRaw.Where(i => i.IsFinished == false).ToList();
 
     var expensesRaw = expenseManager
         .GetAllInclude(e => e.PayerId == user.Id, e => e.ExpenseDetails)
@@ -41,51 +36,21 @@
 }
 
 <!-- Modal -->
-<div class="modal fade m-5" id="NotificationModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="NotificationModalLabel" aria-hidden="true">
+<div class="modal fade m-5" id="PaidConfirmationNotificationModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="PaidConfirmationNotificationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="NotificationModalLabel">Notification</h1>
+                <h1 class="modal-title fs-5" id="PaidConfirmationNotificationModalLabel">Payment Confirmations</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex flex-column justify-content-center align-items-center">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @if (invites.Count < 1 && expenseDetailCount < 1)
+                @if (expenseDetailCount < 1)
                 {
-                    <label class="fs-5">Hiç Bildirimiz Yok</label>
+                    <label class="fs-5">You have no payment notifications.</label>
                 }
                 else
                 {
-                    @if (invites.Count > 0)
-                    {
-                        <label class="fs-5">Group Invites</label>
-                        foreach (var invite in invites)
-                        {
-                            var sender = await userManager.FindByIdAsync(invite.SenderId);
-                            <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
-                                <label>Sender: @sender.UserName</label>
-                                <label>Group Name: @invite.Groups.Name</label>
-                                <label>Group Description: @invite.Groups.Description</label>
-                                <div class="d-flex w-25">
-                                    <a asp-area="Dashboard"
-                                       asp-controller="Group"
-                                       asp-action="DeniedInvite"
-                                       asp-route-inviteId="@invite.Id"
-                                       class="btn btn-danger p-2">
-                                        Denied
-                                    </a>
-                                    <a asp-area="Dashboard"
-                                       asp-controller="Group"
-                                       asp-action="AcceptInvite"
-                                       asp-route-inviteId="@invite.Id"
-                                       class="btn btn-success p-2">
-                                        Accept
-                                    </a>
-                                </div>
-                            </div>
-                        }
-                    }
-
                     if (expenseDetailBool)
                     {
                         <label class="fs-5">Expenditure Approvals</label>

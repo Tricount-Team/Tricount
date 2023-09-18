@@ -16,12 +16,13 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.BL.Concrete
 {
-    public class GroupManager : ManagerBase<Group>, BL.Abstract.IGroupManager
+    public class GroupManager : ManagerBase<Group>, Abstract.IGroupManager
     {
         private readonly IGroupRepository repository;
+
         public GroupManager(IGroupRepository repository) : base(repository)
         {
-           this.repository= repository;
+            this.repository = repository;
         }
 
         public async override Task<int> Insert(Group entity)
@@ -29,19 +30,28 @@ namespace Tricount.BL.Concrete
             entity.Slug = "";
             return await base.Insert(entity);
         }
-        public override Task<IQueryable<Group>> GetAllInclude(Expression<Func<Group, bool >>? filter = null, params  Expression<Func<Group , object>>[]? include)
+
+        public override Task<IQueryable<Group>>? GetAllInclude(Expression<Func<Group, bool>>? filter = null, params Expression<Func<Group, object>>[]? include)
         {
             return base.GetAllInclude(filter, include);
-
-        }
-        public virtual async Task<ICollection<Group>> GetGroupWithUserSlug(string slug)
-        {
-            return await repository.GetGroupWithUserSlug(slug);
         }
         public override Task<int> Update(Group entity)
         {
             entity.Slug = entity.Name.ToLower() + "-" + entity.Description.ToLower() + "-" + entity.Id.ToString().Split('-')[0].ToLower();
             return base.Update(entity);
+        }
+        public virtual async Task<ICollection<Group>> GetGroupWithUserSlug(string slug)
+        {
+            return await repository.GetGroupWithUserSlug(slug);
+        }
+
+        public virtual Group GetGroupWithSlug(string slug)
+        {
+            return repository.GetGroupWithSlug(slug);
+        }
+        public virtual Group GetGroupWithSlugAndIncludeUsers(string slug)
+        {
+            return repository.GetGroupWithSlugAndIncludeUsers(slug);
         }
     }
 }

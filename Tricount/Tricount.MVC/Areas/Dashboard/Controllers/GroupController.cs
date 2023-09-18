@@ -28,8 +28,8 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 
 		}
 		[Route("/dashboard/menu")]
-		public async Task<IActionResult> Index()
-		{
+			public async Task<IActionResult> Index()
+			{
 			return View();
 		}
 		[HttpPost]
@@ -72,7 +72,14 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 			{
 				var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
 				model.Group = group;
-				return View("_UpdateGroupModal", model);
+                if (group!= null)
+                {
+                      return View("_UpdateGroupModal", model);
+                }
+				else
+				{
+					return View();
+				}
 
 			}
 			catch (Exception ex)
@@ -156,29 +163,31 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 		[Route("Dashboard/Group/Detail/{slug}")]
 		public async Task<IActionResult> Detail(string slug)
 		{
-			GroupDetailViewModel viewmodel = new GroupDetailViewModel();
-			try
-			{
-				var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
-				var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
-				viewmodel.Group = groupDetail;
+            GroupDetailViewModel model = new();
 
-				if (user == null)
-				{
-					return Redirect("Identitiy/Account/AccessDenied");
-				}
-				return View(viewmodel);
+            try
+            {
 
-			}
-			catch (Exception ex)
-			{
-				ModelState.AddModelError(ex.Source, $"An error was encountered.\n {ex.Message}");
-				return View(viewmodel);
-			}
+                var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
+                var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
+                model.Group = groupDetail;
 
-			
-		}
-		[HttpGet]
+                if (user == null)
+                {
+                    return Redirect("/Identity/Account/AccessDenied");
+                }
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
+                return View(model);
+            }
+
+
+        }
+        [HttpGet]
 		[Route("dashboard/getcreateinvite/{slug}")]
 		public IActionResult GetCreateInvite(string slug)
 		{
@@ -364,28 +373,37 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 			}
 
 		}
-		[HttpGet]
-		public async Task<IActionResult> PaidConfirmation(string expenseId)
-		{
-			try
-			{
-				var expense = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
-				expense.ExpenseDetails.FirstOrDefault().IsPaid = true;
-				await expenseManager.Update(expense);
-				return RedirectToAction("Index", "Group");
+        [HttpGet]
+        public async Task<IActionResult> PaidConfirmation(string expenseId, string debtorId)
+        {
+            try
+            {
+                var expense = await expenseManager.GetAllInclude(e => e.Id == expenseId, e => e.ExpenseDetails).Result.FirstOrDefaultAsync();
+                foreach (var expenseDetail in expense.ExpenseDetails)
+                {
+                    if (expenseDetail.ExpenseId == expenseId && expenseDetail.DebtorId == debtorId)
+                    {
+                        expenseDetail.IsPaid = true;
+                    }
+                }
+                await expenseManager.Update(expense);
 
-			}
-			catch (Exception ex)
-			{
-				ModelState.AddModelError("", $"An error was encountered.\n Error Message: {ex.Message}");
-				return RedirectToAction("Index", "Group");
-
-			
-			}
-		}
+                Payment payment = new();
+                payment.DebtorId = debtorId;
 
 
-		public string GetUserId()
+                return RedirectToAction("Index", "Group");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"An error was encountered.\nError message: {ex.Message}");
+                return RedirectToAction("Index", "Group");
+            }
+
+        }
+
+
+        public string GetUserId()
 		{
 			var userId =userManager.GetUserId(User).ToString();
 			return userId;

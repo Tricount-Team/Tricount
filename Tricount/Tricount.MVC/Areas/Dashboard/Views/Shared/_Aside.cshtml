@@ -5,32 +5,15 @@
 
 @inject UserManager<User> userManager;
 @inject IGroupManager groupManager;
-@inject IInviteManager inviteManager;
-@inject IExpenseManager expenseManager
 @{
     var user = await userManager.GetUserAsync(User);
     var userGroups = groupManager.GetGroupWithUserSlug(user.Slug).Result.ToList();
-
-    var inviteRaw = inviteManager.GetAllInclude(i => i.UserId == user.Id, i => i.Groups).Result;
-    var invites = inviteRaw.Where(i => i.IsFinished == false).ToList();
-
-    var expenseRaw = expenseManager.GetAllInclude(e => e.PayerId == user.Id, e => e.ExpenseDetails).Result;
-    var expenses = expenseRaw.Where(e => e.IsFinished == false).ToList();
-
-    var notificationCount = 0;
-    foreach (var expense in expenses)
-    {
-        if (expense.ExpenseDetails.Count > 0 && expense.ExpenseDetails.FirstOrDefault().IsPaid == true && expense.ExpenseDetails.FirstOrDefault().IsApproved == false)
-        {
-            notificationCount++;
-        }
-    }
-    notificationCount += invites.Count;
 }
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
+    <a href="/dashboard/menu" class="brand-link text-decoration-none">
+        <img src="~/dist/img/boxed-bg.jpg" alt="Tricount Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">TriCount</span>
     </a>
 
@@ -38,26 +21,19 @@
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="~/dist/img/avatar5.png" class="img-circle elevation-2" alt="User Image">
+            </div>
             <div class="info">
-                <label>Hesap:</label>
-                <a href="#" class="d-block">@user.UserName</a>
+                <a href="#" class="d-block text-decoration-none">@user.UserName</a>
             </div>
         </div>
 
 
-        <!-- Button trigger modal -->
-        <div class="form-inline d-flex justify-content-center p-3">
-            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NotificationModal">
-                Notification (@notificationCount)
-            </a>
-        </div>
-
-        <partial name="_NotificationModal"></partial>
-
         <!-- SidebarSearch Form -->
         <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Arama Yap" aria-label="Search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search in The Groups" aria-label="Search">
                 <div class="input-group-append">
                     <button class="btn btn-sidebar">
                         <i class="fas fa-search fa-fw"></i>
@@ -90,15 +66,6 @@
 
             </ul>
         </nav>
-
-        <!-- Button trigger modal -->
-        <div class="form-inline d-flex justify-content-center">
-            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGroupModal">
-                + Create New Group
-            </a>
-        </div>
-
-        <partial name="_CreateModal"></partial>
 
         <!-- /.sidebar-menu -->
     </div>

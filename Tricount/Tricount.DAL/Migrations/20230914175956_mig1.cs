@@ -34,7 +34,7 @@ namespace Tricount.DAL.Migrations
                     Surname = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     Iban = table.Column<string>(type: "nvarchar(26)", maxLength: 26, nullable: true),
                     DefaultCurrency = table.Column<int>(type: "int", nullable: false),
-                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -59,14 +59,14 @@ namespace Tricount.DAL.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "d2a61063-b101-4c38-bb38-5ca5cd70e52d"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "88e842eb-7265-4d8d-b418-4cfd43e7a1a7"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DefaultCurrency = table.Column<int>(type: "int", nullable: false),
                     ConstituentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 39, DateTimeKind.Local).AddTicks(7418)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 39, DateTimeKind.Local).AddTicks(7122))
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 996, DateTimeKind.Local).AddTicks(5581)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,8 +119,8 @@ namespace Tricount.DAL.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -164,8 +164,8 @@ namespace Tricount.DAL.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -177,28 +177,6 @@ namespace Tricount.DAL.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "expenseDetails",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "a9051fd1-7c77-4c56-b71e-71e5bbb1f049"),
-                    IsPaid = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
-                    Amount = table.Column<double>(type: "float", nullable: true, defaultValue: 0.0),
-                    DebtorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 39, DateTimeKind.Local).AddTicks(3787)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 39, DateTimeKind.Local).AddTicks(3460))
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_expenseDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_expenseDetails_AspNetUsers_DebtorId",
-                        column: x => x.DebtorId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -229,13 +207,13 @@ namespace Tricount.DAL.Migrations
                 name: "Invites",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "8e7c39fd-33b3-4af6-a161-0f5d7c0cf4f1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "9e21e5c7-171a-45c0-995b-41d7e90860de"),
                     GroupId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     IsFinished = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     SenderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 40, DateTimeKind.Local).AddTicks(1477)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 40, DateTimeKind.Local).AddTicks(1124))
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 996, DateTimeKind.Local).AddTicks(8896)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -253,16 +231,39 @@ namespace Tricount.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "expenseDetails",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "62aebbba-e953-4282-bc37-91a7adf4b4f7"),
+                    Amount = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
+                    IsApproved = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DebtorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ExpenseId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 996, DateTimeKind.Local).AddTicks(1718)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_expenseDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_expenseDetails_AspNetUsers_DebtorId",
+                        column: x => x.DebtorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "7dd898f2-e0e8-4664-941d-f90d85c2d353"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "9921fd4b-9253-45f5-84ea-3defb7deaa01"),
                     Amount = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
                     IsFinished = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DebtorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ExpenseDetailId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 40, DateTimeKind.Local).AddTicks(4852)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 40, DateTimeKind.Local).AddTicks(4465))
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 997, DateTimeKind.Local).AddTicks(2063)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -284,15 +285,15 @@ namespace Tricount.DAL.Migrations
                 name: "Expenses",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "affdd87d-6ffd-4d4c-8292-b28d6c9d0ef3"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "756d1f62-5c53-4fde-98ca-ce0122a01cfb"),
                     TotalAmount = table.Column<double>(type: "float", nullable: true, defaultValue: 0.0),
                     IsFinished = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PayerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GroupId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PaymentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 38, DateTimeKind.Local).AddTicks(9914)),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 7, 23, 47, 52, 38, DateTimeKind.Local).AddTicks(9541))
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 995, DateTimeKind.Local).AddTicks(8176)),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -312,30 +313,6 @@ namespace Tricount.DAL.Migrations
                         column: x => x.PaymentId,
                         principalTable: "Payments",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ExpenseExpenseDetail",
-                columns: table => new
-                {
-                    ExpenseDetailsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ExpensesId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExpenseExpenseDetail", x => new { x.ExpenseDetailsId, x.ExpensesId });
-                    table.ForeignKey(
-                        name: "FK_ExpenseExpenseDetail_Expenses_ExpensesId",
-                        column: x => x.ExpensesId,
-                        principalTable: "Expenses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ExpenseExpenseDetail_expenseDetails_ExpenseDetailsId",
-                        column: x => x.ExpenseDetailsId,
-                        principalTable: "expenseDetails",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -381,8 +358,7 @@ namespace Tricount.DAL.Migrations
                 name: "IX_AspNetUsers_Slug",
                 table: "AspNetUsers",
                 column: "Slug",
-                unique: true,
-                filter: "[Slug] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -397,15 +373,15 @@ namespace Tricount.DAL.Migrations
                 column: "DebtorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_expenseDetails_ExpenseId",
+                table: "expenseDetails",
+                column: "ExpenseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_expenseDetails_Id",
                 table: "expenseDetails",
                 column: "Id",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ExpenseExpenseDetail_ExpensesId",
-                table: "ExpenseExpenseDetail",
-                column: "ExpensesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Expenses_GroupId",
@@ -438,8 +414,7 @@ namespace Tricount.DAL.Migrations
                 name: "IX_Groups_Slug",
                 table: "Groups",
                 column: "Slug",
-                unique: true,
-                filter: "[Slug] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_GroupUser_UsersId",
@@ -477,11 +452,34 @@ namespace Tricount.DAL.Migrations
                 table: "Payments",
                 column: "Id",
                 unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_expenseDetails_Expenses_ExpenseId",
+                table: "expenseDetails",
+                column: "ExpenseId",
+                principalTable: "Expenses",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_expenseDetails_AspNetUsers_DebtorId",
+                table: "expenseDetails");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Expenses_AspNetUsers_PayerId",
+                table: "Expenses");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Payments_AspNetUsers_DebtorId",
+                table: "Payments");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_expenseDetails_Expenses_ExpenseId",
+                table: "expenseDetails");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -498,9 +496,6 @@ namespace Tricount.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ExpenseExpenseDetail");
-
-            migrationBuilder.DropTable(
                 name: "GroupUser");
 
             migrationBuilder.DropTable(
@@ -508,6 +503,9 @@ namespace Tricount.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Expenses");
@@ -520,9 +518,6 @@ namespace Tricount.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "expenseDetails");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
         }
     }
 }

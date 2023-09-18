@@ -43,7 +43,7 @@ namespace Tricount.DAL.Repositories.Concrete
 			}
 			else
 			{
-				return await Context.Set<T>().Where(filter).ToListAsync();
+				return await Context.Set<T>().Where(filter).ToListAsync(); 
 			}
 		}
 	       
@@ -62,7 +62,7 @@ namespace Tricount.DAL.Repositories.Concrete
 		}
 		public async Task<T?> GetById(int id)
 		{
-			return await Context.Set<T>().FindAsync(id);
+			return await Context.Set<T>().FindAsync(id); 
 		}
 	}
 }

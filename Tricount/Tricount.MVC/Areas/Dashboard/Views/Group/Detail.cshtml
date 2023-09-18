@@ -26,7 +26,7 @@
     }
 
     var expensesRaw = expenseManager
-        .GetAllInclude(e => e.GroupId == groupWithSlug.Id && e.ExpenseDetails.FirstOrDefault().DebtorId == user.Id, e => e.ExpenseDetails)
+        .GetAllInclude(e => e.GroupId == groupWithSlug.Id, e => e.ExpenseDetails)
         .Result;
     var expenses = await expensesRaw
         .Include(e => e.Group)
@@ -34,236 +34,309 @@
         .ToListAsync();
 }
 
-<!--Custom ScroolBar With CSS-->
-<style>
-    ::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background-color: transparent;
-        border: 1.5px solid #7e7e7e;
-        border-radius: 8px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: #f1f1f1;
-        border: 2px solid #616161;
-        border-radius: 8px;
-    }
-
-</style>
-
 <section class="content">
 
-    <!-- Default box -->
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Group Detail</h3>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
-                    <div class="row">
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box bg-light">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Number of Expenditures</span>
-                                    <span class="info-box-number text-center text-muted mb-0">@numberOfExpenditures</span>
+    <div>
+        <div class="row">
+            <div class="col-12 col-sm-6">
+                <div class="card bg-gradient-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Group Details</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+                                <div class="row">
+                                    <div class="col-12 col-sm-4">
+                                        <div class="info-box bg-warning">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">Number of Expenditures</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@numberOfExpenditures</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">Total Amount Spent</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@totalAmountSpent @groupDefaultCurrency</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <div class="info-box bg-warning">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">Date of Establishment</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@groupWithSlug.CreateDate.ToLongDateString()</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box bg-light">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Total Amount Spent</span>
-                                    <span class="info-box-number text-center text-muted mb-0">@totalAmountSpent @groupDefaultCurrency</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-4">
-                            <div class="info-box bg-light">
-                                <div class="info-box-content">
-                                    <span class="info-box-text text-center text-muted">Date of Establishment</span>
-                                    <span class="info-box-number text-center text-muted mb-0">@groupWithSlug.CreateDate.ToLongDateString()</span>
+                        <div class="row">
+                            <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
+                                <div class="row">
+                                    <div class="col-12 col-sm-4">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">Group Name</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@groupWithSlug.Name</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <div class="info-box bg-warning">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">Group Description</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@groupWithSlug.Description</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <div class="info-box bg-light">
+                                            <div class="info-box-content">
+                                                <span class="info-box-text text-center text-muted">Group Leader</span>
+                                                <span class="info-box-number text-center text-muted mb-0">@groupCreatedBy.UserName</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6" style="max-height: 630px;min-height:629px ; overflow-y:scroll !important;">
-                            <h4 class="text-center">Recent Expenses</h4>
-                            @foreach (var expense in expenseWithGroupId)
-                            {
-                                var userWithId = await userManager.FindByIdAsync(expense.PayerId);
-
-                                <div class="post clearfix d-flex flex-column justify-content-center align-items-center">
-                                    <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
-                                        <span class="username">
-                                            <a href="#">@userWithId.UserName</a>
-                                        </span>
-                                        <span class="description">spent</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="info-box bg-light">
-                                                <div class="info-box-content">
-                                                    <span class="info-box-text text-center text-muted">Spent Amount</span>
-                                                    <span class="info-box-number text-center text-muted mb-0">@expense.TotalAmount @groupDefaultCurrency</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="info-box bg-light">
-                                                <div class="info-box-content">
-                                                    <span class="info-box-text text-center text-muted">Spending Time</span>
-                                                    <span class="info-box-number text-center text-muted mb-0">@expense.CreateDate.ToShortDateString() - @expense.CreateDate.ToShortTimeString()</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="info-box bg-light">
-                                                <div class="info-box-content">
-                                                    <span class="info-box-text text-center text-muted">Description</span>
-                                                    <span class="info-box-number text-center text-muted mb-0">@expense.Description</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                        <div class="col-6" style="max-height: 630px;min-height:629px ; overflow-y:scroll !important;">
-                            <h4 class="text-center">Your Debts</h4>
-                            @foreach (var expense in expenses)
-                            {
-                                if (expense.ExpenseDetails.FirstOrDefault().IsPaid == false && expense.ExpenseDetails.FirstOrDefault().IsApproved == false)
-                                {
-                                    var userWithId = await userManager.FindByIdAsync(expense.PayerId);
-                                    var debtorWithId = await userManager.FindByIdAsync(expense.ExpenseDetails.FirstOrDefault().DebtorId);
-
-                                    <div class="post clearfix d-flex flex-column justify-content-center align-items-center">
-                                        <div class="w-100 d-flex justify-content-between align-items-center">
-                                            <div class="user-block">
-                                                <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
-                                                <span class="username">
-                                                    <a href="#">@debtorWithId.UserName</a>
-                                                </span>
-                                                <span class="description">Debtor</span>
-                                            </div>
-                                            <div class="user-block">
-                                                <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
-                                                <span class="username">
-                                                    <a href="#">@expense.Payer.UserName</a>
-                                                </span>
-                                                <span class="description">The Person To Pay</span>
-                                            </div>
-                                        </div>
-                                        <!-- /.user-block -->
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="info-box bg-light">
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text text-center text-muted">Debt Amount</span>
-                                                        <span class="info-box-number text-center text-muted mb-0">@expense.ExpenseDetails?.FirstOrDefault()?.Amount @groupDefaultCurrency</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="info-box bg-light">
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text text-center text-muted">Debt Time</span>
-                                                        <span class="info-box-number text-center text-muted mb-0">@expense.CreateDate.ToShortDateString() - @expense.CreateDate.ToShortTimeString()</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="info-box bg-light">
-                                                    <div class="info-box-content">
-                                                        <span class="info-box-text text-center text-muted">Description</span>
-                                                        <span class="info-box-number text-center text-muted mb-0">@expense.Description</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <a asp-area="Dashboard"
-                                                   asp-controller="Group"
-                                                   asp-action="PaidConfirmation"
-                                                   asp-route-expenseId="@expense.Id"
-                                                   class="btn btn-success w-100">
-                                                    Send To Paid Confirmation
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            }
-                        </div>
-                    </div>
+                    <!-- /.card-body -->
                 </div>
-                <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
-                    <h3 class="text-primary"><i class="fas fa-paint-brush"></i>@groupWithSlug.Name</h3>
-                    <p class="text-muted">@groupWithSlug.Description</p>
-                    <br>
-                    <div class="text-muted">
-                        <p class="text-sm">
-                            Group Leader
-                            <b class="d-block">@groupCreatedBy.UserName</b>
-                        </p>
+            </div>
+            <div class="col-12 col-sm-6">
+                <div class="card bg-gradient-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Group Tools</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
                     </div>
-
-                    @*<div class="text-center mt-5 mb-3">
-                    <a href="#" class="btn btn-sm btn-primary">Add files</a>
-                    <a href="#" class="btn btn-sm btn-warning">Report contact</a>
-                    </div>*@
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <a class="btn btn-info p-4 w-100" id="createInviteModalButton" data-bs-toggle="modal" data-bs-target="#createInviteModal">
+                                        Share
+                                    </a>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <a class="btn btn-success p-4 w-100" id="createExpenseModalButton" data-bs-toggle="modal" data-bs-target="#createExpenseModal">
+                                        Add Expense
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row my-4">
+                                <div class="col-12 col-md-6">
+                                    <a class="btn btn-warning p-4 w-100" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
+                                        Update
+                                    </a>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <a class="btn btn-danger p-4 w-100" id="deleteGroupModalButton" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
+                                        Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- /.card-body -->
+        <!-- Default box -->
+        <!-- /.card -->
     </div>
-    <!-- /.card -->
+    <div>
+        <div class="row">
+            <!-- Default box -->
+            <div class="col-12 col-sm-6">
+                <div class="card bg-gradient-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Recent Expenses</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class=" order-2 order-md-1">
+                                <div class="row">
+                                    <div style="max-height: 630px;min-height:629px ; overflow-y:scroll !important;">
+                                        @foreach (var expense in expenseWithGroupId)
+                                        {
+                                            var userWithId = await userManager.FindByIdAsync(expense.PayerId);
+
+                                            <div class="post clearfix d-flex flex-column justify-content-center align-items-center">
+                                                <div class="user-block">
+                                                    <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
+                                                    <span class="username">
+                                                        <a class="text-decoration-none text-white" href="#">@userWithId.UserName</a>
+                                                    </span>
+                                                    <span class="description text-danger font-weight-bold">Spent</span>
+                                                </div>
+                                                <!-- /.user-block -->
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="info-box bg-light">
+                                                            <div class="info-box-content">
+                                                                <span class="info-box-text text-center text-muted">Spent Amount</span>
+                                                                <span class="info-box-number text-center text-muted mb-0">@expense.TotalAmount @groupDefaultCurrency</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="info-box bg-light">
+                                                            <div class="info-box-content">
+                                                                <span class="info-box-text text-center text-muted">Spending Time</span>
+                                                                <span class="info-box-number text-center text-muted mb-0">@expense.CreateDate.ToShortDateString() - @expense.CreateDate.ToShortTimeString()</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="info-box bg-light">
+                                                            <div class="info-box-content">
+                                                                <span class="info-box-text text-center text-muted">Description</span>
+                                                                <span class="info-box-number text-center text-muted mb-0">@expense.Description</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+
+
+                                @*<div class="text-center mt-5 mb-3">
+                                <a href="#" class="btn btn-sm btn-primary">Add files</a>
+                                <a href="#" class="btn btn-sm btn-warning">Report contact</a>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.card -->
+            <!-- Default box -->
+            <div class="col-12 col-sm-6">
+                <div class="card bg-gradient-secondary">
+                    <div class="card-header">
+                        <h3 class="card-title">Your Debts</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class=" order-2 order-md-1">
+                                <div class="row">
+                                    <div style="max-height: 630px;min-height:629px ; overflow-y:scroll !important;">
+                                        @foreach (var expense in expenses)
+                                        {
+                                            var userWithId = await userManager.FindByIdAsync(expense.PayerId);
+                                            foreach (var expenseDetail in expense.ExpenseDetails)
+                                            {
+                                                if (expenseDetail.IsPaid == false && expenseDetail.IsApproved == false && expenseDetail.DebtorId == user.Id)
+                                                {
+                                                    var debtorWithId = await userManager.FindByIdAsync(expenseDetail.DebtorId);
+
+                                                    <div class="post clearfix d-flex flex-column justify-content-center align-items-center">
+                                                        <div class="w-100 d-flex justify-content-between align-items-center">
+                                                            <div class="user-block">
+                                                                <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
+                                                                <span class="username">
+                                                                    <a class="text-decoration-none text-white" href="#">@debtorWithId.UserName</a>
+                                                                </span>
+                                                                <span class="description font-weight-bold text-danger">Debtor</span>
+                                                            </div>
+                                                            <div class="user-block">
+                                                                <img class="img-circle img-bordered-sm" src="~/dist/img/avatar.png" alt="User Image">
+                                                                <span class="username">
+                                                                    <a class="text-decoration-none text-white" href="#">@expense.Payer.UserName</a>
+                                                                </span>
+                                                                <span class="description font-weight-bold text-success">The Person To Pay</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.user-block -->
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="info-box bg-light">
+                                                                    <div class="info-box-content">
+                                                                        <span class="info-box-text text-center text-muted">Debt Amount</span>
+                                                                        <span class="info-box-number text-center text-muted mb-0">@expenseDetail.Amount @groupDefaultCurrency</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="info-box bg-light">
+                                                                    <div class="info-box-content">
+                                                                        <span class="info-box-text text-center text-muted">Debt Time</span>
+                                                                        <span class="info-box-number text-center text-muted mb-0">@expense.CreateDate.ToShortDateString() - @expense.CreateDate.ToShortTimeString()</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="info-box bg-light">
+                                                                    <div class="info-box-content">
+                                                                        <span class="info-box-text text-center text-muted">Description</span>
+                                                                        <span class="info-box-number text-center text-muted mb-0">@expense.Description</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <a asp-area="Dashboard"
+                                                                   asp-controller="Group"
+                                                                   asp-action="PaidConfirmation"
+                                                                   asp-route-expenseId="@expense.Id"
+                                                                   asp-route-debtorId="@user.Id"
+                                                                   class="btn btn-success w-100">
+                                                                    Send To Paid Confirmation
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
 
 </section>
 <!-- /.content -->
-
-
-<div class="btn-group" role="group" aria-label="BtnGroup">
-    <a class="btn btn-primary mb-5" id="createInviteModalButton" data-bs-toggle="modal" data-bs-target="#createInviteModal">
-        Share
-    </a>
-    <a class="btn btn-primary mb-5" id="updateGroupModalButton" data-bs-toggle="modal" data-bs-target="#updateGroupModal">
-        Update
-    </a>
-    <a class="btn btn-primary mb-5" id="deleteGroupModalButton" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">
-        Delete
-    </a>
-</div>
-
-<div class="btn-group" role="group" aria-label="BtnGroup">
-    <a class="btn btn-primary mb-5" id="createExpenseModalButton" data-bs-toggle="modal" data-bs-target="#createExpenseModal">
-        Add Expense
-    </a>
-    <a class="btn btn-primary mb-5" id="getPaymentsButton" data-bs-toggle="modal" data-bs-target="#paymentsModal">
-        Show Expenses
-    </a>
-</div>
-
-<!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
 <!-- My Scripts -->
 <script src="~/js/script.js"></script>
 
