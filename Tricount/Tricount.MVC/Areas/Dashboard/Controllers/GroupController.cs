@@ -72,14 +72,10 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 			{
 				var group = groupManager.GetAll(p => p.Slug == slug).Result.FirstOrDefault();
 				model.Group = group;
-                if (group!= null)
-                {
-                      return View("_UpdateGroupModal", model);
-                }
-				else
-				{
-					return View();
-				}
+                
+                return View("_UpdateGroupModal", model);
+               
+			
 
 			}
 			catch (Exception ex)
@@ -168,8 +164,8 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             try
             {
 
-                var groupDetail = await groupManager.GetAllInclude(g => g.Slug == slug, g => g.Users).Result.FirstOrDefaultAsync();
-                var user = groupDetail.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
+                var groupDetail = await groupManager.GetGroupWithSlugAndIncludeUsers(slug);
+                var user = groupwi   .Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
                 model.Group = groupDetail;
 
                 if (user == null)
@@ -194,7 +190,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 			GroupDetailViewModel model = new GroupDetailViewModel();
 			try
 			{
-				var group = groupManager.GetAll(i=>i.Slug == slug).Result.FirstOrDefault();
+				var group = groupManager.GetGroupWithSlug(slug);
 				model.Group= group;
 				return View("_InviteModal", model);
 
@@ -213,7 +209,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 			{
 
 				var user = await userManager.FindByNameAsync(model.Invite.UserName);
-				var group =await groupManager.GetAllInclude(g => g.Slug == model.Invite.GroupSlug, g => g.Users).Result.FirstOrDefaultAsync();
+				var group =await groupManager.GetGroupWithSlugAndIncludeUsers(g => g.Slug == model.Invite.GroupSlug).Result.FirstOrDefaultAsync();
 				var groupUser = group.Users.FirstOrDefault(u => u.Id == user.Id);
 
 				if (user.Id == GetUserId())

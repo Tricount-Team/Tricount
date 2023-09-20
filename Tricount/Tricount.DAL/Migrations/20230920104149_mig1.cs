@@ -59,13 +59,13 @@ namespace Tricount.DAL.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "88e842eb-7265-4d8d-b418-4cfd43e7a1a7"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "ee291ff9-383a-4af2-9191-e1efafa039e8"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Slug = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DefaultCurrency = table.Column<int>(type: "int", nullable: false),
                     ConstituentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 996, DateTimeKind.Local).AddTicks(5581)),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 20, 13, 41, 49, 543, DateTimeKind.Local).AddTicks(8463)),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -207,12 +207,12 @@ namespace Tricount.DAL.Migrations
                 name: "Invites",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "9e21e5c7-171a-45c0-995b-41d7e90860de"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "6c5e2a12-9283-484f-aae4-89067e53e588"),
                     GroupId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     IsFinished = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     SenderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 996, DateTimeKind.Local).AddTicks(8896)),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 20, 13, 41, 49, 544, DateTimeKind.Local).AddTicks(1292)),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -234,13 +234,13 @@ namespace Tricount.DAL.Migrations
                 name: "expenseDetails",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "62aebbba-e953-4282-bc37-91a7adf4b4f7"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "f8f1f9de-141f-46d9-8efc-627c1cba06ce"),
                     Amount = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
                     IsPaid = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DebtorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ExpenseId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 996, DateTimeKind.Local).AddTicks(1718)),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 20, 13, 41, 49, 543, DateTimeKind.Local).AddTicks(5023)),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -257,12 +257,12 @@ namespace Tricount.DAL.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "9921fd4b-9253-45f5-84ea-3defb7deaa01"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "f64f4a84-e88b-4a8f-af6f-713762844376"),
                     Amount = table.Column<double>(type: "float", nullable: false, defaultValue: 0.0),
                     IsFinished = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     DebtorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ExpenseDetailId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 997, DateTimeKind.Local).AddTicks(2063)),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 20, 13, 41, 49, 544, DateTimeKind.Local).AddTicks(4180)),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -285,14 +285,14 @@ namespace Tricount.DAL.Migrations
                 name: "Expenses",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "756d1f62-5c53-4fde-98ca-ce0122a01cfb"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValue: "cbaa2796-f56a-4d01-bc87-3baefc4f661c"),
                     TotalAmount = table.Column<double>(type: "float", nullable: true, defaultValue: 0.0),
                     IsFinished = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PayerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     GroupId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PaymentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 14, 20, 59, 55, 995, DateTimeKind.Local).AddTicks(8176)),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 20, 13, 41, 49, 543, DateTimeKind.Local).AddTicks(1725)),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
