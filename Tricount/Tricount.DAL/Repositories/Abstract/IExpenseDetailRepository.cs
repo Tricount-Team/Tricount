@@ -8,7 +8,7 @@ using Tricount.Entities.Concrete;
 
 namespace Tricount.DAL.Repositories.Abstract
 {
-	public interface IExpenseDetailRepository : IBaseRepository<ExpenseDetail>
+	public interface IExpenseDetailRepository : IRepository<ExpenseDetail>
 	{
 	}
 }

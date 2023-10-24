@@ -11,7 +11,7 @@ using Tricount.Entities.Abstract;
 
 namespace Tricount.DAL.Repositories.Concrete
 {
-	public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity,new()
+	public class BaseRepository<T> : IRepository<T> where T : BaseEntity,new()
 	{
 		public SqlDbContext Context {get; set;}
 

@@ -138,7 +138,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 			}
 			try
 			{
-				var invites = await inviteManager.GetAll(p => p.GroupId == model.Group.Id);
+				var invites = await groupManager.GetGroupWithSlugAndIncludeUsers(model.Group.Slug).Users;
 				foreach (var invite in invites)
 				{
 					await inviteManager.Delete(invite);
@@ -164,9 +164,9 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
             try
             {
 
-                var groupDetail = await groupManager.GetGroupWithSlugAndIncludeUsers(slug);
-                var user = groupwi   .Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
-                model.Group = groupDetail;
+                var groupWithUsers = groupManager.GetGroupWithSlugAndIncludeUsers(slug);
+                var user = groupWithUsers.Users.Where(u => u.Id == GetUserId()).FirstOrDefault();
+                model.Group = groupWithUsers;
 
                 if (user == null)
                 {
@@ -209,7 +209,7 @@ namespace Tricount.MVC.Areas.Dashboard.Controllers
 			{
 
 				var user = await userManager.FindByNameAsync(model.Invite.UserName);
-				var group =await groupManager.GetGroupWithSlugAndIncludeUsers(g => g.Slug == model.Invite.GroupSlug).Result.FirstOrDefaultAsync();
+				var group = groupManager.GetGroupWithSlugAndIncludeUsers(model.Invite.GroupSlug);
 				var groupUser = group.Users.FirstOrDefault(u => u.Id == user.Id);
 
 				if (user.Id == GetUserId())
